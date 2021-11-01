@@ -1,0 +1,48 @@
+package com.chen.mycardsystembackstage.service.impl;
+
+import com.chen.mycardsystembackstage.entity.ColumnName;
+import com.chen.mycardsystembackstage.entity.Manages;
+import com.chen.mycardsystembackstage.mapper.ManaMapper;
+import com.chen.mycardsystembackstage.service.ManaService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @author George
+ * @project MyCardSystem
+ * @package com.chen.mycardsystembackstage.service.impl
+ * @date 2021/10/22 16:42
+ * @since 1.0
+ */
+@Service
+public class ManaServiceImpl implements ManaService {
+
+    @Resource
+    private ManaMapper manaMapper;
+    @Override
+    public List<Manages> getMana() {
+        return manaMapper.getMana();
+    }
+
+    @Override
+    public List<ColumnName> getHead(int head) {
+        String name=getName(head);
+        return manaMapper.getHead(name);
+    }
+
+    private String getName(int head){
+        String name=null;
+        if (head==1){
+            name="card";
+        }else if (head==2){
+            name="mork";
+        }else if (head==3){
+            name="coll";
+        }else if (head==4){
+            name="ad";
+        }
+        return name;
+    }
+}

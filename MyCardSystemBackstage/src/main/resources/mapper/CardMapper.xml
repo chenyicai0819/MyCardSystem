@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mycardsystembackstage.mapper.CardMapper">
+    <insert id="addCard">
+        INSERT
+        INTO card(cardId,cardName,cardLink,cardImg)
+        VALUES(#{cardId},#{cardName},#{cardLink},#{cardImg})
+    </insert>
+    <update id="upCard" parameterType="com.chen.mycardsystembackstage.entity.Card">
+        UPDATE card
+        SET cardName=#{cardName},cardLink=#{cardLink},cardImg=#{cardImg}
+        WHERE cardId=#{cardId}
+    </update>
+    <delete id="delCard" parameterType="string">
+        DELETE FROM card WHERE cardId=#{cardId}
+    </delete>
+
+    <select id="getCard" resultType="com.chen.mycardsystembackstage.entity.Card">
+        SELECT * FROM card
+    </select>
+    <select id="seaCard" resultType="com.chen.mycardsystembackstage.entity.Card">
+        SELECT * FROM card WHERE cardName LIKE concat('%',#{name},'%')
+    </select>
+    <select id="countCard" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM card
+    </select>
+</mapper>

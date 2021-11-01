@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mycardsystembackstage.mapper.CollMapper">
+    <insert id="addColl">
+        INSERT
+        INTO coll(collId,collName,collImg,collText)
+        VALUES (#{collId},#{collName},#{collImg},#{collText})
+    </insert>
+    <update id="upColl" parameterType="com.chen.mycardsystembackstage.entity.Coll">
+        UPDATE coll
+        SET collName=#{collName},collImg=#{collImg},collText=#{collText}
+        WHERE collId=#{collId}
+    </update>
+    <delete id="delColl" parameterType="string">
+        DELETE FROM coll WHERE collId=#{id}
+    </delete>
+
+    <select id="getColl" resultType="com.chen.mycardsystembackstage.entity.Coll">
+        SELECT * FROM coll
+    </select>
+    <select id="seaColl" resultType="com.chen.mycardsystembackstage.entity.Coll">
+        SELECT * FROM coll WHERE collName LIKE concat('%',#{name},'%')
+    </select>
+    <select id="countColl" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM coll
+    </select>
+</mapper>

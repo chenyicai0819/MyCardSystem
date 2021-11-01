@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mycardsystembackstage.mapper.MorkMapper">
+    <insert id="addMork" parameterType="com.chen.mycardsystembackstage.entity.Mork">
+        INSERT INTO
+            mork(morkName,morkLink,morkType,morkImg)
+            VALUES(#{morkName},#{morkLink},#{morkType},#{morkImg});
+    </insert>
+    <update id="upMork">
+        UPDATE mork
+        SET morkName=#{morkName},morkLink=#{morkLink},morkType=#{morkType},morkImg=#{morkImg}
+        WHERE morkId=#{morkId}
+    </update>
+    <delete id="delMork" parameterType="int">
+        DELETE FROM mork WHERE morkId=#{id}
+    </delete>
+
+    <select id="getMork" resultType="com.chen.mycardsystembackstage.entity.Mork">
+        SELECT * FROM mork
+    </select>
+    <select id="seaMork" resultType="com.chen.mycardsystembackstage.entity.Mork">
+        SELECT * FROM mork WHERE morkName LIKE concat('%',#{name},'%')
+    </select>
+    <select id="countMork" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM mork
+    </select>
+</mapper>
