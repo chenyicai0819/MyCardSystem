@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mycardsystembackstage.mapper.AdMapper">
+    <insert id="addAd">
+        INSERT INTO
+            ad(adId,adName,adText,adImg,adUpDate,adDownDate)
+        VALUES(#{adId},#{adName},#{adText},#{adImg},#{adUpDate},#{adDownDate});
+    </insert>
+    <update id="upAd">
+        UPDATE ad
+        SET adName=#{adName},adText=#{adText},adImg=#{adImg},adUpDate=#{adUpDate},adDownDate=#{adDownDate}
+        WHERE adId=#{adId}
+    </update>
+    <delete id="delAd">
+        DELETE
+        FROM ad
+        WHERE adId=#{id}
+    </delete>
+
+    <select id="getAd" resultType="com.chen.mycardsystembackstage.entity.Ad">
+        SELECT *
+        FROM ad
+    </select>
+    <select id="seaAd" resultType="com.chen.mycardsystembackstage.entity.Ad">
+        SELECT *
+        FROM ad
+        WHERE adName=#{name}
+    </select>
+    <select id="countAd" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ad
+    </select>
+</mapper>
