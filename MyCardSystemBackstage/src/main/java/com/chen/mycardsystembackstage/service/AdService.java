@@ -18,7 +18,7 @@ public interface AdService {
     public List<Ad> getAd(int page,int size);
     public List<Ad> showAd();
     public int addAd(Ad ad);
-    public int delAd(int id);
+    public int delAd(String id);
     public List<Ad> seaAd(String name);
     public int upAd(Ad ad);
     public int countAd();

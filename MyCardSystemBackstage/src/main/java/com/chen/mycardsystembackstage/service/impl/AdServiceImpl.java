@@ -4,6 +4,7 @@ import com.chen.mycardsystembackstage.entity.Ad;
 import com.chen.mycardsystembackstage.mapper.AdMapper;
 import com.chen.mycardsystembackstage.service.AdService;
 import com.github.pagehelper.PageHelper;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * @date 2021/11/1 22:12
  * @since 1.0
  */
+@Service
 public class AdServiceImpl implements AdService {
 
     @Resource
@@ -37,7 +39,7 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public int delAd(int id) {
+    public int delAd(String id) {
         return adMapper.delAd(id);
     }
 

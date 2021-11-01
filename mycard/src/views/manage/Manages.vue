@@ -89,6 +89,7 @@ import { ElMessageBox } from 'element-plus'
 import qs from "qs";
 import Add from "./Add";
 import router from "../../router";
+import moment from 'moment'
 export default {
   name: "Manages",
   components: {Add},
@@ -118,6 +119,10 @@ export default {
       allTotal:'',
       pageSize:20,
     })
+    // 时间格式化
+    const dateFormat = (row,column) => {
+
+    }
     const load = () => {
       count.value += 2
     }
@@ -131,6 +136,10 @@ export default {
     const openDrawer = (buttenType) => {
       data.drawer=true;
       data.buttenType=buttenType;
+      // 使用子组件方法
+      setTimeout(() => {
+        RefChilde.value.getFather();
+      }, 500);
     }
     const handleEdit = (index, row) => {
       chooseNum();
@@ -145,12 +154,11 @@ export default {
         data.editId=row.adId;
       }
       data.editData=row
+      data.buttenType='修改'
       console.log(data.editData);
       // RefChilde.value.getFather();
       openDrawer('修改');
-      setTimeout(() => {
-        RefChilde.value.getFather();
-      }, 500);
+
     }
     const handleDelete = (index, row) => {
       console.log(index, row)
@@ -194,6 +202,7 @@ export default {
         uri='coll/get';
       }else if (active==4){
         uri='ad/get';
+
       }
       proxy.$axios.get(uri,{params:{page:data.currentPage,size:data.pageSize}}).then(res=>{
         const getdata=res.data;
@@ -287,6 +296,7 @@ export default {
     chooseNum();
     return{
       data,
+      dateFormat,
       handleSizeChange,
       handleCurrentChange,
       toLoad,

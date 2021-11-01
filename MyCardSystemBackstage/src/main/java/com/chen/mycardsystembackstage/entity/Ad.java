@@ -1,5 +1,8 @@
 package com.chen.mycardsystembackstage.entity;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
 import java.sql.Timestamp;
 
 /**

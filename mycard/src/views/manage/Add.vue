@@ -14,8 +14,22 @@
       </el-option>
     </el-select>
     <el-input placeholder="请输入介绍内容" v-model="data.text" v-show="activeName==3||activeName==4"></el-input>
-    <el-input placeholder="请输入上架时间" v-model="data.upDate" v-show="activeName==4"></el-input>
-    <el-input placeholder="请输入下架时间" v-model="data.downDate" v-show="activeName==4"></el-input>
+    <!--<el-input placeholder="请输入上架时间" v-model="data.upDate" v-show="activeName==4"></el-input>-->
+    <!--<el-input placeholder="请输入下架时间" v-model="data.downDate" v-show="activeName==4"></el-input>-->
+    <div class="block" v-show="activeName==4">
+      <el-date-picker
+          v-model="data.value2"
+          type="daterange"
+          unlink-panels
+          range-separator="⏩"
+          start-placeholder="上架时间"
+          end-placeholder="下架时间"
+          :shortcuts="data.shortcuts"
+          format="YYYY/MM/DD"
+          value-format="YYYY-MM-DD HH:mm:ss"
+      >
+      </el-date-picker>
+    </div>
   </div>
   <div>
     <el-button type="primary" @click="add">{{data.manatype}}</el-button>
@@ -55,6 +69,36 @@ export default {
       getReData:'',
       maData:[],
       collName:[],
+      value2:'',
+      shortcuts: [
+        {
+          text: '未来一周',
+          value: () => {
+            const end = new Date()
+            const start = new Date()
+            end.setTime(end.getTime() + 3600 * 1000 * 24 * 7)
+            return [start, end]
+          },
+        },
+        {
+          text: '未来一个月',
+          value: () => {
+            const end = new Date()
+            const start = new Date()
+            end.setTime(end.getTime() + 3600 * 1000 * 24 * 30)
+            return [start, end]
+          },
+        },
+        {
+          text: '未来三个月',
+          value: () => {
+            const end = new Date()
+            const start = new Date()
+            end.setTime(end.getTime() + 3600 * 1000 * 24 * 90)
+            return [start, end]
+          },
+        },
+      ],
     })
     const add = () => {
       let active=props.activeName;
@@ -78,7 +122,9 @@ export default {
           checkSucces();
         });
       }else if (active==4){
-        proxy.$axios.post('ad/'+data.posts,qs.stringify({"id":data.id,"name":data.name,"text":data.text,"img":data.img,"upDate":data.upDate,"downDate":data.downDate})).then(res=>{
+        data.upDate=data.value2[0]
+        data.downDate=data.value2[1]
+        proxy.$axios.post('ad/'+data.posts,qs.stringify({"id":data.id,"name":data.name,"text":data.text,"img":data.img,"adUpDate":data.upDate,"adDownDate":data.downDate})).then(res=>{
           data.getReData=res.data;
           checkSucces();
         });
@@ -97,6 +143,10 @@ export default {
       }else {
         ElMessage.error('添加失败');
       }
+    }
+    // 更新按钮
+    const upButton = () => {
+      data.manatype=props.manatype;
     }
     const create = () => {
       let active=props.activeName;
@@ -134,6 +184,8 @@ export default {
           data.name=props.manaData.adName
           data.img=props.manaData.adImg
           data.text=props.manaData.adText
+          // data.value2[0]=props.manaData.adUpDate
+          // data.value2[1]=props.manaData.adDownDate
           data.upDate=props.manaData.adUpDate
           data.downDate=props.manaData.adDownDate
         }
@@ -142,6 +194,7 @@ export default {
     }
     const getFather = () => {
       create()
+      upButton()
     }
     const getType = () => {
       let uri='coll/show';

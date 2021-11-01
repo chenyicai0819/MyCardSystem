@@ -17,7 +17,7 @@ import java.util.List;
 public interface AdMapper {
     public List<Ad> getAd();
     public int addAd(Ad ad);
-    public int delAd(int id);
+    public int delAd(String id);
     public List<Ad> seaAd(String name);
     public int upAd(Ad ad);
     public int countAd();
