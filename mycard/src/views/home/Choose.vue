@@ -1,5 +1,5 @@
 <template>
-  <div id="choose">
+  <div id="choose" v-loading="data.loading">
     <div class="choosecard" :class="{choosecardmoblie:data.ismoblie}" v-for="name in data.cardname" >
       <el-card class="box-card">
         <template #header>
@@ -21,10 +21,9 @@ export default {
   setup(){
     const {proxy}=getCurrentInstance();
     const data=reactive({
-      cardname:[
-
-      ],
+      cardname:[],
       ismoblie:false,
+      loading: false,
     })
     const isMobile = () => {
       const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
@@ -37,9 +36,11 @@ export default {
       }
     }
     const getCard = () =>{
+      data.loading=true
       proxy.$axios.get('card/show',{}).then(res=>{
         const getdata=res.data;
         data.cardname=getdata;
+        data.loading=false
       });
     }
     isMobile();
