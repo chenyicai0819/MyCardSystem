@@ -2,6 +2,7 @@ package com.chen.mycardsystembackstage.controller;
 
 import com.chen.mycardsystembackstage.entity.Mork;
 import com.chen.mycardsystembackstage.service.MorkService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +27,12 @@ public class MorkController {
     private MorkService morkService;
 
     @GetMapping("/get")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.MorkMapper::get")
     public List<Mork> getMork(int page,int size){
         return morkService.getMork(page,size);
     }
     @GetMapping("/show")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.MorkMapper::show")
     public List<Mork> showMork(){
         return morkService.showMork();
     }

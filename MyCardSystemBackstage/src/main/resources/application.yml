@@ -5,7 +5,18 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/mycard?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: 12345678
+    password: 123456
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password:
+    timeout: 500
+    pool:
+      max-active: 8
+      max-idle: 8
+      min-idle: 0
+      max-wait: -1
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.chen.mycardsystembackstage.entity

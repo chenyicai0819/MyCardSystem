@@ -8,7 +8,8 @@
   </div>
   <div id="selectbody">
     <div id="left" class="couplet">
-      <h1>广<br/>告<br/>位<br/>招<br/>租</h1>
+      <!--<h1>广<br/>告<br/>位<br/>招<br/>租</h1>-->
+      <Ad/>
     </div>
     <router-view/>
     <div id="right" class="couplet">
@@ -20,15 +21,17 @@
 
 <script>
 import Choose from "./Choose";
-import {reactive} from "vue";
+import Ad from "../ad/Ad";
+import {reactive, ref} from "vue";
+import Add from "../manage/Add";
 export default {
   name: "Select",
-  components: {Choose},
+  components: {Add, Choose,Ad},
   props:{
     msgforselect:''
   },
   setup(){
-
+    const RefChilde=ref();
   }
 }
 </script>

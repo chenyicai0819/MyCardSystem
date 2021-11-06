@@ -4,6 +4,7 @@ import com.chen.mycardsystembackstage.entity.Ad;
 import com.chen.mycardsystembackstage.entity.Card;
 import com.chen.mycardsystembackstage.service.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +32,13 @@ public class AdController {
     private AdService adService;
 
     @GetMapping("/get")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.AdMapper::get")
     public List<Ad> getAd(int page,int size){
         List<Ad> ad=adService.getAd(page,size);
         return ad;
     }
     @GetMapping("/show")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.AdMapper::show")
     public List<Ad> showCard(){
         return adService.showAd();
     }

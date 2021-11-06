@@ -25,6 +25,7 @@ export default {
 
     const data=reactive({
       // nameAndAge:appStore.name
+      ip:'',
       backtop:[
         {text: '富强 民主 文明 和谐'},
         {text: '自由 平等 公正 法制'},
@@ -39,9 +40,10 @@ export default {
         console.log('PC端打开')
       }
     }
+
     return{
       isMobile,
-      data
+      data,
     }
   }
 }

@@ -2,6 +2,7 @@ package com.chen.mycardsystembackstage.controller;
 
 import com.chen.mycardsystembackstage.entity.Coll;
 import com.chen.mycardsystembackstage.service.CollService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +27,13 @@ public class CollController {
     private CollService collService;
 
     @GetMapping("/get")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.CollMapper::get")
     public List<Coll> getColl(int page,int size){
         return collService.getColl(page, size);
     }
+
     @GetMapping("/show")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.CollMapper::show")
     public List<Coll> showColl(){
         return collService.showColl();
     }

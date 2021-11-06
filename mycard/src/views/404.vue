@@ -3,6 +3,7 @@
     <h1 class="c404h1">出错了！</h1>
     <h1 class="c404h1">404错误！</h1>
     <h1 class="c404h1">找不到界面</h1>
+    <!--<p>{{data.ip}}</p>-->
     <!--<p>{{data.nameAndAge}}</p>-->
   </div>
 
@@ -10,18 +11,17 @@
 
 <script>
 
-import {inject, reactive, ref, watchEffect} from "vue";
-
+import {inject, onMounted, reactive, ref, watchEffect} from "vue";
 export default {
   name: "404",
   setup(){
-    const appStore=inject('appStore')
 
     const data=reactive({
       // nameAndAge:appStore.name
+      ip:''
     })
     return{
-      data
+      data,
     }
   }
 }
