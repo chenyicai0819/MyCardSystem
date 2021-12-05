@@ -30,7 +30,7 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public List<Ad> showAd() {
-        return adMapper.getAd();
+        return adMapper.showAd();
     }
 
     @Override

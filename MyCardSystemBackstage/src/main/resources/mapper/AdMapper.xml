@@ -12,6 +12,12 @@
         SET adName=#{adName},adText=#{adText},adImg=#{adImg},adUpDate=#{adUpDate},adDownDate=#{adDownDate}
         WHERE adId=#{adId}
     </update>
+    <select id="showAd" resultType="com.chen.mycardsystembackstage.entity.Ad">
+        SELECT *
+        FROM ad
+        WHERE NOW() >= adUpDate
+          AND adDownDate >= NOW()
+    </select>
     <delete id="delAd">
         DELETE
         FROM ad

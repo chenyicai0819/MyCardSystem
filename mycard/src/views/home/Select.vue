@@ -13,7 +13,8 @@
     </div>
     <router-view/>
     <div id="right" class="couplet">
-      <h1>广<br/>告<br/>位<br/>招<br/>租</h1>
+      <!--<h1>广<br/>告<br/>位<br/>招<br/>租</h1>-->
+      <Ad/>
     </div>
   </div>
 

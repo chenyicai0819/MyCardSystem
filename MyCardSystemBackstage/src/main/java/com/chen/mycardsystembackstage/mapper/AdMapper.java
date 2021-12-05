@@ -21,4 +21,5 @@ public interface AdMapper {
     public List<Ad> seaAd(String name);
     public int upAd(Ad ad);
     public int countAd();
+    public List<Ad> showAd();
 }
