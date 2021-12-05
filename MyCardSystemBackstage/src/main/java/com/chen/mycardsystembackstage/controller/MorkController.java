@@ -38,7 +38,7 @@ public class MorkController {
     }
 
     @PostMapping("/add")
-    public int addMork(int id,String name,String link,String type,String img){
+    public int addMork(Integer id,String name,String link,String type,String img){
         Mork mork=new Mork();
         mork.setMorkName(name);
         mork.setMorkLink(link);
