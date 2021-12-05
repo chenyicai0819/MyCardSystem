@@ -13,6 +13,7 @@
           <el-input v-model="data.form.pass" type="password" class="input-login"></el-input>
         </el-form-item>
         <el-button type="primary" @click="onSubmit">登录</el-button>
+        <el-button @click="toAl">访问al网址</el-button>
       </el-form>
     </div>
   </div>
@@ -47,10 +48,13 @@ export default {
     const toLoad = () => {
       router.push("/home");
     }
+    const toAl = () => {
+      window.open("http://al.cyc0819.top")
+    }
     return{
       data,
       onSubmit,
-      toLoad
+      toLoad,toAl,
     }
   }
 }
