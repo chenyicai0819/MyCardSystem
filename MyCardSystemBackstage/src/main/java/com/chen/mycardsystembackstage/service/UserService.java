@@ -13,4 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserService {
     public int login(User user);
+    public int addOpenid(String id,String openid);
+    public User selUser(String id);
 }

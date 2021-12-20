@@ -23,4 +23,14 @@ public class UserServiceImpl implements UserService {
     public int login(User user) {
         return userMapper.login(user);
     }
+
+    @Override
+    public int addOpenid(String id, String openid) {
+        return userMapper.addOpenid(id,openid);
+    }
+
+    @Override
+    public User selUser(String id) {
+        return userMapper.selUser(id);
+    }
 }

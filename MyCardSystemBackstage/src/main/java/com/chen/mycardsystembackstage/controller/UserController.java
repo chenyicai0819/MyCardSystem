@@ -1,13 +1,17 @@
 package com.chen.mycardsystembackstage.controller;
 
 import com.chen.mycardsystembackstage.entity.User;
+import com.chen.mycardsystembackstage.oauth.WechatOAuth;
 import com.chen.mycardsystembackstage.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * @author George
@@ -19,6 +23,12 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    //公众号的唯一标识
+    static String APPID = "";
+    //公众号的secret
+    static String SECRET = "";
+
     @Resource
     private UserService userService;
 

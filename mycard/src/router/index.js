@@ -30,11 +30,14 @@ const routes = [
     component: ()=>import('../views/manage/Login')
   },
   {
+    path: '/wechar',
+    name: 'wechar',
+    component: ()=>import('../views/manage/Wechar')
+  },
+  {
     path: '/manages',
     name: 'Manages',
     component: ()=>import('../views/manage/Manages'),
-
-
     children:[
       // {
       //   path: 'mahome',
@@ -42,6 +45,11 @@ const routes = [
       //   component: ()=>import('../views/manage/MaHome')
       // },
     ]
+  },
+  {
+    path: '/wechatSuccess',
+    name: 'wechatSuccess',
+    component: () => import('../views/manage/wechatSuccess')
   },
   {
     path: '/about',

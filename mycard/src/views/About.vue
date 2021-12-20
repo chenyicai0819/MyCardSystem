@@ -5,8 +5,16 @@
   </div>
   <div class="about">
     <h2>站长资料</h2>
+    <Head/>
   </div>
 </template>
+
+<script>
+import Head from "./about/Head";
+export default {
+  components: {Head}
+}
+</script>
 
 <style scoped>
 *{

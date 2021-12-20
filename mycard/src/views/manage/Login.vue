@@ -13,6 +13,7 @@
           <el-input v-model="data.form.pass" type="password" class="input-login"></el-input>
         </el-form-item>
         <el-button type="primary" @click="onSubmit">登录</el-button>
+        <el-button @click="Wechatlogin">微信授权</el-button>
         <el-button @click="toAl">访问al网址</el-button>
       </el-form>
     </div>
@@ -22,6 +23,7 @@
 <script>
 import {getCurrentInstance, reactive} from "vue";
 import router from "../../router";
+import qs from "qs";
 export default {
   name: "Login",
   setup(){
@@ -51,10 +53,13 @@ export default {
     const toAl = () => {
       window.open("http://al.cyc0819.top")
     }
+    const Wechatlogin = () => {
+      router.push("/wechar");
+    }
     return{
       data,
       onSubmit,
-      toLoad,toAl,
+      toLoad,toAl,Wechatlogin,
     }
   }
 }

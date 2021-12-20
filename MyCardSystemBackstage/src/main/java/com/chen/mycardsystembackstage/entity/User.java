@@ -10,13 +10,9 @@ package com.chen.mycardsystembackstage.entity;
 public class User {
     private int userId;
     private String userPass;
+    private String openid;
 
     public User() {
-    }
-
-    public User(int userId, String userPass) {
-        this.userId = userId;
-        this.userPass = userPass;
     }
 
     public int getUserId() {
@@ -35,11 +31,11 @@ public class User {
         this.userPass = userPass;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", userPass='" + userPass + '\'' +
-                '}';
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
     }
 }

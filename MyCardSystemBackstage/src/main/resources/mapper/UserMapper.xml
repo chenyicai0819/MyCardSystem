@@ -2,8 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chen.mycardsystembackstage.mapper.UserMapper">
     <cache type="com.chen.mycardsystembackstage.cache.MybatisRedisCache"></cache>
+    <update id="addOpenid" parameterType="string">
+        UPDATE user SET openid = #{openid} WHERE userId = #{id}
+    </update>
 
     <select id="login" resultType="int" parameterType="com.chen.mycardsystembackstage.entity.User">
         SELECT COUNT(*) FROM user WHERE userId=#{userId} AND userPass=#{userPass}
+    </select>
+    <select id="selUser" resultType="com.chen.mycardsystembackstage.entity.User">
+        SELECT * FROM user WHERE userId=#{id}
     </select>
 </mapper>
