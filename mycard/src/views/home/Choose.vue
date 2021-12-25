@@ -1,5 +1,10 @@
 <template>
   <div id="choose" v-loading="data.loading">
+    <div style="width: 100%">
+      <el-card class="sea-card" style="width: 91.5%;margin: 0 auto">
+        <QuiteSearch style="width: 50%"/>
+      </el-card>
+    </div>
     <div class="choosecard" :class="{choosecardmoblie:data.ismoblie}" v-for="name in data.cardname" >
       <el-card class="box-card">
         <template #header>
@@ -8,7 +13,18 @@
             <a :href="name.cardLink" style="text-decoration: none;font-weight: bold">前往链接</a>
           </div>
         </template>
-        <div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>
+        <el-image
+            :src="name.cardImg"
+            class="image"
+            style="width: 100px; height: 100px"
+        >
+          <template #error>
+            <div class="image-slot">
+              <el-icon><icon-picture /></el-icon>
+            </div>
+          </template>
+        </el-image>
+        <!--<div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>-->
       </el-card>
     </div>
   </div>
@@ -16,8 +32,10 @@
 
 <script>
 import {reactive,getCurrentInstance} from "vue";
+import QuiteSearch from "./QuiteSearch";
 export default {
   name: "Choose",
+  components: {QuiteSearch},
   setup(){
     const {proxy}=getCurrentInstance();
     const data=reactive({
