@@ -7,12 +7,12 @@
     <h2>{{msgforselect}}</h2>
   </div>
   <div id="selectbody">
-    <div id="left" class="couplet">
+    <div id="left" class="couplet" v-if="isMob==false">
       <!--<h1>广<br/>告<br/>位<br/>招<br/>租</h1>-->
       <Ad/>
     </div>
     <router-view/>
-    <div id="right" class="couplet">
+    <div id="right" class="couplet" v-if="isMob==false">
       <!--<h1>广<br/>告<br/>位<br/>招<br/>租</h1>-->
       <Ad/>
     </div>
@@ -23,7 +23,7 @@
 <script>
 import Choose from "./Choose";
 import Ad from "../ad/Ad";
-import {reactive, ref} from "vue";
+import {reactive, ref, toRefs} from "vue";
 import Add from "../manage/Add";
 export default {
   name: "Select",
@@ -33,6 +33,24 @@ export default {
   },
   setup(){
     const RefChilde=ref();
+
+    const data=reactive({
+      isMob:false,
+    })
+
+    const isMobile = () => {
+      const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+      if (flag) {
+        data.isMob=true
+      }else{
+        data.isMob=false
+      }
+    }
+
+    isMobile()
+    return{
+      isMobile,...toRefs(data),
+    }
   }
 }
 </script>

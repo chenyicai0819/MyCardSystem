@@ -2,7 +2,7 @@
   <div id="choose" v-loading="data.loading">
     <div style="width: 100%">
       <el-card class="sea-card" style="width: 91.5%;margin: 0 auto">
-        <QuiteSearch style="width: 50%"/>
+        <QuiteSearch :class="data.ismoblie==true?'qsForMobile':'qsForPC'"/>
       </el-card>
     </div>
     <div class="choosecard" :class="{choosecardmoblie:data.ismoblie}" v-for="name in data.cardname" >
@@ -78,7 +78,7 @@ export default {
   padding: 0;
 }
 #choose{
-  width: 80%;
+  width: 100%;
   background-color: #BDBDBD;
   display: flex;
   justify-content: center;
@@ -108,5 +108,11 @@ export default {
 
 .box-card {
   width: 100%;
+}
+.qsForPC{
+  width: 50%;
+}
+.qsForMobile{
+  width: 90%;
 }
 </style>

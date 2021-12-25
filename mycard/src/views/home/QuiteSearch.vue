@@ -22,7 +22,7 @@
     <div style="margin-top: 15px">
       <el-input
           v-model="input2"
-          placeholder="Please input"
+          placeholder="快捷搜索"
           class="input-with-select"
       >
         <template #prepend>
@@ -57,6 +57,7 @@ export default {
       input2: '',
       select1: 'Https://',
       select2: '1',
+      ismoblie:false,
     })
     const link1 = () => {
       if (data.input1!=''){

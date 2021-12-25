@@ -3,8 +3,8 @@
     <h2 class="head-h2">在前往网站内容设置前请验证您的身份</h2>
     <el-button type="danger" @click="toLoad">返回首页</el-button>
   </div>
-  <div class="login">
-    <div class="form-login">
+  <div :class="data.ismoblie==true?'login-mobile':'login-pc'">
+    <div :class="data.ismoblie==true?'form-login-mobile':'form-login-pc'">
       <el-form ref="form" :model="data.form" >
         <el-form-item label="账户">
           <el-input v-model="data.form.name" class="input-login"></el-input>
@@ -34,6 +34,8 @@ export default {
         name: '',
         pass: '',
       },
+      ismoblie:false,
+
     })
     const onSubmit = () => {
       console.log(data.form.name);
@@ -56,10 +58,22 @@ export default {
     const Wechatlogin = () => {
       router.push("/wechar");
     }
+    const isMobile = () => {
+      const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+      if (flag) {
+        console.log('移动端打开')
+        data.ismoblie=true
+      } else {
+        data.ismoblie=false
+        console.log('PC端打开')
+      }
+    }
+
+    isMobile()
     return{
       data,
       onSubmit,
-      toLoad,toAl,Wechatlogin,
+      toLoad,toAl,Wechatlogin,isMobile,
     }
   }
 }
@@ -72,16 +86,27 @@ export default {
 .head-h2{
   width: 90%;
 }
-.login{
+.login-pc{
   margin: 10px auto;
   width: 500px;
   height: 300px;
   background-color: #42b983;
 }
-.form-login{
+.login-mobile{
+  margin: 10px auto;
+  width: 100%;
+  height: 300px;
+  background-color: #42b983;
+}
+.form-login-pc{
   padding-top: 50px;
   margin: auto;
   width: 300px;
+}
+.form-login-mobile{
+  padding-top: 50px;
+  margin: auto;
+  width: 90%;
 }
 .input-login{
   width: 200px;
