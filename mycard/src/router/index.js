@@ -52,6 +52,18 @@ const routes = [
     component: () => import('../views/manage/wechatSuccess')
   },
   {
+    path: '/map',
+    name: 'Map',
+    component: ()=>import('../views/map/Index'),
+    children:[
+      // {
+      //   path: 'mahome',
+      //   name: 'MaHome',
+      //   component: ()=>import('../views/manage/MaHome')
+      // },
+    ]
+  },
+  {
     path: '/about',
     name: 'About',
     component: () => import('../views/About.vue')

@@ -1,3 +1,6 @@
+const {inject} = require("vue");
+const mapStore=inject('mapStore')
+
 module.exports = {
     publicPath: './',
     outputDir: "dist", // 输出文件目录
@@ -11,6 +14,18 @@ module.exports = {
                 ws: true,
                 pathRewrite: {
                     '^/connect/oauth2/authorize': ''
+                }
+            }
+        },
+        proxy: {
+            '/mapapi': {
+                // 此处的写法，目的是为了 将 /api 替换成 https://www.baidu.com/
+                target: 'https://gwpre.sina.cn/interface/news/wap/historydata.d.json',
+                // 允许跨域
+                changeOrigin: true,
+                ws: true,
+                pathRewrite: {
+                    '^/mapapi': ''
                 }
             }
         }

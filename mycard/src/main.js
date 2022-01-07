@@ -18,3 +18,6 @@ Object.keys(icons).forEach(key => {
     app.component(key, icons[key])
 })
 
+
+
+// axios.defaults.baseURL = '/api'
