@@ -7,8 +7,7 @@ let apihead="https://gwpre.sina.cn/interface/news/wap/historydata.d.json?provinc
 let apiout="&callback=_aProvinceFunction&_=1585398242301"
 
 let citys='';
-export const apis = (city) => {
-  citys=city;
-  return axios.get("/mapapi?province="+city,{})
+export const apis = (province) => {
+  return axios.get("/mapapi?province="+province,{})
 }
 
