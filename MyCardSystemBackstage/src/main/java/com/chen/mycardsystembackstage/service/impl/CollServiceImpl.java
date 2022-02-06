@@ -56,4 +56,9 @@ public class CollServiceImpl implements CollService {
     public int upColl(Coll coll) {
         return collMapper.upColl(coll);
     }
+
+    @Override
+    public String seaNameColl(String id) {
+        return collMapper.seaNameColl(id);
+    }
 }

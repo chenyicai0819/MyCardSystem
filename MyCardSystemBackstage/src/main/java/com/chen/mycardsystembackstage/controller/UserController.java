@@ -53,12 +53,13 @@ public class UserController {
     }
 
 
-    Date date = new Date();
-    SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");
+
 
     @PostMapping("/login")
     public String login(User user){
-        System.out.println(user);
+        // System.out.println(user);
+        Date date = new Date();
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         int num= userService.login(user);
         // 往模板消息里添加内容
         map.put("ip",addr.getHostAddress());
@@ -67,12 +68,14 @@ public class UserController {
         if (num==0){
             // 通知登录错误结果
             map.put("isYes","否");
-            wcn.push(map);
+            wcn.pushLogin(map);
+            // System.out.println("没有这个用户，或者密码错误");
             return "没有这个用户，或者密码错误";
         }else{
             // 通知登录成功结果
             map.put("isYes","是");
-            wcn.push(map);
+            wcn.pushLogin(map);
+            // System.out.println("允许登录");
             return "允许登录";
         }
     }

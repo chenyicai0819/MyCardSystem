@@ -21,4 +21,5 @@ public interface CollService {
     public int countColl();
     public int addColl(Coll coll);
     public int upColl(Coll coll);
+    public String seaNameColl(String id);
 }

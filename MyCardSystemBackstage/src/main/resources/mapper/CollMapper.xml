@@ -25,4 +25,9 @@
     <select id="countColl" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM coll
     </select>
+    <select id="seaNameColl" resultType="java.lang.String">
+        SELECT collName
+        FROM coll
+        WHERE collId=#{id}
+    </select>
 </mapper>

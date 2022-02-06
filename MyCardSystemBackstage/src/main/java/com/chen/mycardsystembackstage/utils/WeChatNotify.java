@@ -23,8 +23,14 @@ public class WeChatNotify {
 
     String openid="o_pA75h_jMAXIGlITHs3XNX-ykuA";
 
-    // 发送模板信息
-    public String push(Map<String,Object> map) {
+
+    /**
+     *  发送模板信息
+     *  登录操作提醒
+     * @param map
+     * @return
+     */
+    public String pushLogin(Map<String,Object> map) {
         //1，配置
         WxMpInMemoryConfigStorage wxStorage = new WxMpInMemoryConfigStorage();
         wxStorage.setAppId("wxacc93d31c5dbd26f");
@@ -42,12 +48,14 @@ public class WeChatNotify {
                 .build();
 
         //3,正式版发送模版消息，这里需要配置你的信息，替换微信公众号上创建的模板内容
+        // 根据type决定发送哪条
         templateMessage.addData(new WxMpTemplateData("ip", map.get("ip").toString(), "#173177"));
         templateMessage.addData(new WxMpTemplateData("isYes",map.get("isYes").toString(), "#173177"));
         templateMessage.addData(new WxMpTemplateData("id", map.get("id").toString(), "#173177"));
         templateMessage.addData(new WxMpTemplateData("time", map.get("time").toString(), "#173177"));
         try {
             wxMpService.getTemplateMsgService().sendTemplateMsg(templateMessage);
+            System.out.println("推送成功");
             return "推送成功";
         } catch (Exception e) {
             System.out.println("推送失败：" + e.getMessage());
@@ -64,4 +72,45 @@ public class WeChatNotify {
     //     }
     //     return openid;
     // }
+
+
+    /**
+     * 管理员后台操作提醒
+     * @param map
+     * @return
+     */
+    public String pushEdit(Map<String,Object> map) {
+        //1，配置
+        WxMpInMemoryConfigStorage wxStorage = new WxMpInMemoryConfigStorage();
+        wxStorage.setAppId("wxacc93d31c5dbd26f");
+        wxStorage.setSecret("f8c9e82b590ac71eb12e96f77cf65740");
+        WxMpService wxMpService = new WxMpServiceImpl();
+        wxMpService.setWxMpConfigStorage(wxStorage);
+        //2,推送消息
+        WxMpTemplateMessage templateMessage = WxMpTemplateMessage.builder()
+                //要推送的用户openid
+                .toUser(openid)
+                //模版id
+                .templateId("sk3CdLFlSlzuU0umJkFLgGJg2x7WNLMItOk_TtQXYD4")
+                //点击模版消息要访问的网址
+                .url("http://www.cyc292.top/#/login")
+                .build();
+
+        //3,正式版发送模版消息，这里需要配置你的信息，替换微信公众号上创建的模板内容
+        // 根据type决定发送哪条
+        templateMessage.addData(new WxMpTemplateData("ip", map.get("ip").toString(), "#173177"));
+        templateMessage.addData(new WxMpTemplateData("type",map.get("type").toString(), "#173177"));
+        templateMessage.addData(new WxMpTemplateData("name", map.get("name").toString(), "#173177"));
+        templateMessage.addData(new WxMpTemplateData("time", map.get("time").toString(), "#173177"));
+        try {
+            wxMpService.getTemplateMsgService().sendTemplateMsg(templateMessage);
+            System.out.println("推送成功");
+            return "推送成功";
+        } catch (Exception e) {
+            System.out.println("推送失败：" + e.getMessage());
+            e.printStackTrace();
+            return "推送失败";
+        }
+    }
+
 }
