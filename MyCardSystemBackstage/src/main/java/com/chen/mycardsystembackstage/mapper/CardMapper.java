@@ -20,4 +20,5 @@ public interface CardMapper {
     public int upCard(Card card);
     public int addCard(Card card);
     public int countCard();
+    public String getNameById(String id);
 }

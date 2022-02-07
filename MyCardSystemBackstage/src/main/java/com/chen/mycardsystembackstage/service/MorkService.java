@@ -21,4 +21,5 @@ public interface MorkService {
     public List<Mork> seaMork(String name);
     public int upMork(Mork mork);
     public int countMork();
+
 }

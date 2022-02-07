@@ -3,11 +3,19 @@ package com.chen.mycardsystembackstage.service.impl;
 import com.chen.mycardsystembackstage.entity.Coll;
 import com.chen.mycardsystembackstage.mapper.CollMapper;
 import com.chen.mycardsystembackstage.service.CollService;
+import com.chen.mycardsystembackstage.utils.WeChatNotify;
 import com.github.pagehelper.PageHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author George
@@ -18,7 +26,19 @@ import java.util.List;
  */
 @Service
 public class CollServiceImpl implements CollService {
+    Map<String,Object> map=new HashMap<>();
 
+    InetAddress addr;
+
+    {
+        try {
+            addr = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+    @Autowired
+    private WeChatNotify wcn;
     @Resource
     private CollMapper collMapper;
     @Override
@@ -34,6 +54,13 @@ public class CollServiceImpl implements CollService {
 
     @Override
     public int delColl(String id) {
+        Date date = new Date();
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        map.put("ip",addr.getHostAddress());
+        map.put("type","删除书签分类");
+        map.put("name",collMapper.seaNameColl(id));
+        map.put("time", dateFormat.format(date));
+        wcn.pushEdit(map);
         return collMapper.delColl(id);
     }
 
@@ -49,11 +76,25 @@ public class CollServiceImpl implements CollService {
 
     @Override
     public int addColl(Coll coll) {
+        Date date = new Date();
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        map.put("ip",addr.getHostAddress());
+        map.put("type","添加书签分类");
+        map.put("name",coll.getCollName());
+        map.put("time", dateFormat.format(date));
+        wcn.pushEdit(map);
         return collMapper.addColl(coll);
     }
 
     @Override
     public int upColl(Coll coll) {
+        Date date = new Date();
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        map.put("ip",addr.getHostAddress());
+        map.put("type","更新书签分类");
+        map.put("name",collMapper.seaNameColl(coll.getCollId()));
+        map.put("time", dateFormat.format(date));
+        wcn.pushEdit(map);
         return collMapper.upColl(coll);
     }
 

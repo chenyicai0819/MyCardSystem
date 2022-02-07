@@ -27,13 +27,13 @@ public class CardController {
     private CardService cardService;
 
     @GetMapping("/get")
-    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.CardMapper::get")
+    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.CardMapper::get")
     public List<Card> getCard(int page,int size){
         return cardService.getCard(page,size);
     }
 
     @GetMapping("/show")
-    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.CardMapper::show")
+    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.CardMapper::show")
     public List<Card> showCard(){
         return cardService.showCard();
     }

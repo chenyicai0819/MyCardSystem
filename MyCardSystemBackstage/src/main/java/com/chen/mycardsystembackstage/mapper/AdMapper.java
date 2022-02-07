@@ -22,4 +22,5 @@ public interface AdMapper {
     public int upAd(Ad ad);
     public int countAd();
     public List<Ad> showAd();
+    public String getNameForId(String id);
 }

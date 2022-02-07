@@ -20,4 +20,5 @@ public interface MorkMapper {
     public List<Mork> seaMork(String name);
     public int upMork(Mork mork);
     public int countMork();
+    public String getNameById(int id);
 }

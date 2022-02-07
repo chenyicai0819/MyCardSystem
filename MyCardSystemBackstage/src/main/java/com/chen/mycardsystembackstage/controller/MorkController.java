@@ -2,6 +2,8 @@ package com.chen.mycardsystembackstage.controller;
 
 import com.chen.mycardsystembackstage.entity.Mork;
 import com.chen.mycardsystembackstage.service.MorkService;
+import com.chen.mycardsystembackstage.utils.WeChatNotify;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author George
@@ -27,12 +35,12 @@ public class MorkController {
     private MorkService morkService;
 
     @GetMapping("/get")
-    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.MorkMapper::get")
+    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.MorkMapper::get")
     public List<Mork> getMork(int page,int size){
         return morkService.getMork(page,size);
     }
     @GetMapping("/show")
-    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.MorkMapper::show")
+    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.MorkMapper::show")
     public List<Mork> showMork(){
         return morkService.showMork();
     }

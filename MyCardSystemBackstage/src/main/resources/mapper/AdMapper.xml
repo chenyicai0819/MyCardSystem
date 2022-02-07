@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chen.mycardsystembackstage.mapper.AdMapper">
-    <cache type="com.chen.mycardsystembackstage.cache.MybatisRedisCache"></cache>
+    <!--<cache type="com.chen.mycardsystembackstage.cache.MybatisRedisCache"></cache>-->
     <insert id="addAd">
         INSERT INTO
             ad(adId,adName,adText,adImg,adUpDate,adDownDate)
@@ -36,5 +36,10 @@
     <select id="countAd" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM ad
+    </select>
+    <select id="getNameForId" resultType="java.lang.String">
+        SELECT adName
+        FROM ad
+        WHERE adId=#{id}
     </select>
 </mapper>

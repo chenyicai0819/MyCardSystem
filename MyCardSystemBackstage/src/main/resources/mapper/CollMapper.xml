@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chen.mycardsystembackstage.mapper.CollMapper">
-    <cache type="com.chen.mycardsystembackstage.cache.MybatisRedisCache"></cache>
+    <!--<cache type="com.chen.mycardsystembackstage.cache.MybatisRedisCache"></cache>-->
     <insert id="addColl">
         INSERT
         INTO coll(collId,collName,collImg,collText)
