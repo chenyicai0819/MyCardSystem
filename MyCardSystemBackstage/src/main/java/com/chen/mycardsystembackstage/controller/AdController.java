@@ -4,6 +4,9 @@ import com.chen.mycardsystembackstage.entity.Ad;
 import com.chen.mycardsystembackstage.entity.Card;
 import com.chen.mycardsystembackstage.service.AdService;
 import com.chen.mycardsystembackstage.utils.WeChatNotify;
+import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -109,5 +114,50 @@ public class AdController {
     @GetMapping("/count")
     public int countAd(){
         return adService.countAd();
+    }
+
+    @GetMapping("/buy")
+    public void buyAd(String title,String text,String money,String time,String phone,String buyemail) throws EmailException, MalformedURLException {
+        // 创建邮件
+        HtmlEmail email = new HtmlEmail();
+        // 邮箱主机，可以是域名也可以是IP地址
+        email.setHostName("smtp.qq.com");
+        // 设置使用安全链接
+        email.setSSLOnConnect(true);
+        // QQ邮箱默认的端口是465
+        email.setSslSmtpPort("465");
+        // 有中文的话需要设置编码，不然会乱码
+        email.setCharset("UTF-8");
+        // 设置你的邮箱名与生成的授权码
+        email.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
+        // 发件人信息，收件人收到邮件时看到的收件人姓名
+        email.setFrom(buyemail, title);
+        // 标题
+        email.setSubject(title);
+        // 内容
+        StringBuilder sb=new StringBuilder();
+        sb.append("广告内容：").append(text).append('\n')
+                .append("广告报价：").append(money).append('\r')
+                        .append("联系方式：").append(phone).append('\r')
+                        .append("上架时间").append(time);
+        email.setHtmlMsg(sb.toString());
+        // 附件
+        // EmailAttachment attachment = new EmailAttachment();
+        // // 附件地址
+        // attachment.setURL(new URL("http://www.apache.org/images/asf_logo_wide.gif"));
+        // // 附件的形式
+        // attachment.setDisposition(EmailAttachment.ATTACHMENT);
+        // // 附件描述
+        // attachment.setDescription("Apache logo");
+        // 附件名
+        // attachment.setName("Apache logo");
+        // // 添加附件
+        // email.attach(attachment);
+        // // 也可以是本地文件
+        // email.attach(new File("D:\\MyFile\\插画\\94307472_p0.jpg"));
+        // 设置收件人，有多个的话继续加参数就好了，这是可变参数
+        email.addTo("chenyc2021@qq.com");
+        //发送邮件
+        email.send();
     }
 }

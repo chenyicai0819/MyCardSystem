@@ -1,17 +1,59 @@
 <template>
-  <h3>{{data.name}}</h3>
-  <p>{{data.text}}</p>
+  <h3>{{name}}</h3>
+  <p>{{text}}</p>
   <div class="demo-image">
-    <div :key="data.fit" class="block">
+    <div :key="fit" class="block">
       <el-image
           style="width: 100px; height: 100px"
-          :src="data.img"
-          :fit="data.fit"
+          :src="img"
+          :fit="fit"
       ></el-image>
     </div>
   </div>
-  <div class="Formail" v-if="data.isAd==0">
-    <a href="mailto:chenyc2021@qq.com?subject=广告招标&body=广告商家：初步报价：其他联系方式：">联系管理员</a>
+  <div class="Formail" v-if="isAd==0">
+    <!--<a href="mailto:chenyc2021@qq.com?subject=广告招标&body=广告商家：初步报价：其他联系方式：">联系管理员</a>-->
+    <el-button type="success" @click="dialogVisible = true">联系管理员</el-button>
+  </div>
+  <div>
+    <el-dialog
+        v-model="dialogVisible"
+        title="您的广告内容"
+        width="30%"
+    >
+      <div>
+        <div>
+          <span style="size: 18px;font-weight: bold">广告标题：</span>
+          <el-input v-model="input.title" placeholder="广告标题" style="width: 80%"></el-input>
+        </div>
+        <div style="padding-top: 5px">
+          <span style="size: 18px;font-weight: bold">广告内容：</span>
+          <el-input v-model="input.text" autosize type="textarea" placeholder="广告内容" style="width: 80%"></el-input>
+        </div>
+        <div style="padding-top: 5px">
+          <span style="size: 18px;font-weight: bold">广告报价：</span>
+          <el-input v-model="input.money" placeholder="广告报价" style="width: 80%"></el-input>
+        </div>
+        <div style="padding-top: 5px">
+          <span style="size: 18px;font-weight: bold">显示日期：</span>
+          <el-input v-model="input.times" placeholder="显示日期" style="width: 80%"></el-input>
+        </div>
+        <div style="padding-top: 5px">
+          <span style="size: 18px;font-weight: bold">联系方式：</span>
+          <el-input v-model="input.phone" placeholder="联系方式" style="width: 80%"></el-input>
+        </div>
+        <div style="padding-top: 5px">
+          <span style="size: 18px;font-weight: bold">您的邮箱：</span>
+          <el-input v-model="input.email" placeholder="您的邮箱" style="width: 80%"></el-input>
+        </div>
+      </div>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="buyEmail">发送</el-button
+        >
+      </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -23,7 +65,7 @@ export default {
   setup(){
     const {proxy}=getCurrentInstance();
     const data=reactive({
-      fits:'fill',
+      fit:'fill',
       ad:[],
       show:true,
       name:'',
@@ -32,7 +74,26 @@ export default {
       upDate:'',
       downDate:'',
       isAd:1,
+      dialogVisible:false,
+      input:{
+        title:'',
+        text:'',
+        money:'',
+        phone:'',
+        email:'',
+        times:'',
+      }
     })
+    const buyEmail = () => {
+      proxy.$axios.get('ad/buy',{params:{"title":data.input.title,
+          "text":data.input.text,
+          "money":data.input.money,
+          "time":data.input.times,
+          "phone":data.input.phone,
+          "buyemail":data.input.email}
+      })
+      data.dialogVisible = false
+    }
     const getAd = () => {
       proxy.$axios.get('ad/show',{}).then(res=>{
         data.ad=res.data;
@@ -62,9 +123,9 @@ export default {
     
     getAd();
     return{
-      data,
+      ...toRefs(data),
       getAd,
-      checkDate
+      checkDate,buyEmail
     }
   }
 }

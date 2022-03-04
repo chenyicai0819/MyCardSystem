@@ -1,11 +1,13 @@
 <template>
+
   <div class="home">
     <Select msgforselect="欢迎来到George的Card"/>
   </div>
+
   <div id="block">
     <p> </p>
     <el-carousel trigger="click" height="50px" indicator-position="none" arrow="never">
-      <el-carousel-item v-for="item in data.backtop" :key="item">
+      <el-carousel-item v-for="item in backtop" :key="item">
         <p class="small" style="font-size: 36px">{{ item.text }}</p>
       </el-carousel-item>
     </el-carousel>
@@ -14,7 +16,7 @@
 
 <script>
 import Select from "./home/Select";
-import {inject, reactive} from "vue";
+import {inject, reactive, toRefs} from "vue";
 export default {
   name: 'Home',
   components: {
@@ -25,6 +27,7 @@ export default {
 
     const data=reactive({
       // nameAndAge:appStore.name
+      dialogVisible:false,
       ip:'',
       backtop:[
         {text: '富强 民主 文明 和谐'},
@@ -43,7 +46,7 @@ export default {
 
     return{
       isMobile,
-      data,
+      ...toRefs(data),
     }
   }
 }

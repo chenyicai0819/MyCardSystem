@@ -89,6 +89,12 @@
             <artifactId>weixin-java-mp</artifactId>
             <version>3.3.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.5</version>
+        </dependency>
+
     </dependencies>
 
     <build>
