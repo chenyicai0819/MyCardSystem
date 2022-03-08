@@ -22,8 +22,7 @@
           <span>地图位置</span>
         </div>
       </template>
-      <div id="container">
-
+      <div id="container" :class="ismoblie==true?'map1':'map2'">
       </div>
     </el-card>
   </div>
@@ -108,7 +107,12 @@ export default {
   margin-bottom: 18px;
 }
 #container {
+
+}
+.map1{
+  width:100%; height: 200px;
+}
+.map2{
   width:600px; height: 300px;
 }
-
 </style>

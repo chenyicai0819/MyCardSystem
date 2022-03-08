@@ -7,7 +7,7 @@
     </div>
     <div style="width: 100%">
       <el-card class="sea-card" style="width: 91.5%;margin: 0 auto ;background: rgba(255, 255, 255, 0.46);">
-        <div id="he-plugin-standard"></div>
+        <div id="he-plugin-standard" ></div>
       </el-card>
     </div>
     <div class="choosecard" :class="{choosecardmoblie:data.ismoblie}" v-for="name in data.cardname" >
@@ -47,6 +47,7 @@ export default {
       cardname:[],
       ismoblie:false,
       loading: false,
+
     })
     const isMobile = () => {
       const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
@@ -76,10 +77,22 @@ export default {
     }
   },
   created() {
+    const widths = window.innerWidth;
+    // 根据设备，切换天气的大小
+    let weatherWidth;
+    const isMobile = () => {
+      const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+      if (flag) {
+        weatherWidth=widths*0.8;
+      } else {
+        weatherWidth="500";
+      }
+    }
+    isMobile()
     window.WIDGET = {
       "CONFIG": {
         "layout": "1",
-        "width": "500",
+        "width": weatherWidth,
         "height": "200",
         "background": "1",
         "dataColor": "FFFFFF",
@@ -146,4 +159,5 @@ export default {
 .qsForMobile{
   width: 90%;
 }
+
 </style>
