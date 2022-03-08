@@ -59,6 +59,8 @@
 
 <script>
 import {getCurrentInstance, defineComponent, reactive, toRefs} from "vue";
+import {ElMessage} from "element-plus";
+
 
 export default {
   name: "Ad",
@@ -91,6 +93,11 @@ export default {
           "time":data.input.times,
           "phone":data.input.phone,
           "buyemail":data.input.email}
+      }).then((res)=>{
+        ElMessage({
+          message: '邮件发送成功，请等待工作人员回复.',
+          type: 'success',
+        })
       })
       data.dialogVisible = false
     }

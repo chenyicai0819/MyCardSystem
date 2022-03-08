@@ -1,8 +1,13 @@
 <template>
   <div id="choose" v-loading="data.loading">
-    <div style="width: 100%">
-      <el-card class="sea-card" style="width: 91.5%;margin: 0 auto">
+    <div style="width: 100%;">
+      <el-card class="sea-card" style="width: 91.5%;margin: 0 auto ;background: rgba(255, 255, 255, 0.46);">
         <QuiteSearch :class="data.ismoblie==true?'qsForMobile':'qsForPC'"/>
+      </el-card>
+    </div>
+    <div style="width: 100%">
+      <el-card class="sea-card" style="width: 91.5%;margin: 0 auto ;background: rgba(255, 255, 255, 0.46);">
+        <div id="he-plugin-standard"></div>
       </el-card>
     </div>
     <div class="choosecard" :class="{choosecardmoblie:data.ismoblie}" v-for="name in data.cardname" >
@@ -61,6 +66,7 @@ export default {
         data.loading=false
       });
     }
+
     isMobile();
     getCard();
     return{
@@ -68,6 +74,29 @@ export default {
       isMobile,
       getCard,
     }
+  },
+  created() {
+    window.WIDGET = {
+      "CONFIG": {
+        "layout": "1",
+        "width": "500",
+        "height": "200",
+        "background": "1",
+        "dataColor": "FFFFFF",
+        "borderRadius": "5",
+        "key": "94096c96a79b4e3d9bf421612639f9e9"
+      }
+    };
+    (function (d) {
+      var c = d.createElement('link')
+      c.rel = 'stylesheet'
+      c.href = 'https://widget.heweather.net/standard/static/css/he-standard.css?v=1.4.0'
+      var s = d.createElement('script')
+      s.src = 'https://widget.heweather.net/standard/static/js/he-standard.js?v=1.4.0'
+      var sn = d.getElementsByTagName('script')[0]
+      sn.parentNode.insertBefore(c, sn)
+      sn.parentNode.insertBefore(s, sn)
+    })(document)
   }
 }
 </script>
@@ -79,7 +108,8 @@ export default {
 }
 #choose{
   width: 100%;
-  background-color: #BDBDBD;
+  /*background-color: #BDBDBD;*/
+  background-image: url("https://cdn.jsdelivr.net/gh/chenyicai0819/MyImage/Imgs/20220308133544.png");
   display: flex;
   justify-content: center;
   flex-flow: wrap;
@@ -108,6 +138,7 @@ export default {
 
 .box-card {
   width: 100%;
+  background: rgba(255, 255, 255, 0.46);
 }
 .qsForPC{
   width: 50%;

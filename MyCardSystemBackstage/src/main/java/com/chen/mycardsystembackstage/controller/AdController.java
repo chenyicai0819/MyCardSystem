@@ -117,7 +117,7 @@ public class AdController {
     }
 
     @GetMapping("/buy")
-    public void buyAd(String title,String text,String money,String time,String phone,String buyemail) throws EmailException, MalformedURLException {
+    public int buyAd(String title,String text,String money,String time,String phone,String buyemail) throws EmailException, MalformedURLException {
         // 创建邮件
         HtmlEmail email = new HtmlEmail();
         // 邮箱主机，可以是域名也可以是IP地址
@@ -159,5 +159,6 @@ public class AdController {
         email.addTo("chenyc2021@qq.com");
         //发送邮件
         email.send();
+        return 1;
     }
 }

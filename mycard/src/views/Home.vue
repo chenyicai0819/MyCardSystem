@@ -4,14 +4,14 @@
     <Select msgforselect="欢迎来到George的Card"/>
   </div>
 
-  <div id="block">
-    <p> </p>
-    <el-carousel trigger="click" height="50px" indicator-position="none" arrow="never">
-      <el-carousel-item v-for="item in backtop" :key="item">
-        <p class="small" style="font-size: 36px">{{ item.text }}</p>
-      </el-carousel-item>
-    </el-carousel>
-  </div>
+  <!--<div id="block">-->
+  <!--  <p> </p>-->
+  <!--  <el-carousel trigger="click" height="50px" indicator-position="none" arrow="never">-->
+  <!--    <el-carousel-item v-for="item in backtop" :key="item">-->
+  <!--      <p class="small" style="font-size: 36px">{{ item.text }}</p>-->
+  <!--    </el-carousel-item>-->
+  <!--  </el-carousel>-->
+  <!--</div>-->
 </template>
 
 <script>

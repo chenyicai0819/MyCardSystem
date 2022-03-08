@@ -16,11 +16,21 @@
         <el-descriptions-item label="联系地址：">广西壮族自治区-桂林市-桂林电子科技大学-花江校区</el-descriptions-item>
       </el-descriptions>
     </el-card>
+    <el-card class="box-card" >
+      <template #header>
+        <div class="card-header">
+          <span>地图位置</span>
+        </div>
+      </template>
+      <div id="container">
+
+      </div>
+    </el-card>
   </div>
 </template>
 
 <script>
-import {reactive, toRefs} from "vue";
+import {onMounted, reactive, toRefs} from "vue";
 
 export default {
   name: "Head",
@@ -45,7 +55,32 @@ export default {
       }
     }
 
-
+    onMounted(()=>{
+      //   页面加载完,开始异步引入高德地图
+      //创建了一个回调函数,高德地图加载完毕会调用
+      window.onLoad = function () {
+        // 所有关于地图的逻辑全部都要写在这个回调里面
+        // 保证高德地图加载完毕
+        // var map = new AMap.Map("container");
+        var map = new AMap.Map("container", {
+          zoom: 16, //级别
+          center: [110.417813,25.31373], //中心点坐标
+          viewMode: "3D", //使用3D视图
+        });
+        // https://www.amap.com/?p=B0FFFA0ZCS,25.31132,110.416325,%E6%A1%82%E6%9E%97%E7%94%B5%E5%AD%90%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E8%8A%B1%E6%B1%9F%E6%A0%A1%E5%8C%BA,%E6%A1%82%E6%9E%97%E5%B8%82%E7%81%B5%E5%B7%9D%E5%8E%BF%E7%81%B5%E7%94%B0%E9%95%87,450300
+      };
+      // key是申请的值
+      var url =
+          "https://webapi.amap.com/maps?v=1.4.15&key=d6c8f397b0da87524290b6622de498f5&callback=onLoad";
+      //创建一个 script dom元素
+      // doc需要补全document
+      var jsapi = document.createElement("script");
+      //设定script标签属性
+      jsapi.charset = "utf-8";
+      jsapi.src = url;
+      //将API文件引入页面中,加载完毕以后会调用函数
+      document.head.appendChild(jsapi);
+    })
     isMobile()
     return{
       ...toRefs(data),isMobile,
@@ -53,12 +88,16 @@ export default {
   }
 }
 </script>
-
 <style scoped>
+.box-card{
+  width: 100%;
+  margin-bottom: 10px;
+}
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
 }
 
 .text {
@@ -68,6 +107,8 @@ export default {
 .item {
   margin-bottom: 18px;
 }
-
+#container {
+  width:600px; height: 300px;
+}
 
 </style>
