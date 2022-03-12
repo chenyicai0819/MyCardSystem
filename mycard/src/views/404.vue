@@ -24,7 +24,7 @@
       </div>
 
     </div>
-    <audio autoplay loop id="music">
+    <audio loop id="music">
       <source src="../assets/music.mp3" type="audio/mpeg">
       该浏览器不支持 audio 属性~
     </audio>
@@ -93,16 +93,12 @@ export default {
         }
       },100)
     }
-    onMounted(()=>{
-
-    })
-
     onBeforeMount(()=>{
       data.maxheight=window.screen.height
 
     })
     return{
-      ...toRefs(data),outHome,play,rotate
+      ...toRefs(data),outHome,play,rotate,
     }
   }
 }
