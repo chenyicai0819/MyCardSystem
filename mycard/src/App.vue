@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import {reactive} from "vue";
+import {reactive, watch} from "vue";
 export default {
   name: "App",
   setup(){
@@ -35,8 +35,10 @@ export default {
       ],
     })
 
+
+
     return{
-      data
+      data,
     }
   }
 }

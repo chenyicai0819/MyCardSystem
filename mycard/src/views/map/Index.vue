@@ -48,6 +48,7 @@ export default {
     }
 
 
+
     onBeforeMount(()=>{
       getAllProvince()
       mapStore.setMaplist(data.allProvince)
