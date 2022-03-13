@@ -174,6 +174,7 @@ export default {
 }
 #choose{
   width: 100%;
+  height: 93vh;
   /*background-color: #BDBDBD;*/
   background-image: url("https://cdn.jsdelivr.net/gh/chenyicai0819/MyImage/Imgs/20220308133544.png");
   display: flex;

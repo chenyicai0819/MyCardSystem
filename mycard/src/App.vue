@@ -35,8 +35,6 @@ export default {
       ],
     })
 
-
-
     return{
       data,
     }
