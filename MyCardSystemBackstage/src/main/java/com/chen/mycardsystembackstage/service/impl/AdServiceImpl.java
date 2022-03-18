@@ -98,4 +98,9 @@ public class AdServiceImpl implements AdService {
     public int countAd() {
         return adMapper.countAd();
     }
+
+    @Override
+    public List<Ad> allAd() {
+        return adMapper.getAd();
+    }
 }

@@ -8,5 +8,9 @@ const appStore ={
     setgetIntoSucc(value){
         this.getIntoSucc=value
     },
+    isMoblie:false,
+    setIsMoblie(value){
+        this.isMoblie=value
+    }
 }
 export default reactive(appStore)

@@ -23,11 +23,13 @@
 </template>
 
 <script>
-import {reactive, watch} from "vue";
+import {inject, reactive, watch} from "vue";
 export default {
   name: "App",
   setup(){
+    const appStore=inject('appStore')
     const data=reactive({
+      isMoblie:appStore.isMoblie,
       backtop:[
         {text: '富强 民主 文明 和谐'},
         {text: '自由 平等 公正 法制'},
@@ -35,8 +37,17 @@ export default {
       ],
     })
 
+    const isMobile = () => {
+      const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+      if (flag) {
+        appStore.setIsMoblie(true)
+      } else {
+        appStore.setIsMoblie(false)
+      }
+    }
+    isMobile()
     return{
-      data,
+      data,isMobile,
     }
   }
 }

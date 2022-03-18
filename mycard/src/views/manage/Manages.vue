@@ -8,6 +8,8 @@
       <el-tab-pane v-for="mana in data.manaName" :label="mana.manaName" :name="mana.manaId">
         <div class="buttons">
           <el-button type="primary" @click="openDrawer('增加')">增加</el-button>
+          <el-button type="success" @click="upExcel">批量上传</el-button>
+          <el-button type="success" plain @click="outExcel">导出备份</el-button>
         </div>
         <div class="table">
           <el-table :data="data.tableData" stripe style="width: 100%">
@@ -89,11 +91,14 @@ import { ElMessageBox } from 'element-plus'
 import qs from "qs";
 import Add from "./Add";
 import router from "../../router";
+import { ElMessage } from 'element-plus'
 import moment from 'moment'
+import _axios from "@/axios/config";
 export default {
   name: "Manages",
   components: {Add},
   setup(){
+
     const appStore=inject('appStore')
     const qs=require('qs');
     const {proxy}=getCurrentInstance();
@@ -159,6 +164,20 @@ export default {
       // RefChilde.value.getFather();
       openDrawer('修改');
 
+    }
+    /**
+     * 导出备份
+     */
+    const outExcel = () => {
+      let active=data.activeName;
+      // window.location.href="http://8.129.212.155:8089/download/message?id="+active
+      window.location.href="http://localhost:8089/download/message?id="+active
+    }
+    /**
+     * 批量上传
+     */
+    const upExcel = () => {
+      ElMessage.error('功能正在开发中')
     }
     const handleDelete = (index, row) => {
       console.log(index, row)
@@ -295,27 +314,9 @@ export default {
     getData();
     chooseNum();
     return{
-      data,
-      dateFormat,
-      handleSizeChange,
-      handleCurrentChange,
-      toLoad,
-      handleClick,
-      getMana,
-      getHead,
-      getData,
-      openDrawer,
-      handleEdit,
-      handleDelete,
-      confirmEvent,
-      cancelEvent,
-      chooseNum,
-      searchName,
-      getCount,
-      downAdd,
-      RefChilde,
-      count,
-      load,
+      data, dateFormat, handleSizeChange, handleCurrentChange, toLoad, handleClick, getMana,
+      getHead, getData, openDrawer, handleEdit, handleDelete, confirmEvent, cancelEvent, chooseNum,
+      searchName, getCount, downAdd, RefChilde, count, load, outExcel,upExcel,
     }
   }
 }
