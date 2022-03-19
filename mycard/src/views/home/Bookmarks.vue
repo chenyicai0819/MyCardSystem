@@ -38,14 +38,12 @@ export default {
 }
 #bookmarks-PC{
   width: 80%;
-  background-color: #BDBDBD;
   display: flex;
   justify-content: center;
   flex-flow: wrap;
 }
 #bookmarks-moblic{
   width: 100%;
-  background-color: #BDBDBD;
   display: flex;
   justify-content: center;
   flex-flow: wrap;

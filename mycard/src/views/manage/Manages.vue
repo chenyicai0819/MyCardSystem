@@ -1,88 +1,89 @@
 <template>
-  <div class="mana-head">
-    <h2 class="mana-h2">网站内容管理界面</h2>
-    <el-button type="danger" @click="toLoad">返回首页</el-button>
+  <div class="messages">
+    <div class="mana-head">
+      <h2 class="mana-h2">网站内容管理界面</h2>
+      <el-button type="danger" @click="toLoad">返回首页</el-button>
+    </div>
+    <div class="manages">
+      <el-tabs v-model="data.activeName" @tab-click="handleClick">
+        <el-tab-pane v-for="mana in data.manaName" :label="mana.manaName" :name="mana.manaId">
+          <div class="buttons">
+            <el-button type="primary" @click="openDrawer('增加')">增加</el-button>
+            <el-button type="success" @click="upExcel">批量上传</el-button>
+            <el-button type="success" plain @click="outExcel">导出备份</el-button>
+          </div>
+          <div class="table">
+            <el-table :data="data.tableData" stripe style="width: 100%">
+              <el-table-column :prop="thead.name"
+                               :label="thead.name"
+                               sortable
+                               v-for="(thead,i) in data.tableHead"
+                               :key =i
+              />
+              <el-table-column align="right">
+                <template #header>
+                  <el-input v-model="data.search" size="mini" placeholder="输入想找的名字" @change="searchName"/>
+                </template>
+                <template #default="scope">
+                  <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+                  >Edit</el-button
+                  >
+                  <el-popconfirm
+                      confirm-button-text="Yes"
+                      cancel-button-text="No"
+                      icon="el-icon-info"
+                      icon-color="red"
+                      :title="'确定要删除'+data.deleteId+'吗'"
+                      @confirm="confirmEvent"
+                      @cancel="cancelEvent"
+                  >
+                    <template #reference>
+                      <el-button
+                          size="mini"
+                          type="danger"
+                          @click="handleDelete(scope.$index, scope.row)"
+                      >Delete</el-button
+                      >
+                    </template>
+                  </el-popconfirm>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:currentPage="data.currentPage"
+          :page-sizes="[10, 20, 30, 40, 50]"
+          :page-size=data.pageSize
+          background="true"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="data.allTotal"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+      >
+      </el-pagination>
+    </div>
+    <div class="drawers">
+      <el-drawer
+          v-model="data.drawer"
+          :title="data.buttenType"
+          :direction="data.direction"
+          size="50%"
+      >
+        <Add :numlength="data.tableHead"
+             :manatype="data.buttenType"
+             :mana-data="data.editData"
+             :active-name="data.activeName"
+             :drawer="data.drawer"
+             @checkSucces="downAdd"
+             ref="RefChilde"
+        ></Add>
+      </el-drawer>
+    </div>
   </div>
-  <div class="manages">
-    <el-tabs v-model="data.activeName" @tab-click="handleClick">
-      <el-tab-pane v-for="mana in data.manaName" :label="mana.manaName" :name="mana.manaId">
-        <div class="buttons">
-          <el-button type="primary" @click="openDrawer('增加')">增加</el-button>
-          <el-button type="success" @click="upExcel">批量上传</el-button>
-          <el-button type="success" plain @click="outExcel">导出备份</el-button>
-        </div>
-        <div class="table">
-          <el-table :data="data.tableData" stripe style="width: 100%">
-            <el-table-column :prop="thead.name"
-                             :label="thead.name"
-                             sortable
-                             v-for="(thead,i) in data.tableHead"
-                             :key =i
-            />
-            <el-table-column align="right">
-              <template #header>
-                <el-input v-model="data.search" size="mini" placeholder="输入想找的名字" @change="searchName"/>
-              </template>
-              <template #default="scope">
-                <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-                >Edit</el-button
-                >
-                <el-popconfirm
-                    confirm-button-text="Yes"
-                    cancel-button-text="No"
-                    icon="el-icon-info"
-                    icon-color="red"
-                    :title="'确定要删除'+data.deleteId+'吗'"
-                    @confirm="confirmEvent"
-                    @cancel="cancelEvent"
-                >
-                  <template #reference>
-                    <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handleDelete(scope.$index, scope.row)"
-                    >Delete</el-button
-                    >
-                  </template>
-                </el-popconfirm>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </el-tab-pane>
-    </el-tabs>
-  </div>
-  <div class="demo-pagination-block">
-    <el-pagination
-        v-model:currentPage="data.currentPage"
-        :page-sizes="[10, 20, 30, 40, 50]"
-        :page-size=data.pageSize
-        background="true"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="data.allTotal"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-    >
-    </el-pagination>
-  </div>
-  <div class="drawers">
-    <el-drawer
-        v-model="data.drawer"
-        :title="data.buttenType"
-        :direction="data.direction"
-        size="50%"
-    >
-      <Add :numlength="data.tableHead"
-           :manatype="data.buttenType"
-           :mana-data="data.editData"
-           :active-name="data.activeName"
-           :drawer="data.drawer"
-           @checkSucces="downAdd"
-           ref="RefChilde"
-      ></Add>
-    </el-drawer>
-  </div>
-
 </template>
 
 <script>
@@ -170,8 +171,8 @@ export default {
      */
     const outExcel = () => {
       let active=data.activeName;
-      // window.location.href="http://8.129.212.155:8089/download/message?id="+active
-      window.location.href="http://localhost:8089/download/message?id="+active
+      window.location.href="http://8.129.212.155:8089/download/message?id="+active
+      // window.location.href="http://localhost:8089/download/message?id="+active
     }
     /**
      * 批量上传
@@ -323,6 +324,9 @@ export default {
 </script>
 
 <style scoped>
+.messages{
+  height: 100vh;
+}
 .mana-head{
   display: flex;
   position: fixed;
@@ -340,12 +344,14 @@ export default {
   z-index: 2;
 }
 .buttons{
-  float: left;
+  display: flex;
 }
 .demo-pagination-block {
   position: fixed;
   bottom: 0px;
   background-color: #FFFFFF;
 }
+.table{
 
+}
 </style>

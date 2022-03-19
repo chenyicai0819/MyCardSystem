@@ -66,10 +66,6 @@ export default {
 .select-father{
 }
 #nav {
-  background: #4A569D;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #4A569D, #DC2424);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #4A569D, #DC2424); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
 
 }
 #nav a {
@@ -84,10 +80,6 @@ export default {
 }
 .select{
   margin: 0 auto;
-  background: #4A569D;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #4A569D, #DC2424);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #4A569D, #DC2424); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
 }
 .couplet{
   width: 10%;

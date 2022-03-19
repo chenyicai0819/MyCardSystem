@@ -1,6 +1,6 @@
 <template>
   <div class="demo-collapse" v-for="coll in data.collname">
-    <el-collapse>
+    <el-collapse >
       <el-collapse-item>
         <template #title>
           {{coll.collName}}
@@ -82,13 +82,13 @@ export default {
 </script>
 
 <style scoped>
-*{
-  margin:0;
-  padding: 0;
-}
 .demo-collapse{
+  border-radius: 10px;
   margin-top: 5px;
   width: 98%;
+}
+.mark-collapse{
+  background-color: #475669;
 }
 #morks{
   /*width: 80%;*/

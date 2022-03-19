@@ -9,7 +9,7 @@
 
     <!--功能插件-->
     <div :class="data.ismoblie==true?'function1':'function2'">
-      <el-card class="sea-card" style="width: 91.5%;margin: 0 auto ;background: rgba(255, 255, 255, 0.46);">
+      <el-card id="timecard" class="sea-card" style="width: 100%;margin: 0 auto ;background: rgba(255, 255, 255, 0.46);">
         <!--时间插件-->
         <div id="mycard-time" style="">
           <div class="time" :class="data.ismoblie==true?'function-time1':'function-time2'">
@@ -34,7 +34,8 @@
         <template #header>
           <div class="card-header">
             <span>{{ name.cardName }}</span>
-            <a :href="name.cardLink" style="text-decoration: none;font-weight: bold">前往链接</a>
+            <!--<el-button type="text" id="choose-link" @click="toLink(name.cardLink)">前往链接</el-button>-->
+            <a :href="name.cardLink" id="choose-link" @click="toLink(name.cardLink)">前往链接</a>
           </div>
         </template>
         <el-image
@@ -57,6 +58,8 @@
 <script>
 import {reactive,getCurrentInstance} from "vue";
 import QuiteSearch from "./QuiteSearch";
+import router from "@/router";
+import {ElMessage} from "element-plus";
 export default {
   name: "Choose",
   components: {QuiteSearch},
@@ -102,6 +105,15 @@ export default {
     }
 
     /**
+     * 前往链接
+     */
+    const toLink = (link) => {
+      if (link=="/#/"){
+        ElMessage.error('功能正在开发中')
+      }
+    }
+
+    /**
      * 获取今天日期
      */
     const mygetDate = () => {
@@ -120,7 +132,7 @@ export default {
     return{
       data,
       isMobile,
-      getCard,mygetTime,mygetDate
+      getCard,mygetTime,mygetDate,toLink
     }
   },
   created() {
@@ -136,7 +148,7 @@ export default {
         weatherWidth=widths*0.90;
         // weatherWidth=widths*0.80;
       } else {
-        weatherWidth=widths*0.8*0.45;
+        weatherWidth=widths*0.37;
       }
     }
     isMobile()
@@ -172,9 +184,9 @@ export default {
 }
 #choose{
   width: 100%;
-  height: 93vh;
+  /*height: 93vh;*/
   /*background-color: #BDBDBD;*/
-  background-image: url("https://cdn.jsdelivr.net/gh/chenyicai0819/MyImage/Imgs/20220308133544.png");
+  /*background-image: url("https://cdn.jsdelivr.net/gh/chenyicai0819/MyImage/Imgs/20220308133544.png");*/
   display: flex;
   justify-content: center;
   flex-flow: wrap;
@@ -240,5 +252,15 @@ export default {
   /*text-shadow: 5px 5px 5px #42b983;*/
   font-size: 26px;
   margin-bottom: 10px
+}
+#choose-link{
+  font-size: 16px;
+  font-family: 微软雅黑;
+  font-weight: bolder;
+  text-decoration: none;
+  color: #2c3e50
+}
+#choose-link:hover{
+  color: #1FA2FF;
 }
 </style>
