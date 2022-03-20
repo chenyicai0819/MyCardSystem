@@ -1,4 +1,5 @@
 <template>
+  <GlobalTip/>
   <!--<div id="nav">-->
   <!--  <router-link to="/">Home</router-link> |-->
   <!--  <router-link to="/about">About</router-link>-->
@@ -24,8 +25,11 @@
 
 <script>
 import {inject, reactive, watch} from "vue";
+import {useRouter} from "vue-router";
+import GlobalTip from "@/views/other/GlobalTip";
 export default {
   name: "App",
+  components: {GlobalTip},
   setup(){
     const appStore=inject('appStore')
     const data=reactive({
@@ -38,12 +42,14 @@ export default {
     })
 
     const isMobile = () => {
+      const $router = useRouter()
       const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
       if (flag) {
         appStore.setIsMoblie(true)
       } else {
         appStore.setIsMoblie(false)
       }
+      // console.log($router.currentRoute.value.path);
     }
     isMobile()
     return{

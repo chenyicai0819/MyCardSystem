@@ -104,7 +104,7 @@ export default {
     const getAd = () => {
       proxy.$axios.get('ad/show',{}).then(res=>{
         data.ad=res.data;
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.length==0){
           data.name="广告位招租"
           data.isAd=0
