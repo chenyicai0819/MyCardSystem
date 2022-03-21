@@ -66,7 +66,7 @@ export default {
           center: [110.417813,25.31373], //中心点坐标
           viewMode: "3D", //使用3D视图
         });
-        // https://www.amap.com/?p=B0FFFA0ZCS,25.31132,110.416325,%E6%A1%82%E6%9E%97%E7%94%B5%E5%AD%90%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6%E8%8A%B1%E6%B1%9F%E6%A0%A1%E5%8C%BA,%E6%A1%82%E6%9E%97%E5%B8%82%E7%81%B5%E5%B7%9D%E5%8E%BF%E7%81%B5%E7%94%B0%E9%95%87,450300
+
       };
       // key是申请的值
       var url =

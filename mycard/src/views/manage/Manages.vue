@@ -134,7 +134,7 @@ export default {
     }
     // 切换Tab时
     const handleClick = (tab, event) => {
-      console.log(data.activeName);
+      // console.log(data.activeName);
       getHead();
       getCount();
       getData();
@@ -161,7 +161,7 @@ export default {
       }
       data.editData=row
       data.buttenType='修改'
-      console.log(data.editData);
+      // console.log(data.editData);
       // RefChilde.value.getFather();
       openDrawer('修改');
 
@@ -181,7 +181,7 @@ export default {
       ElMessage.error('功能正在开发中')
     }
     const handleDelete = (index, row) => {
-      console.log(index, row)
+      // console.log(index, row)
       chooseNum();
       let active=data.activeName;
       if (active==1){
@@ -207,7 +207,7 @@ export default {
     const getHead= () =>{
       proxy.$axios.post('mana/head',qs.stringify({"head":data.activeName})).then(res=>{
         const getdata=res.data;
-        console.log(getdata);
+        // console.log(getdata);
         data.tableHead=getdata;
       });
     }
@@ -232,19 +232,19 @@ export default {
     const confirmEvent = () => {
       proxy.$axios.post(data.uri+'del',qs.stringify({"id":data.deleteId})).then(res=>{
         const getdata=res.data;
-        console.log(getdata);
+        // console.log(getdata);
         getData();
       });
     }
     const cancelEvent = () => {
-      console.log('cancel!')
+      // console.log('cancel!')
     }
     const searchName = () => {
       chooseNum();
       let search=data.search;
       proxy.$axios.post(data.uri+'sea',qs.stringify({"name":search})).then(res=>{
         const getdata=res.data;
-        console.log(getdata);
+        // console.log(getdata);
         data.tableData=getdata;
       });
     }

@@ -33,26 +33,20 @@ export default {
         let mess="下午好呀~~，现在是"+hours+":"+minutes+":"+seconds+"，繁忙的下午也要适当休息哦🥤🏀~~"
         ElMessage({
           message: mess,
-          type: 'success',
+          type: 'warning',
         })
       } else if (hours >= 16 && hours <= 19) {
         let mess="到黄昏了~~，现在是"+hours+":"+minutes+":"+seconds+"，该准备吃饭啦🥗🍖~~"
         ElMessage({
           message: mess,
-          type: 'success',
+          type: 'warning',
         })
       } else if (hours >= 19 && hours < 24) {
         let mess="晚上好呀~~，现在是"+hours+":"+minutes+":"+seconds+"，该准备洗漱睡觉啦🥱😪~~"
-        ElMessage({
-          message: mess,
-          type: 'success',
-        })
+        ElMessage(mess)
       } else if (hours >= 0 && hours < 6) {
         let mess="别再熬夜了~~，现在是"+hours+":"+minutes+":"+seconds+"，早点睡吧，让我们一起欣赏早上的太阳~~😇🛏"
-        ElMessage({
-          message: mess,
-          type: 'success',
-        })
+        ElMessage.error(mess)
       }
     }
     const nextAllTipElement = (elem) => {
@@ -74,7 +68,9 @@ export default {
 
     watch(()=>$router.currentRoute.value.path,()=>{
       // console.log("地址改为："+$router.currentRoute.value.path)
-      bgTimeColor()
+      if ($router.currentRoute.value.path=="/home") {
+        bgTimeColor();
+      }
     })
 
     return {

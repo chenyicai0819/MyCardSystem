@@ -57,14 +57,14 @@ export default {
     const getColl= () =>{
       proxy.$axios.get('coll/show',{}).then(res=>{
         const getdata=res.data;
-        console.log(getdata);
+        // console.log(getdata);
         data.collname=getdata;
       });
     }
     const getMork= () =>{
       proxy.$axios.get('mork/show',{}).then(res=>{
         const getdata=res.data;
-        console.log(getdata);
+        // console.log(getdata);
         data.morkname=getdata;
       });
     }

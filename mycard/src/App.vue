@@ -1,5 +1,6 @@
 <template>
   <GlobalTip/>
+  <!--<Maps/>-->
   <!--<div id="nav">-->
   <!--  <router-link to="/">Home</router-link> |-->
   <!--  <router-link to="/about">About</router-link>-->
@@ -27,9 +28,11 @@
 import {inject, reactive, watch} from "vue";
 import {useRouter} from "vue-router";
 import GlobalTip from "@/views/other/GlobalTip";
+import Maps from "@/views/map/Maps";
+
 export default {
   name: "App",
-  components: {GlobalTip},
+  components: {Maps, GlobalTip},
   setup(){
     const appStore=inject('appStore')
     const data=reactive({

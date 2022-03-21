@@ -38,9 +38,9 @@ export default {
     const isMobile = () => {
       const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
       if (flag) {
-        console.log('移动端打开')
+        // console.log('移动端打开')
       } else {
-        console.log('PC端打开')
+        // console.log('PC端打开')
       }
     }
 

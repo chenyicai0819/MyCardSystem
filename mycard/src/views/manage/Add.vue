@@ -152,7 +152,7 @@ export default {
       let active=props.activeName;
       let manadata=props.manaData;
 
-      console.log(manadata);
+      // console.log(manadata);
       if (active==1){
         if (props.manatype=="修改"){
           data.id=props.manaData.cardId

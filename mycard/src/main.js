@@ -7,11 +7,13 @@ import 'element-plus/theme-chalk/index.css'
 import axios from './axios/config'
 import store from './store'
 import * as icons from '@element-plus/icons-vue'
+import aMap from 'vue-amap'
 
 const app=createApp(App)
 app.use(ElementPlus)
 app.use(Vuex)
 app.use(store)
+app.use(aMap)
 app.config.globalProperties.$axios = axios
 app.use(router).mount('#app')
 Object.keys(icons).forEach(key => {

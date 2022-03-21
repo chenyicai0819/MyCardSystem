@@ -40,8 +40,8 @@ export default {
 
     })
     const onSubmit = () => {
-      console.log(data.form.name);
-      console.log(data.form.pass);
+      // console.log(data.form.name);
+      // console.log(data.form.pass);
       proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":data.form.pass })).then(res=>{
         if ("允许登录"==res.data){
           localStorage.setItem("loginToken",data.form.name)
@@ -63,11 +63,11 @@ export default {
     const isMobile = () => {
       const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
       if (flag) {
-        console.log('移动端打开')
+        // console.log('移动端打开')
         data.ismoblie=true
       } else {
         data.ismoblie=false
-        console.log('PC端打开')
+        // console.log('PC端打开')
       }
     }
 

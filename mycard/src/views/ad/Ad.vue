@@ -120,11 +120,11 @@ export default {
       let day = new Date();
       let date=new Date();
       date.setTime(day*1000)
-      console.log(date);
+      // console.log(date);
       if (date-data.downDate>=0){
-        console.log("显示时间内")
+        // console.log("显示时间内")
       }else {
-        console.log("不在显示时间")
+        // console.log("不在显示时间")
       }
     }
     

@@ -54,7 +54,7 @@ const routes = [
   {
     path: '/map',
     name: 'Map',
-    component: ()=>import('../views/map/Index'),
+    component: ()=>import('../views/map/Maps'),
     children:[
       // {
       //   path: 'mahome',
