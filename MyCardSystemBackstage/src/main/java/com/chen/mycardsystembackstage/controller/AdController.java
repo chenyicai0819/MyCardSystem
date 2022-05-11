@@ -154,8 +154,8 @@ public class AdController {
             // 内容
             StringBuilder sb=new StringBuilder();
             sb.append("广告内容：").append(text).append('\n')
-                    .append("广告报价：").append(money).append('\r')
-                    .append("联系方式：").append(phone).append('\r')
+                    .append("广告报价：").append(money).append('\n')
+                    .append("联系方式：").append(phone).append('\n')
                     .append("上架时间").append(time);
             email.setHtmlMsg(sb.toString());
             email.addTo("chenyc2021@qq.com");

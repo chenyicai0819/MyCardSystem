@@ -1,4 +1,7 @@
 <template>
+  <div>
+
+  </div>
 </template>
 
 <script>
@@ -32,7 +35,7 @@ export default {
         apis(data.provinceList[i].key).then((res)=>{
           // console.log(res.data);
           data.allProvince[i]=res.data.data
-          // console.log(data.allProvince[i]);
+          // console.log(data.allProvince);
         })
       }
 
@@ -41,6 +44,7 @@ export default {
       apis(province).then((res)=>{
         // console.log(res.data.data);
         data.citys=res.data.data.city
+        console.log(data.citys);
       })
     }
     /**
@@ -88,14 +92,15 @@ export default {
           if (status === 'complete' && result.info === 'OK') {
             console.log(result);
           }else {
-            alert('地址获取失败')
+            // alert('地址获取失败')
           }
         });
       }).catch((e) => {
         console.log(e)
       })
     }
-    getIpCity()
+    getMap()
+    // getIpCity()
     onBeforeMount(()=>{
       getAllProvince()
       mapStore.setMaplist(data.allProvince)

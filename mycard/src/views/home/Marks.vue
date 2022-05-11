@@ -1,12 +1,13 @@
+<!--书签-->
 <template>
-  <div class="demo-collapse" v-for="coll in data.collname">
+  <div class="demo-collapse" v-for="coll in collname">
     <el-collapse >
       <el-collapse-item>
         <template #title>
           {{coll.collName}}
         </template>
         <div id="morks">
-          <div class="morkscard" :class="{morkscardmoblie:data.ismoblie}" v-for="mork in data.morkname" v-show="mork.morkType==coll.collName">
+          <div class="morkscard" :class="{morkscardmoblie:ismoblie}" v-for="mork in morkname" v-show="mork.morkType==coll.collName">
             <el-card class="box-card">
               <template #header>
                 <div class="card-header">
@@ -27,11 +28,46 @@
       </el-collapse-item>
     </el-collapse>
   </div>
+  <div class="marks-affix">
+    <div class="marks-affix-input" v-show="visible">
+      <div style="width: 80%;margin-top: 5px;margin-left: 30px">
+        <h3>在这里写下你想推荐给我们的有趣的网站吧</h3>
+      </div>
+      <el-divider />
+      <el-input :class="net.name==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.name" placeholder="网站的名称" />
+      <el-input :class="net.link==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.link" placeholder="网站的网址" />
+      <el-input :class="net.text==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.text" placeholder="网站的介绍" />
+      <el-input :class="net.user==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.user" placeholder="您的名字" />
+      <el-input :class="net.email==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.email" placeholder="您的邮箱" />
+      <el-divider style="margin-bottom: 10px"/>
+      <el-button type="primary" style="margin-top: -10px;width: 100px" @click="recommendPush">推  荐</el-button>
+    </div>
+    <el-tooltip
+        popper-class="atooltip"
+        effect="dark"
+        content="点击按钮来给我们推荐你收藏的有趣的网站吧！"
+        placement="left-start"
+    >
+      <el-button id="marks-affix-button"
+                 @click="checkDiv"
+                 style="position: fixed;left: 95%;top:87%;"
+                 circle
+      >
+        <el-icon size="20" v-show="visible==false"><chat-line-square /></el-icon>
+        <el-icon size="20" v-show="visible==true"><close-bold /></el-icon>
+      </el-button>
+    </el-tooltip>
+  </div>
 
 </template>
 
 <script>
-import {getCurrentInstance, reactive} from "vue";
+import { ElNotification } from 'element-plus'
+import { h } from 'vue'
+import {getCurrentInstance, onMounted, reactive, toRef, toRefs} from "vue";
+import {ChatLineRound} from '@element-plus/icons-vue';
+import {recommend} from "@/api/mork";
+
 export default {
   name: "Marks",
   setup(){
@@ -43,7 +79,15 @@ export default {
       ],
       collname:[
 
-      ]
+      ],
+      visible:false,
+      net:{
+        name:'',
+        link:'',
+        text:'',
+        user:'',
+        email:'',
+      }
     })
 
     const isMobile = () => {
@@ -68,14 +112,58 @@ export default {
         data.morkname=getdata;
       });
     }
+    /**
+     * 切换div显示情况
+     */
+    const checkDiv = () => {
+      if (data.visible==false){
+        data.visible=true
+      }else {
+        data.visible=false
+      }
+    }
+    /**
+     * 发送推荐
+     */
+    const recommendPush = () => {
+      if (data.net.name==''||data.net.link==''||data.net.text==''||data.net.name==''||data.net.email==''){
+        ElNotification({
+          title: '提示',
+          message: '您有未填的内容，请填完！',
+          type: 'error',
+        })
+      }else {
+        proxy.$axios.get("/mork/recommend",{params:
+              {"name":data.net.name,
+                "link":data.net.link,
+                "text":data.net.text,
+                "user":data.net.user,
+                "email":data.net.email
+              }
+        }).then((res)=>{
+          res=res.data
+          if (res==1){
+            ElNotification({
+              title: '推荐成功',
+              message: h('i', { style: 'color: teal' }, '感谢您的推荐！'),
+            })
+          }
+        })
+      }
+    }
+    // onMounted(()=>{
+    //   document.addEventListener('click', (e)=> {
+    //     if (e.target.className != 'marks-affix') {
+    //       console.log("aaa")
+    //       data.visible= false;
+    //     }
+    //   })
+    // })
     isMobile();
     getColl();
     getMork();
     return{
-      data,
-      getColl,
-      isMobile,
-      getMork,
+      ...toRefs(data),getColl,recommendPush, isMobile, getMork,checkDiv,
     }
   }
 }
@@ -121,5 +209,38 @@ export default {
 
 .box-card {
   width: 100%;
+}
+#marks-affix-button:hover{
+  background-color: #97d9bb;
+}
+.marks-affix-input {
+  background-color: #99a9bf;
+  width: 300px;
+  height: 400px;
+  position: fixed;
+  left: 80%;
+  top: 30%;
+  border-radius: 15px;
+  animation: marks-affix-input 1s 1;
+}
+
+@keyframes marks-affix-input{
+
+  0%{opacity: 0;}
+
+  100%{opacity: 1;}
+
+}
+.marks-affix-input-input{
+  margin-bottom: 3px;
+  width: 90%;
+  margin-left: 7.5px;
+}
+.marks-affix-input-input-null{
+  border: 1px solid #F56C6C;
+  border-radius: 5px;
+  margin-bottom: 3px;
+  width: 90%;
+  margin-left: 7.5px;
 }
 </style>

@@ -3,6 +3,8 @@ package com.chen.mycardsystembackstage.controller;
 import com.chen.mycardsystembackstage.entity.Mork;
 import com.chen.mycardsystembackstage.service.MorkService;
 import com.chen.mycardsystembackstage.utils.WeChatNotify;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
@@ -78,5 +80,54 @@ public class MorkController {
     @GetMapping("/count")
     public int countMork(){
         return morkService.countMork();
+    }
+
+    @GetMapping("/recommend")
+    public int recommend(String name,String link,String text,String user,String email){
+        int out=0;
+        HtmlEmail htmlemail = new HtmlEmail();
+        htmlemail.setHostName("smtp.qq.com");
+        htmlemail.setSSLOnConnect(true);
+        htmlemail.setSslSmtpPort("465");
+        htmlemail.setCharset("UTF-8");
+        htmlemail.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
+        try {
+            htmlemail.setFrom("chenyc2021@qq.com", email,"utf-8");
+            htmlemail.setSubject("推荐网站");
+            StringBuilder sb=new StringBuilder();
+            sb.append("网站名称：").append(name).append('\n')
+                    .append("网站网址：").append(link).append('\n')
+                    .append("网址介绍：").append(text).append('\n')
+                    .append("推荐人").append(user).append('\n')
+                    .append("推荐人邮箱").append(email);
+            htmlemail.setHtmlMsg(sb.toString());
+            htmlemail.addTo("chenyc2021@qq.com");
+            htmlemail.send();
+            out=1;
+
+        } catch (EmailException e) {
+            e.printStackTrace();
+            out=0;
+        } finally {
+            if(out==1){
+                try {
+                    HtmlEmail emailOut = new HtmlEmail();
+                    emailOut.setHostName("smtp.qq.com");
+                    emailOut.setSSLOnConnect(true);
+                    emailOut.setSslSmtpPort("465");
+                    emailOut.setCharset("UTF-8");
+                    emailOut.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
+                    emailOut.setFrom("chenyc2021@qq.com", "mycard管理员","utf-8");
+                    emailOut.setSubject("回复");
+                    emailOut.setHtmlMsg("我们已经收到了您的推荐！我们会尽快审核并上架！感谢！");
+                    emailOut.addTo(email);
+                    //发送邮件
+                    emailOut.send();
+                } catch (EmailException e) {
+                    e.printStackTrace();
+                }
+            }
+            return out;
+        }
     }
 }
