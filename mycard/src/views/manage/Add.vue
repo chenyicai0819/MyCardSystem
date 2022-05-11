@@ -13,7 +13,8 @@
       >
       </el-option>
     </el-select>
-    <el-input placeholder="请输入介绍内容" v-model="data.text" v-show="activeName==3||activeName==4"></el-input>
+
+    <el-input placeholder="请输入介绍内容" v-model="data.text" v-show="activeName==2||activeName==3||activeName==4"></el-input>
     <!--<el-input placeholder="请输入上架时间" v-model="data.upDate" v-show="activeName==4"></el-input>-->
     <!--<el-input placeholder="请输入下架时间" v-model="data.downDate" v-show="activeName==4"></el-input>-->
     <div class="block" v-show="activeName==4">
@@ -112,7 +113,7 @@ export default {
           checkSucces();
         });
       }else if(active==2){
-        proxy.$axios.post('mork/'+data.posts,qs.stringify({"id":data.id,"name":data.name,"link":data.link,"type":data.type,"img":data.img})).then(res=>{
+        proxy.$axios.post('mork/'+data.posts,qs.stringify({"id":data.id,"name":data.name,"link":data.link,"type":data.type,"img":data.img,"text":data.text})).then(res=>{
           data.getReData=res.data;
           checkSucces();
         });
@@ -168,6 +169,7 @@ export default {
           data.link=props.manaData.morkLink
           data.img=props.manaData.morkImg
           data.type=props.manaData.morkType
+          data.text=props.manaData.morkText
         }
         data.uri='mork/'
       }else if(active==3){

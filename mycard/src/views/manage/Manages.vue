@@ -272,7 +272,8 @@ export default {
         data.maData.push({"text": manadata.morkImg}),
         data.maData.push({"text": manadata.morkLink}),
         data.maData.push({"text": manadata.morkName}),
-        data.maData.push({"text": manadata.morkType})
+        data.maData.push({"text": manadata.morkType}),
+        data.maData.push({"text": manadata.morkText})
       }else if(active==3){
         data.id='collId';
         data.uri='coll/';

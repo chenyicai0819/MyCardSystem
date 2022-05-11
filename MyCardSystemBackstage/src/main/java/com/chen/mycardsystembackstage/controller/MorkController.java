@@ -48,23 +48,25 @@ public class MorkController {
     }
 
     @PostMapping("/add")
-    public int addMork(Integer id,String name,String link,String type,String img){
+    public int addMork(Integer id,String name,String link,String type,String img,String text){
         Mork mork=new Mork();
         mork.setMorkName(name);
         mork.setMorkLink(link);
         mork.setMorkType(type);
         mork.setMorkImg(img);
+        mork.setMorkText(text);
         return morkService.addMork(mork);
     }
 
     @PostMapping("/up")
-    public int upMork(int id,String name,String link,String type,String img){
+    public int upMork(int id,String name,String link,String type,String img,String text){
         Mork mork=new Mork();
         mork.setMorkName(name);
         mork.setMorkLink(link);
         mork.setMorkType(type);
         mork.setMorkImg(img);
         mork.setMorkId(id);
+        mork.setMorkText(text);
         return morkService.upMork(mork);
     }
 
@@ -100,6 +102,7 @@ public class MorkController {
                     .append("网址介绍：").append(text).append('\n')
                     .append("推荐人").append(user).append('\n')
                     .append("推荐人邮箱").append(email);
+            // htmlemail.setHtmlMsg("<a>cyc292.top</a>");
             htmlemail.setHtmlMsg(sb.toString());
             htmlemail.addTo("chenyc2021@qq.com");
             htmlemail.send();

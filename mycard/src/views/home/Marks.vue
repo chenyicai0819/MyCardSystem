@@ -8,21 +8,33 @@
         </template>
         <div id="morks">
           <div class="morkscard" :class="{morkscardmoblie:ismoblie}" v-for="mork in morkname" v-show="mork.morkType==coll.collName">
-            <el-card class="box-card">
-              <template #header>
-                <div class="card-header">
-                  <span>{{ mork.morkName }}</span>
-                  <a :href="mork.morkLink" style="text-decoration: none;font-weight: bold">前往链接</a>
-                </div>
+            <el-popover
+                placement="top-start"
+                title="网站介绍"
+                :width="200"
+                effect="dark"
+                trigger="hover"
+                :content="mork.morkText!=null?mork.morkText:'暂无介绍内容'"
+            >
+              <template #reference>
+                <el-card class="box-card">
+                  <template #header>
+                    <div class="card-header">
+                      <span>{{ mork.morkName }}</span>
+                      <a :href="mork.morkLink" style="text-decoration: none;font-weight: bold">前往链接</a>
+                    </div>
+                  </template>
+                  <div class="block">
+                    <el-image
+                        style="width: 100px; height: 100px"
+                        :src="mork.morkImg"
+                        :fit="mork.morkName"
+                    ></el-image>
+                  </div>
+                </el-card>
               </template>
-              <div class="block">
-                <el-image
-                    style="width: 100px; height: 100px"
-                    :src="mork.morkImg"
-                    :fit="mork.morkName"
-                ></el-image>
-              </div>
-            </el-card>
+            </el-popover>
+
           </div>
         </div>
       </el-collapse-item>

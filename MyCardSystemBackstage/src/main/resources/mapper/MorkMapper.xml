@@ -4,12 +4,12 @@
     <!--<cache type="com.chen.mycardsystembackstage.cache.MybatisRedisCache"></cache>-->
     <insert id="addMork" parameterType="com.chen.mycardsystembackstage.entity.Mork">
         INSERT INTO
-            mork(morkName,morkLink,morkType,morkImg)
-            VALUES(#{morkName},#{morkLink},#{morkType},#{morkImg});
+            mork(morkName,morkLink,morkType,morkImg,morkText)
+            VALUES(#{morkName},#{morkLink},#{morkType},#{morkImg},#{morkText});
     </insert>
     <update id="upMork">
         UPDATE mork
-        SET morkName=#{morkName},morkLink=#{morkLink},morkType=#{morkType},morkImg=#{morkImg}
+        SET morkName=#{morkName},morkLink=#{morkLink},morkType=#{morkType},morkImg=#{morkImg},morkText=#{morkText}
         WHERE morkId=#{morkId}
     </update>
     <delete id="delMork" parameterType="int">
