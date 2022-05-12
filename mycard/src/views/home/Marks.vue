@@ -79,6 +79,7 @@ import { h } from 'vue'
 import {getCurrentInstance, onMounted, reactive, toRef, toRefs} from "vue";
 import {ChatLineRound} from '@element-plus/icons-vue';
 import {recommend} from "@/api/mork";
+import {recommendEmail, replyEmail} from "../../utils/emailModel";
 
 export default {
   name: "Marks",
@@ -99,6 +100,8 @@ export default {
         text:'',
         user:'',
         email:'',
+        type:'推荐网站',
+        out:'我们已经收到了您的推荐！我们会尽快审核,审核通过后尽快上架！感谢！'
       }
     })
 
@@ -150,11 +153,17 @@ export default {
                 "link":data.net.link,
                 "text":data.net.text,
                 "user":data.net.user,
-                "email":data.net.email
+                "email":data.net.email,
+                "model":recommendEmail(data.net),
               }
         }).then((res)=>{
           res=res.data
           if (res==1){
+            proxy.$axios.get("/mork/reply",{params:
+                  {"email":data.net.email,
+                    "model":replyEmail(data.net),
+                  }
+            })
             ElNotification({
               title: '推荐成功',
               message: h('i', { style: 'color: teal' }, '感谢您的推荐！'),

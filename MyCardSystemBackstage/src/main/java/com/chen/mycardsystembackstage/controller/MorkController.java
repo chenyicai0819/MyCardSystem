@@ -85,7 +85,7 @@ public class MorkController {
     }
 
     @GetMapping("/recommend")
-    public int recommend(String name,String link,String text,String user,String email){
+    public int recommend(String name,String link,String text,String user,String email,String model){
         int out=0;
         HtmlEmail htmlemail = new HtmlEmail();
         htmlemail.setHostName("smtp.qq.com");
@@ -102,8 +102,8 @@ public class MorkController {
                     .append("网址介绍：").append(text).append('\n')
                     .append("推荐人").append(user).append('\n')
                     .append("推荐人邮箱").append(email);
-            // htmlemail.setHtmlMsg("<a>cyc292.top</a>");
-            htmlemail.setHtmlMsg(sb.toString());
+            htmlemail.setHtmlMsg(model);
+            // htmlemail.setHtmlMsg(sb.toString());
             htmlemail.addTo("chenyc2021@qq.com");
             htmlemail.send();
             out=1;
@@ -122,15 +122,34 @@ public class MorkController {
                     emailOut.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
                     emailOut.setFrom("chenyc2021@qq.com", "mycard管理员","utf-8");
                     emailOut.setSubject("回复");
-                    emailOut.setHtmlMsg("我们已经收到了您的推荐！我们会尽快审核并上架！感谢！");
+                    // emailOut.setHtmlMsg(reply);
                     emailOut.addTo(email);
                     //发送邮件
-                    emailOut.send();
+                    // emailOut.send();
                 } catch (EmailException e) {
                     e.printStackTrace();
                 }
             }
             return out;
         }
+    }
+    @GetMapping("/reply")
+    public void reply(String email,String model){
+        HtmlEmail emailOut = new HtmlEmail();
+        emailOut.setHostName("smtp.qq.com");
+        emailOut.setSSLOnConnect(true);
+        emailOut.setSslSmtpPort("465");
+        emailOut.setCharset("UTF-8");
+        emailOut.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
+        try {
+            emailOut.setFrom("chenyc2021@qq.com", "mycard管理员","utf-8");
+            emailOut.setSubject("回复");
+            emailOut.setHtmlMsg(model);
+            emailOut.addTo(email);
+            emailOut.send();
+        } catch (EmailException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

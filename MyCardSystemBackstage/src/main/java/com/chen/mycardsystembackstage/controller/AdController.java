@@ -181,12 +181,32 @@ public class AdController {
                     emailOut.setHtmlMsg("我们已经收到了您的邮件内容，请您耐心等待工作人员的回复");
                     emailOut.addTo(buyemail);
                     //发送邮件
-                    emailOut.send();
+                    // emailOut.send();
                 } catch (EmailException e) {
                     e.printStackTrace();
                 }
             }
             return out;
+        }
+    }
+
+    @GetMapping("/reply")
+    public void reply(String email,String model){
+        try {
+            HtmlEmail emailOut = new HtmlEmail();
+            emailOut.setHostName("smtp.qq.com");
+            emailOut.setSSLOnConnect(true);
+            emailOut.setSslSmtpPort("465");
+            emailOut.setCharset("UTF-8");
+            emailOut.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
+            emailOut.setFrom("chenyc2021@qq.com", "mycard管理员","utf-8");
+            emailOut.setSubject("回复");
+            emailOut.setHtmlMsg(model);
+            emailOut.addTo(email);
+            //发送邮件
+            emailOut.send();
+        } catch (EmailException e) {
+            e.printStackTrace();
         }
     }
 }

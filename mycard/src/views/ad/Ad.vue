@@ -60,6 +60,7 @@
 <script>
 import {getCurrentInstance, defineComponent, reactive, toRefs} from "vue";
 import {ElMessage} from "element-plus";
+import {replyEmail} from "../../utils/emailModel";
 
 
 export default {
@@ -84,9 +85,15 @@ export default {
         phone:'',
         email:'',
         times:'',
+      },
+      out:{
+        user:'',
+        type:'广告投放',
+        out:'我们已经收到了您的投放广告邮件内容，请您耐心等待工作人员的回复!我们会尽快审核并由专员与您联系，进行合作的协商！'
       }
     })
     const buyEmail = () => {
+      data.out.user=data.input.title
       proxy.$axios.get('ad/buy',{params:{"title":data.input.title,
           "text":data.input.text,
           "money":data.input.money,
@@ -94,6 +101,10 @@ export default {
           "phone":data.input.phone,
           "buyemail":data.input.email}
       }).then((res)=>{
+        proxy.$axios.get('ad/reply',{params:{
+            "email":data.input.email,
+            "model":replyEmail(data.out)}
+        })
         ElMessage({
           message: '邮件发送成功，请等待工作人员回复.',
           type: 'success',
