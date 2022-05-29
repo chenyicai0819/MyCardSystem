@@ -158,6 +158,8 @@ export default {
         data.editId=row.collId;
       }else if (active==4){
         data.editId=row.adId;
+      }else if (active==5){
+        data.editId=row.imgsId;
       }
       data.editData=row
       data.buttenType='修改'
@@ -192,6 +194,8 @@ export default {
         data.deleteId=row.collId;
       }else if (active==4){
         data.deleteId=row.adId;
+      }else if (active==5){
+        data.deleteId=row.imgsId;
       }
     }
     const downAdd = () => {
@@ -222,12 +226,15 @@ export default {
         uri='coll/get';
       }else if (active==4){
         uri='ad/get';
-
+      }else if (active==5){
+        uri='imgs/get';
       }
       proxy.$axios.get(uri,{params:{page:data.currentPage,size:data.pageSize}}).then(res=>{
         const getdata=res.data;
+        console.log(getdata)
         data.tableData=getdata;
       });
+
     }
     const confirmEvent = () => {
       proxy.$axios.post(data.uri+'del',qs.stringify({"id":data.deleteId})).then(res=>{
@@ -290,6 +297,13 @@ export default {
         data.maData.push({"text": manadata.adText}),
         data.maData.push({"text": manadata.adUpDate}),
         data.maData.push({"text": manadata.adDownDate})
+      }else if (active==5){
+        data.id='imgsId';
+        data.uri='imgs/';
+        data.maData.push({"text": manadata.imgsId}),
+            data.maData.push({"text": manadata.imgsName}),
+            data.maData.push({"text": manadata.imgsText}),
+            data.maData.push({"text": manadata.imgsLink})
       }
     }
     const getCount = () => {

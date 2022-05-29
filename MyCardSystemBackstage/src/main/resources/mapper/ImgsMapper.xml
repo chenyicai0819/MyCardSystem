@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mycardsystembackstage.mapper.ImgsMapper">
+    <insert id="AddImgs">
+        INSERT INTO
+            imgs(imgsId,imgsName,imgsText,imgsLink)
+            VALUES (#{imgsId},#{imgsName},#{imgsText},#{imgsLink})
+    </insert>
+    <update id="Updata">
+        UPDATE imgs
+        <set>
+            <if test="imgsName != null">
+                imgsName = #{imgsName,jdbcType=VARCHAR},
+            </if>
+            <if test="imgsText != null">
+                imgsText = #{imgsText,jdbcType=VARCHAR},
+            </if>
+            <if test="imgsLink != null">
+                imgsLink = #{imgsLink,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where imgsId = #{imgsId,jdbcType=INTEGER}
+    </update>
+    <delete id="DeleteImgs">
+        DELETE FROM imgs
+        WHERE imgsId=#{id}
+    </delete>
+
+    <select id="AllImgs" resultType="com.chen.mycardsystembackstage.entity.Imgs">
+        SELECT *
+        FROM imgs
+    </select>
+    <select id="countImgs" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM imgs
+    </select>
+</mapper>

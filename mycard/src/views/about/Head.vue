@@ -19,10 +19,31 @@
     <el-card class="box-card" >
       <template #header>
         <div class="card-header">
-          <span>地图位置</span>
+          <span>地图位置&我的词云</span>
         </div>
       </template>
-      <div id="container" :class="ismoblie==true?'map1':'map2'">
+      <div class="card-header-div">
+        <div id="container" :class="ismoblie==true?'map1':'map2'" />
+        <div>
+          <WordCloud/>
+        </div>
+      </div>
+    </el-card>
+    <el-card class="box-card" >
+      <template #header>
+        <div class="card-header">
+          <span>我的相册</span>
+        </div>
+      </template>
+      <div class="card-header-images">
+        <div v-for="url in urls" style="width: 30%;height: 30%;display: inline;">
+          <el-image
+              style="width: 30%;height: 30%"
+              :preview-src-list="urls"
+              :key="url"
+              :src="url"
+              lazy />
+        </div>
       </div>
     </el-card>
   </div>
@@ -30,9 +51,12 @@
 
 <script>
 import {onMounted, reactive, toRefs} from "vue";
+import {Discount} from "@element-plus/icons";
+import WordCloud from "./WordCloud";
 
 export default {
   name: "Head",
+  components: {WordCloud, Discount},
   setup(){
     const data=reactive({
       audioUrl:"../../assets/music.mp3",
@@ -41,8 +65,17 @@ export default {
         {value:"JavaScript"},
         {value:"HTML"},
         {value:"Vue"},
-        {value:"Linux"}],
+        {value:"Linux"}
+      ],
       ismoblie:false,
+      urls:['https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+          'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
+          'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
+          'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
+          'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+          'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
+          'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg',
+        ],
     })
 
     const isMobile = () => {
@@ -88,6 +121,11 @@ export default {
 }
 </script>
 <style scoped>
+
+.about-head{
+  width: 90%;
+  margin: 0 auto;
+}
 .box-card{
   width: 100%;
   margin-bottom: 10px;
@@ -109,10 +147,15 @@ export default {
 #container {
 
 }
+.card-header-div{
+  display: flex;
+}
 .map1{
   width:100%; height: 200px;
 }
 .map2{
   width:600px; height: 300px;
 }
+
+
 </style>

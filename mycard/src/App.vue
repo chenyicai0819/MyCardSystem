@@ -25,7 +25,9 @@
 </template>
 
 <script>
-import {inject, reactive, watch} from "vue";
+
+import * as echarts from 'echarts'
+import {inject, provide, reactive, watch} from "vue";
 import {useRouter} from "vue-router";
 import GlobalTip from "@/views/other/GlobalTip";
 import Maps from "@/views/map/Maps";
@@ -34,6 +36,7 @@ export default {
   name: "App",
   components: {Maps, GlobalTip},
   setup(){
+    provide('ec',echarts)
     const appStore=inject('appStore')
     const data=reactive({
       isMoblie:appStore.isMoblie,

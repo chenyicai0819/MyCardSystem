@@ -1,12 +1,15 @@
 <template>
-  <div id="nav">
-    <router-link to="/home">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="home-about">
+    <div id="nav">
+      <router-link to="/home">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </div>
+    <div class="about">
+      <h2>站长资料</h2>
+      <Head class="about-head-div"/>
+    </div>
   </div>
-  <div class="about">
-    <h2>站长资料</h2>
-    <Head/>
-  </div>
+
 </template>
 
 <script>
@@ -17,12 +20,15 @@ export default {
 </script>
 
 <style scoped>
-*{
-  margin: 0;
-  padding: 0;
+
+.home-about{
+  height: 100vh;
 }
 #nav {
-  background-color: #42b983;
+  background: #1FA2FF;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 #nav a {
   font-weight: bold;
@@ -33,6 +39,12 @@ export default {
 }
 .about{
   margin: 0 auto;
-  background-color: #42b983;
+  background: #1FA2FF;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.about-head-div{
+
+
 }
 </style>

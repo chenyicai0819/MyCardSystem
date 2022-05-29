@@ -42,6 +42,8 @@ public class ManaServiceImpl implements ManaService {
             name="coll";
         }else if (head==4){
             name="ad";
+        }else if (head==5){
+            name="imgs";
         }
         return name;
     }

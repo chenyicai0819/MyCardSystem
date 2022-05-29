@@ -3,14 +3,8 @@ package com.chen.mycardsystembackstage.controller;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
-import com.chen.mycardsystembackstage.entity.Ad;
-import com.chen.mycardsystembackstage.entity.Card;
-import com.chen.mycardsystembackstage.entity.Coll;
-import com.chen.mycardsystembackstage.entity.Mork;
-import com.chen.mycardsystembackstage.service.AdService;
-import com.chen.mycardsystembackstage.service.CardService;
-import com.chen.mycardsystembackstage.service.CollService;
-import com.chen.mycardsystembackstage.service.MorkService;
+import com.chen.mycardsystembackstage.entity.*;
+import com.chen.mycardsystembackstage.service.*;
 import com.chen.mycardsystembackstage.utils.StringToUtf8;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +38,8 @@ public class DownloadController {
     private CollService collService;
     @Resource
     private AdService adService;
+    @Resource
+    private ImgsService imgsService;
     @Autowired
     private StringToUtf8 stu;
 
@@ -89,6 +85,15 @@ public class DownloadController {
             writer.addHeaderAlias("adUpDate", "上架时间");
             writer.addHeaderAlias("adDownDate", "下架时间");
             last=5;content="mycard广告备份表";
+            writer.merge(last, content);
+            writer.write(list, true);
+        }else if (id==5){
+            List<Imgs> list=imgsService.AllImgs();
+            writer.addHeaderAlias("imgsId", "唯一ID");
+            writer.addHeaderAlias("imgsName", "名称");
+            writer.addHeaderAlias("imgsText", "介绍");
+            writer.addHeaderAlias("imgsLink", "图片地址");
+            last=3;content="mycard图片备份表";
             writer.merge(last, content);
             writer.write(list, true);
         }

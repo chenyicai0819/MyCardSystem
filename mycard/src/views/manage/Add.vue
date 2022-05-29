@@ -1,8 +1,8 @@
 <template>
   <div class="add">
     <el-input placeholder="请输入名字" v-model="data.name"></el-input>
-    <el-input placeholder="请输入链接地址" v-model="data.link" v-show="activeName==1||activeName==2"></el-input>
-    <el-input placeholder="请输入图片链接" v-model="data.img"></el-input>
+    <el-input placeholder="请输入链接地址" v-model="data.link" v-show="activeName==1||activeName==2||activeName==5"></el-input>
+    <el-input placeholder="请输入图片链接" v-model="data.img" v-show="activeName!=5"></el-input>
     <el-select v-model="data.type" placeholder="请选择类型" v-show="activeName==2">
       <el-option
           v-for="item in data.collName"
@@ -14,7 +14,7 @@
       </el-option>
     </el-select>
 
-    <el-input placeholder="请输入介绍内容" v-model="data.text" v-show="activeName==2||activeName==3||activeName==4"></el-input>
+    <el-input placeholder="请输入介绍内容" v-model="data.text" v-show="activeName==2||activeName==3||activeName==4||activeName==5"></el-input>
     <!--<el-input placeholder="请输入上架时间" v-model="data.upDate" v-show="activeName==4"></el-input>-->
     <!--<el-input placeholder="请输入下架时间" v-model="data.downDate" v-show="activeName==4"></el-input>-->
     <div class="block" v-show="activeName==4">
@@ -129,6 +129,11 @@ export default {
           data.getReData=res.data;
           checkSucces();
         });
+      }else if(active==5){
+        proxy.$axios.post('imgs/'+data.posts,qs.stringify({"id":data.id,"name":data.name,"link":data.link,"text":data.text})).then(res=>{
+          data.getReData=res.data;
+          checkSucces();
+        });
       }
     }
     const checkSucces = () => {
@@ -192,6 +197,14 @@ export default {
           data.downDate=props.manaData.adDownDate
         }
         data.uri='ad/'
+      }else if (active==5){
+        if (props.manatype=="修改"){
+          data.id=props.manaData.imgsId
+          data.name=props.manaData.imgsName
+          data.link=props.manaData.imgsLink
+          data.text=props.manaData.imgsText
+        }
+        data.uri='imgs/'
       }
     }
     const getFather = () => {
