@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.chen</groupId>
-    <artifactId>MyCardSystemBackstage</artifactId>
+    <artifactId>mycardsystembackstage</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>MyCardSystemBackstage</name>
     <description>MyCardSystemBackstage</description>
@@ -121,6 +121,56 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!--  Docker 插件  -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.2.2</version>
+                <executions>
+                    <!--执行 mvn package，即执行 mvn clean package docker:build-->
+                    <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <!-- Maven 打包时，不希望构建镜像，则注释掉下面的 goal -->
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <!-- 指定远程 Docker API 地址 -->
+                    <dockerHost>https://8.129.212.155:1927</dockerHost>
+                    <!--dockerCA证书地址-->
+                    <dockerCertPath>D:\dockerKey</dockerCertPath>
+                    <!-- 构建的镜像名称以及版本号。${project.artifactId} 代表项目的 <artifactId> 名 -->
+                    <imageName>${project.artifactId}</imageName>
+                    <imageTags>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
+                    <!--依赖的基础镜像-->
+                    <baseImage>openjdk:8</baseImage>
+                    <!-- Dockerfile 的位置-->
+                    <!--<dockerDirectory>${project.basedir}</dockerDirectory>-->
+                    <!-- 暴露的端口，和项目保持一致 -->
+                    <exposes>8089</exposes>
+                    <!-- 工作目录，即进入容器后所处的默认目录 -->
+                    <workdir>/ROOT</workdir>
+                    <!-- 启动容器时，自动执行的命令。${project.build.finalName}是 打成 jar 包的名字 -->
+                    <entryPoint>["java", "-jar", "${project.build.finalName}.jar"]</entryPoint>
+                    <!-- 下面是复制 jar 包到 Docker 容器指定目录配置-->
+                    <resources>
+                        <resource>
+                            <!-- 复制到容器的 /ROOT 目录下 -->
+                            <targetPath>/ROOT</targetPath>
+                            <!-- 用于指定需要复制的根目录，${project.build.directory} 表示 target 目录 -->
+                            <directory>${project.build.directory}</directory>
+                            <!-- 用于指定需要复制的文件，${project.build.finalName}.jar 就是打包后的 target 目录下的 jar 包名称　-->
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
