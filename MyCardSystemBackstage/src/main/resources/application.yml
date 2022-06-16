@@ -3,8 +3,8 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://8.129.212.155:3306/mycard?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-#    url: jdbc:mysql://localhost:3306/mycard?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://8.129.212.155:3306/mycard?useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://localhost:3306/mycard?useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
     password: georgechen
 #    password: 123456
     username: root
