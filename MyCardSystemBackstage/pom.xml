@@ -50,10 +50,10 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--<dependency>-->
-        <!--    <groupId>org.springframework.boot</groupId>-->
-        <!--    <artifactId>spring-boot-starter-data-redis</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/net.sf.json-lib/json-lib -->
         <!--<dependency>-->
         <!--    <groupId>net.sf.json-lib</groupId>-->
@@ -134,7 +134,7 @@
                         <phase>package</phase>
                         <goals>
                             <!-- Maven 打包时，不希望构建镜像，则注释掉下面的 goal -->
-                            <goal>build</goal>
+                            <!--<goal>build</goal>-->
                         </goals>
                     </execution>
                 </executions>

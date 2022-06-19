@@ -1,5 +1,7 @@
 package com.chen.mycardsystembackstage.entity;
 
+import java.io.Serializable;
+
 /**
  * @author George
  * @project MyCardSystem
@@ -7,7 +9,7 @@ package com.chen.mycardsystembackstage.entity;
  * @date 2021/10/22 16:39
  * @since 1.0
  */
-public class Manages {
+public class Manages implements Serializable {
     private int manaId;
     private String manaName;
 

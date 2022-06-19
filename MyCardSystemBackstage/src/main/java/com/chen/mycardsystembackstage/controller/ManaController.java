@@ -27,7 +27,7 @@ public class ManaController {
     private ManaService manaService;
 
     @GetMapping("/get")
-    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.ManaMapper::get")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.ManaMapper::get")
     public List<Manages> getMana(){
         return manaService.getMana();
     }

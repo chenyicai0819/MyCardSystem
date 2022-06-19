@@ -2,6 +2,8 @@ package com.chen.mycardsystembackstage.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author George
  * @project MyCardSystem
@@ -11,7 +13,7 @@ import lombok.Data;
  */
 
 @Data
-public class Imgs {
+public class Imgs implements Serializable {
     private int imgsId;
     private String imgsName;
     private String imgsText;

@@ -37,12 +37,12 @@ public class MorkController {
     private MorkService morkService;
 
     @GetMapping("/get")
-    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.MorkMapper::get")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.MorkMapper::get")
     public List<Mork> getMork(int page,int size){
         return morkService.getMork(page,size);
     }
     @GetMapping("/show")
-    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.MorkMapper::show")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.MorkMapper::show")
     public List<Mork> showMork(){
         return morkService.showMork();
     }

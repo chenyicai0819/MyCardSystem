@@ -2,6 +2,8 @@ package com.chen.mycardsystembackstage.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author George
  * @project MyCardSystem
@@ -10,7 +12,7 @@ import lombok.Data;
  * @since 1.0
  */
 @Data
-public class Mork {
+public class Mork implements Serializable {
     private int morkId;
     private String morkName;
     private String morkLink;

@@ -1,5 +1,7 @@
 package com.chen.mycardsystembackstage.entity;
 
+import java.io.Serializable;
+
 /**
  * @author George
  * @project MyCardSystem
@@ -7,7 +9,7 @@ package com.chen.mycardsystembackstage.entity;
  * @date 2021/10/22 15:31
  * @since 1.0
  */
-public class User {
+public class User implements Serializable {
     private int userId;
     private String userPass;
     private String openid;

@@ -3,6 +3,7 @@ package com.chen.mycardsystembackstage.entity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -12,7 +13,7 @@ import java.sql.Timestamp;
  * @date 2021/10/21 21:49
  * @since 1.0
  */
-public class Ad {
+public class Ad implements Serializable {
     private String adId;
     private String adName;
     private String adText;

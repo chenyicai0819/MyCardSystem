@@ -36,13 +36,13 @@ public class CollController {
 
 
     @GetMapping("/get")
-    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.CollMapper::get")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.CollMapper::get")
     public List<Coll> getColl(int page,int size){
         return collService.getColl(page, size);
     }
 
     @GetMapping("/show")
-    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.CollMapper::show")
+    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.CollMapper::show")
     public List<Coll> showColl(){
         return collService.showColl();
     }

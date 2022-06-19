@@ -1,5 +1,7 @@
 package com.chen.mycardsystembackstage.entity;
 
+import java.io.Serializable;
+
 /**
  * @author George
  * @project MyCardSystem
@@ -7,7 +9,7 @@ package com.chen.mycardsystembackstage.entity;
  * @date 2021/10/21 21:51
  * @since 1.0
  */
-public class Coll {
+public class Coll implements Serializable {
     private String collId;
     private String collName;
     private String collImg;
