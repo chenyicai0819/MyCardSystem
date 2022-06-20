@@ -85,18 +85,18 @@ public class UserController {
         }
     }
     // @ApiOperation(value = "用户登录", notes = "登录--不进行拦截")
-    @PostMapping("/login")
-    public Msg login(@RequestParam("username") String username,
-                     @RequestParam("password") String password) {
-        String realPassword = userService.getPassword(username);
-        if (realPassword == null) {
-            return Msg.fail().add("info","用户名错误");
-        } else if (!realPassword.equals(password)) {
-            return Msg.fail().add("info","密码错误");
-        } else {
-            return Msg.success().add("token",JwtUtils.createToken(username));
-        }
-    }
+    // @PostMapping("/login")
+    // public Msg login(@RequestParam("username") String username,
+    //                  @RequestParam("password") String password) {
+    //     String realPassword = userService.getPassword(username);
+    //     if (realPassword == null) {
+    //         return Msg.fail().add("info","用户名错误");
+    //     } else if (!realPassword.equals(password)) {
+    //         return Msg.fail().add("info","密码错误");
+    //     } else {
+    //         return Msg.success().add("token",JwtUtils.createToken(username));
+    //     }
+    // }
 
     // @ApiOperation(value = "无权限", notes = "无权限跳转的接口")
     @RequestMapping(path = "/unauthorized/{message}")

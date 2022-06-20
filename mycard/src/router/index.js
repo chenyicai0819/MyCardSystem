@@ -22,6 +22,11 @@ const routes = [
         name: 'Bookmarks',
         component: ()=>import('../views/home/Bookmarks')
       },
+      {
+        path: 'easy',
+        name: 'easy',
+        component: ()=>import('../views/home/Choose_easy')
+      },
     ]
   },
   {

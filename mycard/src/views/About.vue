@@ -2,7 +2,8 @@
   <div class="home-about">
     <div id="nav">
       <router-link to="/home">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/home/easy">Easy</router-link>
     </div>
     <div class="about">
       <h2>站长资料</h2>

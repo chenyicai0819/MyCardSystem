@@ -1,8 +1,9 @@
 <template>
   <div class="select-father">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/home">Home</router-link> |
+      <router-link to="/about">About</router-link> |
+      <router-link to="/home/easy">Easy</router-link>
     </div>
     <div class="select">
       <h2>{{msgforselect}}</h2>
@@ -73,7 +74,7 @@ export default {
   color: #2c3e50;
 }
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #FFFFFF;
 }
 #selectbody{
   display: flex;
