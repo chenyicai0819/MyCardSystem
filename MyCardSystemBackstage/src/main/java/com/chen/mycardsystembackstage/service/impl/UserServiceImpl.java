@@ -33,4 +33,30 @@ public class UserServiceImpl implements UserService {
     public User selUser(String id) {
         return userMapper.selUser(id);
     }
+
+    @Override
+    public String getPassword(String id) {
+        return userMapper.getPassword(id);
+    }
+
+    @Override
+    public int checkUserBanStatus(String id) {
+        return userMapper.checkUserBanStatus(id);
+    }
+
+    @Override
+    public String getRole(String id) {
+        return userMapper.getRole(id);
+    }
+
+    @Override
+    public String getRolePermission(String id) {
+        return userMapper.getRolePermission(id);
+    }
+
+    @Override
+    public String getPermission(String id) {
+        return userMapper.getPermission(id);
+    }
+
 }

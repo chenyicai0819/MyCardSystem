@@ -12,7 +12,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService {
-    public int login(User user);
-    public int addOpenid(String id,String openid);
-    public User selUser(String id);
+    int login(User user);
+    int addOpenid(String id,String openid);
+    User selUser(String id);
+    String getPassword(String id);
+    int checkUserBanStatus(String id);
+    String getRole(String id);
+    String getRolePermission(String id);
+    String getPermission(String id);
+
 }

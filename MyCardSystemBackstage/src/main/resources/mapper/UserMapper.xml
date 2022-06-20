@@ -12,4 +12,28 @@
     <select id="selUser" resultType="com.chen.mycardsystembackstage.entity.User">
         SELECT * FROM user WHERE userId=#{id}
     </select>
+    <select id="getPassword" resultType="java.lang.String">
+        SELECT userPass FROM user WHERE userId=#{id}
+    </select>
+    <select id="checkUserBanStatus" resultType="java.lang.Integer">
+        SELECT ban
+        FROM user
+        WHERE userId = #{id}
+    </select>
+    <select id="getRole" resultType="java.lang.String">
+        SELECT role
+        FROM user
+        WHERE userId = #{id}
+    </select>
+    <select id="getRolePermission" resultType="java.lang.String">
+        SELECT roles.permission
+        FROM user, roles
+        WHERE user.userId = #{id} AND roles.roleName = user.roleName
+    </select>
+    <select id="getPermission" resultType="java.lang.String">
+        SELECT permission
+        FROM user
+        WHERE userId = #{id}
+    </select>
+
 </mapper>
