@@ -1,6 +1,16 @@
 package com.chen.mycardsystembackstage.controller;
 
+import com.chen.mycardsystembackstage.utils.GetCityByIp;
+import com.chen.mycardsystembackstage.utils.GetIpUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * @author George
@@ -12,8 +22,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WebController {
 
+    @Autowired
+    private GetCityByIp getCityByIp;
+
+    @Autowired
+    private GetIpUtil getIpUtil;
+    InetAddress addr;
+
+    {
+        try {
+            addr = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void getMap(){
-        
+
+    }
+
+    @GetMapping("/getCity")
+    public String getTest(HttpServletRequest request){
+        String ip=getIpUtil.getIpAddr(request);
+        System.out.println(ip);
+        try {
+            return getCityByIp.getAlibaba(ip);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

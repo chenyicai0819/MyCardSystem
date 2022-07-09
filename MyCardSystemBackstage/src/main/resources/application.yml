@@ -10,8 +10,8 @@ spring:
     username: root
   redis:
     database: 0
-    host: 8.129.212.155
-#    host: localhost
+#    host: 8.129.212.155
+    host: localhost
     port: 6379
     timeout: 500
     pool:
