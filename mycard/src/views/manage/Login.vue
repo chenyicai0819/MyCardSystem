@@ -13,6 +13,11 @@
           <el-form-item label="密码">
             <el-input v-model="data.form.pass" type="password" class="input-login"></el-input>
           </el-form-item>
+          <!--<el-form-item label="验证码">-->
+          <!--  <div @click="refreshCode()" class="code" style="cursor:pointer;" title="点击切换验证码">-->
+          <!--    <Verify/>-->
+          <!--  </div>-->
+          <!--</el-form-item>-->
           <el-button type="primary" @click="onSubmit">登录</el-button>
           <!--<el-button @click="Wechatlogin">微信授权</el-button>-->
           <el-button @click="toAl">访问al网址</el-button>
@@ -26,8 +31,10 @@
 import {getCurrentInstance, reactive} from "vue";
 import router from "../../router";
 import qs from "qs";
+import Verify from "./Verify";
 export default {
   name: "Login",
+  components: {Verify},
   setup(){
     const {proxy}=getCurrentInstance();
     const qs=require('qs');
@@ -37,7 +44,8 @@ export default {
         pass: '',
       },
       ismoblie:false,
-
+      identifyCode: "",
+      identifyCodes: ['0','1','2','3','4','5','6','7','8','9','a','b','c','d'], //根据实际需求加入自己想要的字符
     })
     const onSubmit = () => {
       // console.log(data.form.name);
@@ -60,6 +68,24 @@ export default {
     const Wechatlogin = () => {
       router.push("/wechar");
     }
+    // 生成随机数
+    const randomNum = (min, max) => {
+      max = max + 1
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+    // 更新验证码
+    const refreshCode = () => {
+      data.identifyCode = "";
+      makeCode(data.identifyCodes, 4);
+      console.log('当前验证码:',data.identifyCode);
+    }
+    // 随机生成验证码字符串
+    const makeCode = (data, len) => {
+      console.log('data, len:', data, len)
+      for (let i = 0; i < len; i++) {
+        data.identifyCode += data.identifyCodes[randomNum(0, data.identifyCodes.length-1)]
+      }
+    }
     const isMobile = () => {
       const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
       if (flag) {
@@ -72,10 +98,11 @@ export default {
     }
 
     isMobile()
+    // refreshCode()
     return{
       data,
       onSubmit,
-      toLoad,toAl,Wechatlogin,isMobile,
+      toLoad,toAl,Wechatlogin,isMobile,refreshCode,makeCode,randomNum
     }
   }
 }

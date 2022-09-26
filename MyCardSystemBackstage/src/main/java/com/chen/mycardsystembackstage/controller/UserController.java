@@ -1,5 +1,7 @@
 package com.chen.mycardsystembackstage.controller;
 
+import cn.hutool.captcha.CaptchaUtil;
+import cn.hutool.captcha.CircleCaptcha;
 import com.chen.mycardsystembackstage.entity.User;
 import com.chen.mycardsystembackstage.oauth.WechatOAuth;
 import com.chen.mycardsystembackstage.service.UserService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
@@ -47,6 +50,11 @@ public class UserController {
     @Autowired
     private WeChatNotify wcn;
 
+    @Autowired
+    private HttpSession session;
+    @Autowired
+    private HttpServletResponse response;
+
     InetAddress addr;
 
     {
@@ -56,9 +64,6 @@ public class UserController {
             e.printStackTrace();
         }
     }
-
-
-
 
     @PostMapping("/login")
     public String login(User user){
@@ -83,6 +88,14 @@ public class UserController {
             // System.out.println("允许登录");
             return "允许登录";
         }
+    }
+
+    @GetMapping("/verify")
+    public void getVerifyCode() throws IOException {
+        CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(200,100,4,5);
+        String code = circleCaptcha.getCode();
+        session.setAttribute("code",code);
+        circleCaptcha.write(response.getOutputStream());
     }
     // @ApiOperation(value = "用户登录", notes = "登录--不进行拦截")
     // @PostMapping("/login")
