@@ -52,6 +52,20 @@
         <!--<div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>-->
       </el-card>
     </div>
+    <!--底部网站信息-->
+    <div class="footer" :class="{footermoblie:data.ismoblie}">
+      <!--分割线-->
+      <el-divider />
+      <div>
+        Copyright 2020-2022 cyc292.top 陈益财版权所有
+        <el-image
+            src="https://z3.ax1x.com/2021/10/08/59OMgU.png"
+            class="footer-image"
+            style="width: 15px; height: 15px">
+        </el-image>
+        <a id="footer-a1" href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">琼ICP备2021006962号</a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -262,5 +276,17 @@ export default {
 }
 #choose-link:hover{
   color: #1FA2FF;
+}
+.footer{
+  margin: 5px;
+  width: 90%;
+}
+.footermoblie{
+
+}
+#footer-a1{
+  text-decoration: none;
+  /*color: #707c8c;*/
+  color: #2c3e50;
 }
 </style>
