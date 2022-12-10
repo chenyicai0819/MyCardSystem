@@ -152,7 +152,7 @@
                         <phase>package</phase>
                         <goals>
                             <!-- Maven 打包时，不希望构建镜像，则注释掉下面的 goal -->
-                            <!--<goal>build</goal>-->
+<!--                            <goal>build</goal>-->
                         </goals>
                     </execution>
                 </executions>
@@ -161,7 +161,7 @@
                     <!-- 指定远程 Docker API 地址 -->
                     <dockerHost>https://8.129.212.155:1927</dockerHost>
                     <!--dockerCA证书地址-->
-                    <dockerCertPath>D:\dockerKey</dockerCertPath>
+                    <dockerCertPath>D:\Program Files\dockerKey</dockerCertPath>
                     <!-- 构建的镜像名称以及版本号。${project.artifactId} 代表项目的 <artifactId> 名 -->
                     <imageName>${project.artifactId}</imageName>
                     <imageTags>

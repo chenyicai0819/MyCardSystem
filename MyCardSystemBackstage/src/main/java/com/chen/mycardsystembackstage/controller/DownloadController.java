@@ -5,6 +5,7 @@ import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.chen.mycardsystembackstage.entity.*;
 import com.chen.mycardsystembackstage.service.*;
+import com.chen.mycardsystembackstage.service.impl.FileServiceImpl;
 import com.chen.mycardsystembackstage.utils.StringToUtf8;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,16 @@ public class DownloadController {
     private AdService adService;
     @Resource
     private ImgsService imgsService;
+    @Resource
+    private FileService fileService;
     @Autowired
     private StringToUtf8 stu;
 
+    /**
+     * 下载备份文件
+     * @param response
+     * @param id
+     */
     @GetMapping("/message")
     public void downloadMessage(HttpServletResponse response,int id){
         ExcelWriter writer= ExcelUtil.getWriter();
@@ -50,51 +58,23 @@ public class DownloadController {
         String content="";
         if (id==1){
             List<Card> list=cardService.showCard();
-            writer.addHeaderAlias("cardId", "唯一ID");
-            writer.addHeaderAlias("cardName", "名称");
-            writer.addHeaderAlias("cardLink", "链接");
-            writer.addHeaderAlias("cardImg", "图片");
-            last=3;content="mycard卡片备份表";
-            writer.merge(last, content);
+            content = FileServiceImpl.getStringCard(writer);
             writer.write(list, true);
         }else if(id==2){
             List<Mork> list=morkService.showMork();
-            writer.addHeaderAlias("morkId", "唯一ID");
-            writer.addHeaderAlias("morkName", "名称");
-            writer.addHeaderAlias("morkLink", "链接");
-            writer.addHeaderAlias("morkType", "类型");
-            writer.addHeaderAlias("morkImg", "图片");
-            last=4;content="mycard书签备份表";
-            writer.merge(last, content);
+            content = FileServiceImpl.getStringMork(writer);
             writer.write(list, true);
         }else if (id==3){
             List<Coll> list=collService.showColl();
-            writer.addHeaderAlias("collId", "唯一ID");
-            writer.addHeaderAlias("collName", "名称");
-            writer.addHeaderAlias("collImg", "图片");
-            writer.addHeaderAlias("collText", "介绍");
-            last=3;content="mycard类型备份表";
-            writer.merge(last, content);
+            content = FileServiceImpl.getStringColl(writer);
             writer.write(list, true);
         }else if (id==4){
             List<Ad> list=adService.allAd();
-            writer.addHeaderAlias("adId", "唯一ID");
-            writer.addHeaderAlias("adName", "名称");
-            writer.addHeaderAlias("adText", "介绍");
-            writer.addHeaderAlias("adImg", "图片");
-            writer.addHeaderAlias("adUpDate", "上架时间");
-            writer.addHeaderAlias("adDownDate", "下架时间");
-            last=5;content="mycard广告备份表";
-            writer.merge(last, content);
+            content = FileServiceImpl.getStringId(writer);
             writer.write(list, true);
         }else if (id==5){
             List<Imgs> list=imgsService.AllImgs();
-            writer.addHeaderAlias("imgsId", "唯一ID");
-            writer.addHeaderAlias("imgsName", "名称");
-            writer.addHeaderAlias("imgsText", "介绍");
-            writer.addHeaderAlias("imgsLink", "图片地址");
-            last=3;content="mycard图片备份表";
-            writer.merge(last, content);
+            content = FileServiceImpl.getStringImg(writer);
             writer.write(list, true);
         }
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
@@ -112,5 +92,15 @@ public class DownloadController {
             writer.close();
         }
         IoUtil.close(out);
+    }
+
+    /**
+     * 下载模板
+     * @param response
+     * @param id
+     */
+    @GetMapping("/model")
+    public void downloadModel(HttpServletResponse response,int id){
+        fileService.downloadModel(response,id);
     }
 }

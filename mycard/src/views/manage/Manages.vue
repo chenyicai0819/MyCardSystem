@@ -9,7 +9,7 @@
         <el-tab-pane v-for="mana in data.manaName" :label="mana.manaName" :name="mana.manaId">
           <div class="buttons">
             <el-button type="primary" @click="openDrawer('增加')">增加</el-button>
-            <el-button type="success" @click="upExcel">批量上传</el-button>
+            <el-button type="success" @click="data.uploaddialog=true">批量上传</el-button>
             <el-button type="success" plain @click="outExcel">导出备份</el-button>
           </div>
           <div class="table">
@@ -83,6 +83,34 @@
         ></Add>
       </el-drawer>
     </div>
+<!--    批量上传弹框-->
+    <el-dialog v-model="data.uploaddialog" :title=data.uploadTiele[data.activeName-1]>
+      <el-link :href=data.downloadModelIp+data.activeName target="_blank" type="danger">点击此处下载对应的模板</el-link>
+<!--      原生上传模块/-->
+<!--      <input type="file" @change="updataFile" />-->
+      <div style="margin-top: 5px">
+        <el-upload
+            v-model:file-list="data.fileList"
+            class="manages-upload"
+            :action=data.uploadFile
+            multiple
+            name="multipartFile"
+            limit="1"
+            :on-exceed="onExceed"
+            :on-remove="onRemove"
+            :on-error="onError"
+            :on-success="onSuccess"
+
+        >
+          <el-button type="primary">点击上传</el-button>
+          <template #tip>
+            <div class="el-upload__tip">
+              只能上传excel(后缀为.xls或.xlsx)文件，一次只能上传一个文件，请先删除已经上传的文件
+            </div>
+          </template>
+        </el-upload>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -93,6 +121,7 @@ import qs from "qs";
 import Add from "./Add";
 import router from "../../router";
 import { ElMessage } from 'element-plus'
+import { UploadFilled } from '@element-plus/icons-vue'
 import moment from 'moment'
 import _axios from "@/axios/config";
 export default {
@@ -109,7 +138,7 @@ export default {
       drawer:false,
       direction:'rtl',
       buttenType:'',
-      activeName: appStore.activeName,
+      activeName: appStore.activeName, //当前界面的编号
       search: '',
       deleteId:'',
       editId:'',
@@ -119,12 +148,50 @@ export default {
       tableHead:[],
       maData:[],
       upDate:[],
+      fileList:[], //文件上传文件夹
       id:'',
       uri:'',
       currentPage:1,
       allTotal:'',
       pageSize:20,
+      uploaddialog:false,
+      uploadTiele:["批量上传-页面","批量上传-书签内容","批量上传-书签分类","批量上传-广告"],
+      imgs:false,
+      downloadModelIp:"http://8.129.212.155:8089/download/model?id=",
+      uploadFile:"http://8.129.212.155:8089/file/upload/?id="+appStore.activeName
     })
+
+    /**
+     * 上传文件时候各种回调
+     * @param mes
+     */
+    const onExceed = () => {
+      ElMessage.warning("一次只能上传一个文件，请先删除上传成功的文件")
+    }
+    const onSuccess = () => {
+      ElMessage.success("上传成功")
+    }
+    const onError = () => {
+      ElMessage.error("上传失败")
+    }
+    const onRemove = () => {
+      ElMessage.info("文件删除成功")
+    }
+
+    /**
+     * 上传文件，暂时不用到
+     * @param e
+     */
+    const updataFile =(e)=>{
+      let file = e.target.files[0];//拿到上传的file
+      let param = new FormData();//创建form对象
+      param.append("multipartFile", file);//为创建的form对象增加上传的文件
+      param.append("id", data.activeName);//如果需要上传其他字段，在这里增加
+      let headers= { 'content-type': 'multipart/form-data' }//修改请求头
+      proxy.$axios.get('file/upload',param, headers).then(res=>{
+        console.log(res, "res");
+      });
+    }
     // 时间格式化
     const dateFormat = (row,column) => {
 
@@ -332,7 +399,7 @@ export default {
     return{
       data, dateFormat, handleSizeChange, handleCurrentChange, toLoad, handleClick, getMana,
       getHead, getData, openDrawer, handleEdit, handleDelete, confirmEvent, cancelEvent, chooseNum,
-      searchName, getCount, downAdd, RefChilde, count, load, outExcel,upExcel,
+      searchName, getCount, downAdd, RefChilde, count, load, outExcel,upExcel,updataFile,onSuccess,onExceed,onRemove,onError,
     }
   }
 }
