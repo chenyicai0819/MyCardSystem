@@ -5,6 +5,7 @@ import cn.hutool.captcha.CircleCaptcha;
 import com.chen.mycardsystembackstage.entity.User;
 import com.chen.mycardsystembackstage.oauth.WechatOAuth;
 import com.chen.mycardsystembackstage.service.UserService;
+import com.chen.mycardsystembackstage.utils.GetIpUtil;
 import com.chen.mycardsystembackstage.utils.Msg;
 import com.chen.mycardsystembackstage.utils.WeChatNotify;
 import org.apache.shiro.authz.annotation.Logical;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -54,16 +56,20 @@ public class UserController {
     private HttpSession session;
     @Autowired
     private HttpServletResponse response;
+    @Autowired
+    private GetIpUtil getIpUtil;
+    @Autowired
+    private HttpServletRequest request;
 
-    InetAddress addr;
-
-    {
-        try {
-            addr = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
+    // InetAddress addr;
+    //
+    // {
+    //     try {
+    //         addr = InetAddress.getLocalHost();
+    //     } catch (UnknownHostException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     @PostMapping("/login")
     public String login(User user){
@@ -72,7 +78,7 @@ public class UserController {
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         int num= userService.login(user);
         // 往模板消息里添加内容
-        map.put("ip",addr.getHostAddress());
+        map.put("ip",getIpUtil.getIpAddr(request));
         map.put("id",user.getUserId());
         map.put("time", dateFormat.format(date));
         if (num==0){

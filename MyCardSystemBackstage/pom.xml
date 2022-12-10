@@ -152,7 +152,7 @@
                         <phase>package</phase>
                         <goals>
                             <!-- Maven 打包时，不希望构建镜像，则注释掉下面的 goal -->
-<!--                            <goal>build</goal>-->
+                            <goal>build</goal>
                         </goals>
                     </execution>
                 </executions>

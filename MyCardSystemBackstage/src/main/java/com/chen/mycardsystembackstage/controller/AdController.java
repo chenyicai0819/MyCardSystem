@@ -3,6 +3,7 @@ package com.chen.mycardsystembackstage.controller;
 import com.chen.mycardsystembackstage.entity.Ad;
 import com.chen.mycardsystembackstage.entity.Card;
 import com.chen.mycardsystembackstage.service.AdService;
+import com.chen.mycardsystembackstage.utils.GetIpUtil;
 import com.chen.mycardsystembackstage.utils.WeChatNotify;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,18 +42,21 @@ public class AdController {
 
     Map<String,Object> map=new HashMap<>();
 
-    InetAddress addr;
+    // InetAddress addr;
+    //
+    // {
+    //     try {
+    //         addr = InetAddress.getLocalHost();
+    //     } catch (UnknownHostException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
-    {
-        try {
-            addr = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
 
-
-
+    @Autowired
+    private GetIpUtil getIpUtil;
+    @Autowired
+    private HttpServletRequest request;
     @Resource
     private AdService adService;
     @Autowired
@@ -83,7 +88,7 @@ public class AdController {
         ad.setAdImg(img);
         ad.setAdUpDate(upDate);
         ad.setAdDownDate(downDate);
-        map.put("ip",addr.getHostAddress());
+        map.put("ip",getIpUtil.getIpAddr(request));
         map.put("type","添加广告");
         map.put("name",name);
         map.put("time", dateFormat.format(date));

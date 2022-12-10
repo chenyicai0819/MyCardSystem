@@ -3,8 +3,9 @@ import axios from "axios";
 let  config={
     // baseURL:'http://10.33.73.62:8089/',/*请求项目接口 一级域名前缀*/
     // baseURL:'http://10.34.155.160:8089/',/*请求项目接口 一级域名前缀*/
+    baseURL:'http://192.168.1.105:8089/',/*请求项目接口 一级域名前缀*/
     // baseURL:'http://localhost:8089/',/*请求项目接口 一级域名前缀*/
-    baseURL:'http://8.129.212.155:8089/',/*请求项目接口 一级域名前缀，服务器地址*/
+    // baseURL:'http://8.129.212.155:8089/',/*请求项目接口 一级域名前缀，服务器地址*/
     // baseURL:process.env.VUE_APP_BASE_API,
     timeout:8000 /*异步交互 请求时间段*/
 }
