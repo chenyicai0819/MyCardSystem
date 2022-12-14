@@ -39,7 +39,7 @@ export default {
       })
       proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":data.form.pass })).then(res=>{
         if ("允许登录"==res.data){
-          window.location.href="http://10.34.155.160:8089/wechat/oauth?id="+data.form.name
+          window.location.href="http://www.cyc292.top:8089/wechat/oauth?id="+data.form.name
           loading.close()
         }else{
           loading.close()

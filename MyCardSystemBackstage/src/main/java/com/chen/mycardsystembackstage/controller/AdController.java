@@ -63,13 +63,13 @@ public class AdController {
     private WeChatNotify wcn;
 
     @GetMapping("/get")
-    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.AdMapper::get")
+    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.AdMapper::get")
     public List<Ad> getAd(int page,int size){
         List<Ad> ad=adService.getAd(page,size);
         return ad;
     }
     @GetMapping("/show")
-    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.AdMapper::show")
+    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.AdMapper::show")
     public List<Ad> showCard(){
         return adService.showAd();
     }

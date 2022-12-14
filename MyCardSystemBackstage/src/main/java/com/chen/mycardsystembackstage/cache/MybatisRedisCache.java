@@ -61,7 +61,7 @@ public class MybatisRedisCache implements Cache {
             ValueOperations operation = redisTemplate.opsForValue();
             //使用值操作对象operation设置缓存对象
             operation.set(getKey(key), value, EXPRIRE_TIME_IN_MINUT, TimeUnit.MINUTES);
-//            System.out.println("缓存对象保存成功");
+           System.out.println("缓存对象保存成功");
         } catch (Throwable t) {
             System.err.println("缓存对象保存失败" + t);
         }
@@ -82,7 +82,7 @@ public class MybatisRedisCache implements Cache {
             RedisTemplate redisTemplate = getRedisTemplate();
             ValueOperations operations = redisTemplate.opsForValue();
             Object result = operations.get(getKey(key));
-//            System.out.println("获取缓存对象成功");
+           System.out.println("获取缓存对象成功");
             return result;
         } catch (Throwable t) {
             System.err.println("缓存对象获取失败" + t);
@@ -95,7 +95,7 @@ public class MybatisRedisCache implements Cache {
         try {
             RedisTemplate redisTemplate = getRedisTemplate();
             redisTemplate.delete(getKey(key));
-//            System.out.println("删除缓存对象成功！"+key);
+           System.out.println("删除缓存对象成功！"+key);
         } catch (Throwable t) {
             System.err.println("删除缓存对象失败！" + t);
         }

@@ -38,7 +38,7 @@ public class WechatOAuth {
 
         // System.out.println("开始询问用户是否同统一授权");
         String appid = "wxacc93d31c5dbd26f";
-        String path = "http://10.34.155.160:8089/wechat/invoke";
+        String path = "http://www.cyc292.top:8089/wechat/invoke";
         path = URLEncoder.encode(path, "UTF-8");
 
         String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid

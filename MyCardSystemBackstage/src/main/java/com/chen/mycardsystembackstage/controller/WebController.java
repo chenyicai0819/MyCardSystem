@@ -27,15 +27,15 @@ public class WebController {
 
     @Autowired
     private GetIpUtil getIpUtil;
-    InetAddress addr;
-
-    {
-        try {
-            addr = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
+    // InetAddress addr;
+    //
+    // {
+    //     try {
+    //         addr = InetAddress.getLocalHost();
+    //     } catch (UnknownHostException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     public void getMap(){
 

@@ -122,6 +122,11 @@ public class FileServiceImpl implements FileService {
         return null;
     }
 
+    /**
+     * 下载批量上传的模板，保留了第一行的数据作为参考
+     * @param response
+     * @param id
+     */
     @Override
     public void downloadModel(HttpServletResponse response, int id) {
         ExcelWriter writer= ExcelUtil.getWriter();

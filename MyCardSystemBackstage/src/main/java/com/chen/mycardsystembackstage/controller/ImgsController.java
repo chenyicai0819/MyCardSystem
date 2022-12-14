@@ -27,7 +27,7 @@ public class ImgsController {
     private ImgsService is;
 
     @GetMapping("/all")
-    @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.ImgsController::all")
+    // @Cacheable(value = "MYBATIS:com.chen.mycardsystembackstage.ImgsController::all")
     public List<Imgs> AllImgs(){
         return is.AllImgs();
     }
