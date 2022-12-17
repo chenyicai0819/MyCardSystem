@@ -10,6 +10,7 @@ ENTRYPOINT ["java", "-jar"]
 CMD ["app.jar"]
 
 
+
 # 打成 war 包，则将上面的 jar 包代码注释掉，下方代码取消注释
 #FROM tomcat:8.5.73
 #EXPOSE 8080

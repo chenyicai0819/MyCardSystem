@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mycardsystembackstage.mapper.LogsMapper">
+    <insert id="addLogs" parameterType="com.chen.mycardsystembackstage.entity.Logs">
+        INSERT INTO
+            logs(type,user,ip,classMethod,args,path,time)
+        VALUES (#{type},#{user},#{ip},#{classMethod},#{args},#{path},#{time})
+    </insert>
+    <select id="getLogs" resultType="com.chen.mycardsystembackstage.entity.Logs" parameterType="com.chen.mycardsystembackstage.entity.Logs">
+        SELECT * FROM logs
+    </select>
+</mapper>

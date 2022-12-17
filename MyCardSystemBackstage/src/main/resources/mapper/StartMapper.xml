@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mycardsystembackstage.mapper.StartMapper">
+
+    <insert id="addStart" parameterType="string">
+        INSERT INTO
+        start(ip,username)
+        VALUES(#{ip},#{username});
+    </insert>
+    <update id="upStart" parameterType="string">
+        UPDATE start
+        set username=#{username}
+        WHERE ip=#{ip}
+    </update>
+    <select id="selStart" resultType="string" parameterType="string">
+        SELECT * FROM start WHERE ip=#{ip}
+    </select>
+    <select id="countStart" resultType="java.lang.Integer" parameterType="string">
+        SELECT COUNT(*) FROM start WHERE ip=#{ip}
+    </select>
+</mapper>

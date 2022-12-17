@@ -4,6 +4,7 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import com.chen.mycardsystembackstage.entity.User;
 import com.chen.mycardsystembackstage.oauth.WechatOAuth;
+import com.chen.mycardsystembackstage.service.StartService;
 import com.chen.mycardsystembackstage.service.UserService;
 import com.chen.mycardsystembackstage.utils.GetIpUtil;
 import com.chen.mycardsystembackstage.utils.Msg;
@@ -51,7 +52,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private WeChatNotify wcn;
-
+    @Autowired
+    private StartService startService;
     @Autowired
     private HttpSession session;
     @Autowired
@@ -90,6 +92,13 @@ public class UserController {
         }else{
             // 通知登录成功结果
             map.put("isYes","是");
+            String ip = getIpUtil.getIpAddr(request);
+            // 登陆成功的时候往数据库添加登陆状态
+            if (1 == startService.countStart(ip)){
+                startService.upStart(ip, String.valueOf(user.getUserId()));
+            }else {
+                startService.addStart(ip, String.valueOf(user.getUserId()));
+            }
             wcn.pushLogin(map);
             // System.out.println("允许登录");
             return "允许登录";
