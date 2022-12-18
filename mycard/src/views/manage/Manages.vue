@@ -2,6 +2,7 @@
   <div class="messages">
     <div class="mana-head">
       <h2 class="mana-h2">网站内容管理界面</h2>
+      <el-button type="danger" @click="toLogs">查看日志</el-button>
       <el-button type="danger" @click="toLoad">返回首页</el-button>
     </div>
     <div class="manages">
@@ -160,6 +161,13 @@ export default {
       downloadModelIp:"http://8.129.212.155:8089/download/model?id=",
       uploadFile:"http://8.129.212.155:8089/file/upload/?id="+appStore.activeName
     })
+
+    /**
+     * 前往查看日志
+     */
+    const toLogs = () => {
+      router.push("/logs");
+    }
 
     /**
      * 上传文件时候各种回调
@@ -399,7 +407,8 @@ export default {
     return{
       data, dateFormat, handleSizeChange, handleCurrentChange, toLoad, handleClick, getMana,
       getHead, getData, openDrawer, handleEdit, handleDelete, confirmEvent, cancelEvent, chooseNum,
-      searchName, getCount, downAdd, RefChilde, count, load, outExcel,upExcel,updataFile,onSuccess,onExceed,onRemove,onError,
+      searchName, getCount, downAdd, RefChilde, count, load, outExcel,upExcel,updataFile,onSuccess,
+      onExceed,onRemove,onError,toLogs,
     }
   }
 }

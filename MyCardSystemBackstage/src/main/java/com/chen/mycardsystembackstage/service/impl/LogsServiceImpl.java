@@ -28,13 +28,14 @@ public class LogsServiceImpl implements LogsService {
     }
 
     @Override
-    public List<Logs> getLogs(int page,int size) {
+    public List<Logs> getLogs(int page,int size,int type) {
         PageHelper.startPage(page, size);
-        return logsMapper.getLogs();
+        return logsMapper.getLogs(type);
     }
 
     @Override
-    public List<Logs> showLogs() {
-        return logsMapper.getLogs();
+    public List<Logs> showLogs(int type) {
+        // 默认为1，全部日志
+        return logsMapper.getLogs(type);
     }
 }

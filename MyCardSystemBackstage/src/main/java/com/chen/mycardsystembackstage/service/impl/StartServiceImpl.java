@@ -35,6 +35,6 @@ public class StartServiceImpl implements StartService {
 
     @Override
     public int countStart(String ip) {
-        return 0;
+        return startMapper.countStart(ip);
     }
 }

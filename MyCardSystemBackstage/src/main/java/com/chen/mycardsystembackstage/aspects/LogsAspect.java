@@ -105,7 +105,7 @@ public class LogsAspect {
         // 获取访问者的ip地址
         String ip = getIpUtil.getIpAddr(request);
         // 获取当前时间
-        String time = DateUtil.today()+DateUtil.formatTime(DateUtil.date());
+        String time = DateUtil.today()+" "+DateUtil.formatTime(DateUtil.date());
         // 获取当前方法的路径
         String classMethod = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
         // 获取输入的参数

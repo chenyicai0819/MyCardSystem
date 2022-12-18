@@ -13,7 +13,7 @@
         WHERE ip=#{ip}
     </update>
     <select id="selStart" resultType="string" parameterType="string">
-        SELECT * FROM start WHERE ip=#{ip}
+        SELECT username FROM start WHERE ip=#{ip}
     </select>
     <select id="countStart" resultType="java.lang.Integer" parameterType="string">
         SELECT COUNT(*) FROM start WHERE ip=#{ip}

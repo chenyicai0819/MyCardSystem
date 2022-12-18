@@ -45,11 +45,16 @@ const routes = [
     component: ()=>import('../views/manage/Manages'),
     children:[
       // {
-      //   path: 'mahome',
-      //   name: 'MaHome',
-      //   component: ()=>import('../views/manage/MaHome')
+      //   path: 'logs',
+      //   name: 'logs',
+      //   component: ()=>import('../views/manage/Logs')
       // },
     ]
+  },
+  {
+    path: '/logs',
+    name: 'logs',
+    component: ()=>import('../views/manage/Logs')
   },
   {
     path: '/wechatSuccess',

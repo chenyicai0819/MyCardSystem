@@ -18,6 +18,6 @@ import java.util.List;
 public interface LogsService {
 
     public int addLogs(Logs logs);
-    public List<Logs> getLogs(int page,int size);
-    public List<Logs> showLogs();
+    public List<Logs> getLogs(int page,int size,int type);
+    public List<Logs> showLogs(int type);
 }

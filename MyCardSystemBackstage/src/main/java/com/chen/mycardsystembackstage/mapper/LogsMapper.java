@@ -17,5 +17,5 @@ import java.util.List;
 public interface LogsMapper {
 
     public int addLogs(Logs logs);
-    public List<Logs> getLogs();
+    public List<Logs> getLogs(int type);
 }
