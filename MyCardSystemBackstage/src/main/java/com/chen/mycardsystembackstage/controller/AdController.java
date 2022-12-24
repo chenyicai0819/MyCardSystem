@@ -2,7 +2,10 @@ package com.chen.mycardsystembackstage.controller;
 
 import com.chen.mycardsystembackstage.entity.Ad;
 import com.chen.mycardsystembackstage.entity.Card;
+import com.chen.mycardsystembackstage.entity.Message;
+import com.chen.mycardsystembackstage.mapper.MessageMapper;
 import com.chen.mycardsystembackstage.service.AdService;
+import com.chen.mycardsystembackstage.service.MessageService;
 import com.chen.mycardsystembackstage.utils.GetIpUtil;
 import com.chen.mycardsystembackstage.utils.WeChatNotify;
 import org.apache.commons.mail.EmailAttachment;
@@ -23,10 +26,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author George
@@ -59,6 +59,8 @@ public class AdController {
     private HttpServletRequest request;
     @Resource
     private AdService adService;
+    @Autowired
+    private MessageService messageService;
     @Autowired
     private WeChatNotify wcn;
 
@@ -124,6 +126,18 @@ public class AdController {
     @GetMapping("/buy")
     public int buyAd(String title,String text,String money,String time,String phone,String buyemail) {
         int out=0;
+
+        Message message = new Message();
+        message.setTitle(title);
+        message.setText(text);
+        message.setMoney(text);
+        message.setShowdate(Timestamp.valueOf(time));
+        message.setPhone(phone);
+        message.setEmail(buyemail);
+        message.setIsRead(0);
+        message.setType(1);
+
+
         // 附件
         // EmailAttachment attachment = new EmailAttachment();
         // // 附件地址
