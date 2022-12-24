@@ -1,5 +1,12 @@
 import axios from "axios";
 /*接口请求 自定义交互配置*/
+
+//一次性解决时区和日期格式问题
+import moment from 'moment'
+Date.prototype.toISOString = function () {
+    return moment(this).format("YYYY-MM-DD HH:mm:ss");
+};
+
 let  config={
     // baseURL:'http://10.33.73.62:8089/',/*请求项目接口 一级域名前缀*/
     // baseURL:'http://10.34.155.160:8089/',/*请求项目接口 一级域名前缀*/

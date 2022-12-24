@@ -17,6 +17,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Arrays;
 
 /**
@@ -119,7 +120,7 @@ public class LogsAspect {
         logs.setArgs(args);
         logs.setClassMethod(classMethod);
         logs.setPath(path);
-        logs.setTime(time);
+        logs.setTime(Timestamp.valueOf(time));
         logs.setUser(startService.selStart(ip));
         logsService.addLogs(logs);
     }

@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,8 @@ public class DownloadController {
     private FileService fileService;
     @Autowired
     private StringToUtf8 stu;
+    @Autowired
+    private LogsService logsService;
 
     /**
      * 下载备份文件
@@ -102,5 +105,35 @@ public class DownloadController {
     @GetMapping("/model")
     public void downloadModel(HttpServletResponse response,int id){
         fileService.downloadModel(response,id);
+    }
+
+    @GetMapping("/logs")
+    public void downloadLogs(HttpServletResponse response, String beginTime, String endTime, int type){
+        ExcelWriter writer= ExcelUtil.getWriter();
+        int last=0;
+        String content="";
+
+        Timestamp upDate = Timestamp.valueOf(beginTime);
+        Timestamp downDate = Timestamp.valueOf(endTime);
+
+        List<Logs> list=logsService.timeLogs(upDate,downDate,type);
+        content = FileServiceImpl.getStringLogs(writer);
+        writer.write(list, true);
+
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+
+        String name = stu.getUTF8XMLString(content);
+
+        response.setHeader("Content-Disposition", "attachment;filename=" +name+ ".xls");
+        ServletOutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            writer.flush(out, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            writer.close();
+        }
+        IoUtil.close(out);
     }
 }

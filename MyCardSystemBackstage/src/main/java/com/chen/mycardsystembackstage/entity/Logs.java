@@ -1,6 +1,7 @@
 package com.chen.mycardsystembackstage.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * Project : MyCardSystem - Logs
@@ -19,7 +20,7 @@ public class Logs implements Serializable {
     private String classMethod;
     private String args;
     private String path;
-    private String time;
+    private Timestamp time;
 
     public Logs() {
     }
@@ -80,11 +81,11 @@ public class Logs implements Serializable {
         this.path = path;
     }
 
-    public String getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 }

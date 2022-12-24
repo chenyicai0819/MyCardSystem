@@ -235,6 +235,23 @@ public class FileServiceImpl implements FileService {
         return content;
     }
 
+    public static String getStringLogs(ExcelWriter writer) {
+        int last;
+        String content;
+        writer.addHeaderAlias("id", "唯一ID");
+        writer.addHeaderAlias("type", "日志类型");
+        writer.addHeaderAlias("user", "用户");
+        writer.addHeaderAlias("ip", "IP地址");
+        writer.addHeaderAlias("classMethod", "请求方法");
+        writer.addHeaderAlias("args", "请求参数");
+        writer.addHeaderAlias("path", "请求路径");
+        writer.addHeaderAlias("time", "日期时间");
+        last=7;
+        content="mycard日志备份";
+        writer.merge(last, content);
+        return content;
+    }
+
     /**
      * @param multiFile
      * @return

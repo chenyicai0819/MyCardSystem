@@ -3,6 +3,7 @@ package com.chen.mycardsystembackstage.mapper;
 import com.chen.mycardsystembackstage.entity.Logs;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -18,4 +19,6 @@ public interface LogsMapper {
 
     public int addLogs(Logs logs);
     public List<Logs> getLogs(int type);
+    public List<Logs> seaLogs(String user);
+    public List<Logs> timeLogs(Timestamp beginTime,Timestamp endTime,int type);
 }

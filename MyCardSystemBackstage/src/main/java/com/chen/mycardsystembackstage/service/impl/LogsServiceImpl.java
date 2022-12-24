@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -37,5 +38,21 @@ public class LogsServiceImpl implements LogsService {
     public List<Logs> showLogs(int type) {
         // 默认为1，全部日志
         return logsMapper.getLogs(type);
+    }
+
+    @Override
+    public List<Logs> seaLogs(String user) {
+        return logsMapper.seaLogs(user);
+    }
+
+    @Override
+    public List<Logs> timeLogs(int page, int size, Timestamp beginTime, Timestamp endTime,int type) {
+        PageHelper.startPage(page, size);
+        return logsMapper.timeLogs(beginTime,endTime,type);
+    }
+
+    @Override
+    public List<Logs> timeLogs(Timestamp beginTime, Timestamp endTime, int type) {
+        return logsMapper.timeLogs(beginTime,endTime,type);
     }
 }

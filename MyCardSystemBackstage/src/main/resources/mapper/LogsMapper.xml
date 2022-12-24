@@ -22,4 +22,23 @@
         </where>
                  order by id desc
     </select>
+    <select id="seaLogs" resultType="com.chen.mycardsystembackstage.entity.Logs">
+        SELECT * FROM logs WHERE user LIKE concat('%',#{user},'%')
+    </select>
+    <select id="timeLogs" resultType="com.chen.mycardsystembackstage.entity.Logs">
+        SELECT * FROM logs
+        <where>
+            <if test="type == 2">
+                type!="登录"
+            </if>
+            <if test="type == 3">
+                type="登录"
+            </if>
+            <if test="type == 1">
+                type!="null"
+            </if>
+        </where>
+        AND time >= #{beginTime} AND time &lt;= #{endTime}
+        order by id desc
+    </select>
 </mapper>

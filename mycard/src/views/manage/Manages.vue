@@ -2,6 +2,7 @@
   <div class="messages">
     <div class="mana-head">
       <h2 class="mana-h2">网站内容管理界面</h2>
+      <el-button type="warning" circle @click="openMd"><el-icon><Message /></el-icon></el-button>
       <el-button type="danger" @click="toLogs">查看日志</el-button>
       <el-button type="danger" @click="toLoad">返回首页</el-button>
     </div>
@@ -112,10 +113,13 @@
         </el-upload>
       </div>
     </el-dialog>
+
+    <ManagesDialog ref="RefManagesDialog"/>
   </div>
 </template>
 
 <script>
+import { Message } from '@element-plus/icons-vue'
 import {getCurrentInstance, reactive, defineComponent, ref, computed, inject} from "vue";
 import { ElMessageBox } from 'element-plus'
 import qs from "qs";
@@ -125,15 +129,17 @@ import { ElMessage } from 'element-plus'
 import { UploadFilled } from '@element-plus/icons-vue'
 import moment from 'moment'
 import _axios from "@/axios/config";
+import ManagesDialog from "@/views/manage/ManagesDialog";
 export default {
   name: "Manages",
-  components: {Add},
+  components: {ManagesDialog, Add},
   setup(){
 
     const appStore=inject('appStore')
     const qs=require('qs');
     const {proxy}=getCurrentInstance();
     const RefChilde=ref();
+    const RefManagesDialog=ref(null);
     const count = ref(0)
     const data=reactive({
       drawer:false,
@@ -159,8 +165,16 @@ export default {
       uploadTiele:["批量上传-页面","批量上传-书签内容","批量上传-书签分类","批量上传-广告"],
       imgs:false,
       downloadModelIp:"http://8.129.212.155:8089/download/model?id=",
-      uploadFile:"http://8.129.212.155:8089/file/upload/?id="+appStore.activeName
+      uploadFile:"http://8.129.212.155:8089/file/upload/?id="+appStore.activeName,
+      manages_dialog_dialog:false,//消息弹窗是否显示
     })
+
+    /**
+     * 打开消息子组件
+     */
+    const openMd = () => {
+      RefManagesDialog.value.openThis()
+    }
 
     /**
      * 前往查看日志
@@ -408,7 +422,7 @@ export default {
       data, dateFormat, handleSizeChange, handleCurrentChange, toLoad, handleClick, getMana,
       getHead, getData, openDrawer, handleEdit, handleDelete, confirmEvent, cancelEvent, chooseNum,
       searchName, getCount, downAdd, RefChilde, count, load, outExcel,upExcel,updataFile,onSuccess,
-      onExceed,onRemove,onError,toLogs,
+      onExceed,onRemove,onError,toLogs,RefManagesDialog,openMd,
     }
   }
 }
