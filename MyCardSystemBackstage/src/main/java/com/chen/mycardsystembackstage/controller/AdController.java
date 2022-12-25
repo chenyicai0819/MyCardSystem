@@ -1,5 +1,6 @@
 package com.chen.mycardsystembackstage.controller;
 
+import cn.hutool.core.date.DateUtil;
 import com.chen.mycardsystembackstage.entity.Ad;
 import com.chen.mycardsystembackstage.entity.Card;
 import com.chen.mycardsystembackstage.entity.Message;
@@ -7,6 +8,7 @@ import com.chen.mycardsystembackstage.mapper.MessageMapper;
 import com.chen.mycardsystembackstage.service.AdService;
 import com.chen.mycardsystembackstage.service.MessageService;
 import com.chen.mycardsystembackstage.utils.GetIpUtil;
+import com.chen.mycardsystembackstage.utils.TemplateUtils;
 import com.chen.mycardsystembackstage.utils.WeChatNotify;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
@@ -61,6 +63,8 @@ public class AdController {
     private AdService adService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private TemplateUtils templateUtils;
     @Autowired
     private WeChatNotify wcn;
 
@@ -130,13 +134,14 @@ public class AdController {
         Message message = new Message();
         message.setTitle(title);
         message.setText(text);
-        message.setMoney(text);
-        message.setShowdate(Timestamp.valueOf(time));
+        message.setMoney(money);
+        message.setShowdate(DateUtil.date().toTimestamp());
         message.setPhone(phone);
         message.setEmail(buyemail);
         message.setIsRead(0);
         message.setType(1);
-
+        message.setKeyid(templateUtils.getSequence());
+        return messageService.addMessage(message);
 
         // 附件
         // EmailAttachment attachment = new EmailAttachment();
@@ -154,78 +159,78 @@ public class AdController {
         // email.attach(new File("D:\\MyFile\\插画\\94307472_p0.jpg"));
         // 设置收件人，有多个的话继续加参数就好了，这是可变参数
         // 创建邮件
-        HtmlEmail email = new HtmlEmail();
-        // 邮箱主机，可以是域名也可以是IP地址
-        email.setHostName("smtp.qq.com");
-        // 设置使用安全链接
-        email.setSSLOnConnect(true);
-        // QQ邮箱默认的端口是465
-        email.setSslSmtpPort("465");
-        // 有中文的话需要设置编码，不然会乱码
-        email.setCharset("UTF-8");
-        // 设置你的邮箱名与生成的授权码
-        email.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
-        try {
-            // 发件人信息，收件人收到邮件时看到的收件人姓名
-            email.setFrom("chenyc2021@qq.com", buyemail,"utf-8");
-            // 标题
-            email.setSubject(title);
-            // 内容
-            StringBuilder sb=new StringBuilder();
-            sb.append("广告内容：").append(text).append('\n')
-                    .append("广告报价：").append(money).append('\n')
-                    .append("联系方式：").append(phone).append('\n')
-                    .append("上架时间").append(time);
-            email.setHtmlMsg(sb.toString());
-            email.addTo("chenyc2021@qq.com");
-            //发送邮件
-            email.send();
-            out=1;
-
-        } catch (EmailException e) {
-            e.printStackTrace();
-            out=0;
-        } finally {
-            System.out.println(out);
-            if(out==1){
-                try {
-                    HtmlEmail emailOut = new HtmlEmail();
-                    emailOut.setHostName("smtp.qq.com");
-                    emailOut.setSSLOnConnect(true);
-                    emailOut.setSslSmtpPort("465");
-                    emailOut.setCharset("UTF-8");
-                    emailOut.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
-                    emailOut.setFrom("chenyc2021@qq.com", "mycard管理员","utf-8");
-                    emailOut.setSubject("回复");
-                    emailOut.setHtmlMsg("我们已经收到了您的邮件内容，请您耐心等待工作人员的回复");
-                    emailOut.addTo(buyemail);
-                    //发送邮件
-                    // emailOut.send();
-                } catch (EmailException e) {
-                    e.printStackTrace();
-                }
-            }
-            return out;
-        }
+        // HtmlEmail email = new HtmlEmail();
+        // // 邮箱主机，可以是域名也可以是IP地址
+        // email.setHostName("smtp.qq.com");
+        // // 设置使用安全链接
+        // email.setSSLOnConnect(true);
+        // // QQ邮箱默认的端口是465
+        // email.setSslSmtpPort("465");
+        // // 有中文的话需要设置编码，不然会乱码
+        // email.setCharset("UTF-8");
+        // // 设置你的邮箱名与生成的授权码
+        // email.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
+        // try {
+        //     // 发件人信息，收件人收到邮件时看到的收件人姓名
+        //     email.setFrom("chenyc2021@qq.com", buyemail,"utf-8");
+        //     // 标题
+        //     email.setSubject(title);
+        //     // 内容
+        //     StringBuilder sb=new StringBuilder();
+        //     sb.append("广告内容：").append(text).append('\n')
+        //             .append("广告报价：").append(money).append('\n')
+        //             .append("联系方式：").append(phone).append('\n')
+        //             .append("上架时间").append(time);
+        //     email.setHtmlMsg(sb.toString());
+        //     email.addTo("chenyc2021@qq.com");
+        //     //发送邮件
+        //     email.send();
+        //     out=1;
+        //
+        // } catch (EmailException e) {
+        //     e.printStackTrace();
+        //     out=0;
+        // } finally {
+        //     System.out.println(out);
+        //     if(out==1){
+        //         try {
+        //             HtmlEmail emailOut = new HtmlEmail();
+        //             emailOut.setHostName("smtp.qq.com");
+        //             emailOut.setSSLOnConnect(true);
+        //             emailOut.setSslSmtpPort("465");
+        //             emailOut.setCharset("UTF-8");
+        //             emailOut.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
+        //             emailOut.setFrom("chenyc2021@qq.com", "mycard管理员","utf-8");
+        //             emailOut.setSubject("回复");
+        //             emailOut.setHtmlMsg("我们已经收到了您的邮件内容，请您耐心等待工作人员的回复");
+        //             emailOut.addTo(buyemail);
+        //             //发送邮件
+        //             // emailOut.send();
+        //         } catch (EmailException e) {
+        //             e.printStackTrace();
+        //         }
+        //     }
+        //     return out;
+        // }
     }
 
     @GetMapping("/reply")
     public void reply(String email,String model){
-        try {
-            HtmlEmail emailOut = new HtmlEmail();
-            emailOut.setHostName("smtp.qq.com");
-            emailOut.setSSLOnConnect(true);
-            emailOut.setSslSmtpPort("465");
-            emailOut.setCharset("UTF-8");
-            emailOut.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
-            emailOut.setFrom("chenyc2021@qq.com", "mycard管理员","utf-8");
-            emailOut.setSubject("回复");
-            emailOut.setHtmlMsg(model);
-            emailOut.addTo(email);
-            //发送邮件
-            emailOut.send();
-        } catch (EmailException e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     HtmlEmail emailOut = new HtmlEmail();
+        //     emailOut.setHostName("smtp.qq.com");
+        //     emailOut.setSSLOnConnect(true);
+        //     emailOut.setSslSmtpPort("465");
+        //     emailOut.setCharset("UTF-8");
+        //     emailOut.setAuthentication("chenyc2021@qq.com", "cqyruivpditnebhc");
+        //     emailOut.setFrom("chenyc2021@qq.com", "mycard管理员","utf-8");
+        //     emailOut.setSubject("回复");
+        //     emailOut.setHtmlMsg(model);
+        //     emailOut.addTo(email);
+        //     //发送邮件
+        //     emailOut.send();
+        // } catch (EmailException e) {
+        //     e.printStackTrace();
+        // }
     }
 }

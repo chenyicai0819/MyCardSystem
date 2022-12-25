@@ -17,4 +17,6 @@ import java.util.List;
 public interface MessageMapper {
 
     public List<Message> getMessage(int isRead);
+    public int addMessage(Message message);
+    public int countMessageNotRead();
 }

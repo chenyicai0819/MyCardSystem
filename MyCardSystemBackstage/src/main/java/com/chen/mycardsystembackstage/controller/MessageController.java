@@ -31,4 +31,23 @@ public class MessageController {
     public List<Message> getMessageNoRead(int isread){
         return messageService.getMessage(isread);
     }
+
+    /**
+     * 添加新消息
+     * @param message
+     * @return
+     */
+    @GetMapping("/add")
+    public int addMessage(Message message){
+        return messageService.addMessage(message);
+    }
+
+    /**
+     * 统计未读消息的数量
+     * @return
+     */
+    @GetMapping("/count")
+    public int countMessageNotRead(){
+        return messageService.countMessageNotRead();
+    }
 }

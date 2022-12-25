@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  **/
 public class Message implements Serializable {
     private int id;
-    private String key;
+    private String keyid;
     private int type;
     private int isRead;
     private String title;
@@ -24,6 +24,9 @@ public class Message implements Serializable {
     private String email;
     private String link;
     private String name;
+    private Timestamp checkdate;
+
+
 
     public Message() {
     }
@@ -36,12 +39,12 @@ public class Message implements Serializable {
         this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getKeyid() {
+        return keyid;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setKeyid(String keyid) {
+        this.keyid = keyid;
     }
 
     public int getType() {
@@ -122,5 +125,13 @@ public class Message implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Timestamp getCheckdate() {
+        return checkdate;
+    }
+
+    public void setCheckdate(Timestamp checkdate) {
+        this.checkdate = checkdate;
     }
 }

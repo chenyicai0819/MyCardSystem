@@ -24,4 +24,14 @@ public class MessageServiceImpl implements MessageService {
     public List<Message> getMessage(int isRead) {
         return messageMapper.getMessage(isRead);
     }
+
+    @Override
+    public int addMessage(Message message) {
+        return messageMapper.addMessage(message);
+    }
+
+    @Override
+    public int countMessageNotRead() {
+        return messageMapper.countMessageNotRead();
+    }
 }

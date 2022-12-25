@@ -2,7 +2,9 @@
   <div class="messages">
     <div class="mana-head">
       <h2 class="mana-h2">网站内容管理界面</h2>
-      <el-button type="warning" circle @click="openMd"><el-icon><Message /></el-icon></el-button>
+      <el-badge :value="data.messageNotReadCount" :max="99" class="item" style="right: 15px">
+        <el-button type="warning" circle @click="openMd"><el-icon><Message /></el-icon></el-button>
+      </el-badge>
       <el-button type="danger" @click="toLogs">查看日志</el-button>
       <el-button type="danger" @click="toLoad">返回首页</el-button>
     </div>
@@ -167,6 +169,7 @@ export default {
       downloadModelIp:"http://8.129.212.155:8089/download/model?id=",
       uploadFile:"http://8.129.212.155:8089/file/upload/?id="+appStore.activeName,
       manages_dialog_dialog:false,//消息弹窗是否显示
+      messageNotReadCount:0,//未读消息的数量
     })
 
     /**
@@ -174,6 +177,14 @@ export default {
      */
     const openMd = () => {
       RefManagesDialog.value.openThis()
+    }
+    /**
+     * 获取未读消息的数量
+     */
+    const getMessageNotReadCount = () => {
+      proxy.$axios.get('message/count',qs.stringify({})).then(res=>{
+        data.messageNotReadCount=res.data;
+      });
     }
 
     /**
@@ -418,11 +429,12 @@ export default {
     getCount();
     getData();
     chooseNum();
+    getMessageNotReadCount()
     return{
       data, dateFormat, handleSizeChange, handleCurrentChange, toLoad, handleClick, getMana,
       getHead, getData, openDrawer, handleEdit, handleDelete, confirmEvent, cancelEvent, chooseNum,
       searchName, getCount, downAdd, RefChilde, count, load, outExcel,upExcel,updataFile,onSuccess,
-      onExceed,onRemove,onError,toLogs,RefManagesDialog,openMd,
+      onExceed,onRemove,onError,toLogs,RefManagesDialog,openMd,getMessageNotReadCount,
     }
   }
 }
@@ -435,7 +447,7 @@ export default {
 .mana-head{
   display: flex;
   position: fixed;
-  top: 0px;
+  top: 10px;
   width: 100%;
   z-index: 1;
   background-color: #FFFFFF;

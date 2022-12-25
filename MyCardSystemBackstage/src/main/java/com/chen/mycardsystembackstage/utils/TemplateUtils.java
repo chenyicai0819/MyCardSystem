@@ -1,7 +1,6 @@
 package com.chen.mycardsystembackstage.utils;
 
 import com.chen.mycardsystembackstage.entity.SequenceBean;
-import com.chen.mycardsystembackstage.generate.CycRedisGenerate;
 import com.chen.mycardsystembackstage.generate.CycSnowFlakeGenerate;
 import com.chen.mycardsystembackstage.generate.CycUuidGenerate;
 import org.springframework.stereotype.Component;
@@ -109,8 +108,8 @@ public class TemplateUtils {
         } else if ("SEQ".equals(keyword)) {
             // 调用生成序列号的方法生成序号
             if ("REDIS".equals(sequenceBean.getSequenceEngine())){
-                CycRedisGenerate cycRedisGenerate = new CycRedisGenerate();
-                out = cycRedisGenerate.getRedisSequence(sequenceBean);
+                // CycRedisGenerate cycRedisGenerate = new CycRedisGenerate();
+                // out = cycRedisGenerate.getRedisSequence(sequenceBean);
             } else if ("SF".equals(sequenceBean.getSequenceEngine())) {
                 CycSnowFlakeGenerate cycSnowFlakeGenerate = new CycSnowFlakeGenerate();
                 out = String.valueOf(cycSnowFlakeGenerate.nextId());
@@ -127,7 +126,6 @@ public class TemplateUtils {
      * @return
      */
     public String getSequence(){
-        CycRedisGenerate cycRedisGenerate = new CycRedisGenerate();
         TemplateUtils templateUtils = new TemplateUtils();
         return templateUtils.setTemplate(sequenceBean);
     }

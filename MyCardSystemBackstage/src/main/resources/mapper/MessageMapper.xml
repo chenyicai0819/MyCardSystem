@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chen.mycardsystembackstage.mapper.MessageMapper">
+    <insert id="addMessage">
+        INSERT
+        INTO message(keyid, type, isRead, title, text, money, showdate, phone, email,link,name)
+        VALUES(#{keyid},#{type},#{isRead},#{title},#{text},#{money},#{showdate},#{phone},#{email},#{link},#{name})
+    </insert>
     <select id="getMessage" resultType="com.chen.mycardsystembackstage.entity.Message">
         SELECT * FROM message WHERE isRead = #{isRead}
+    </select>
+    <select id="countMessageNotRead" resultType="java.lang.Integer">
+        SELECT count(*) FROM message WHERE isRead=0
     </select>
 </mapper>
