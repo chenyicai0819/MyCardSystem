@@ -34,4 +34,9 @@ public class MessageServiceImpl implements MessageService {
     public int countMessageNotRead() {
         return messageMapper.countMessageNotRead();
     }
+
+    @Override
+    public int psaaMessage(int ispass, String keyid) {
+        return messageMapper.psaaMessage(ispass,keyid);
+    }
 }

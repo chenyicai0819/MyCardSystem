@@ -44,9 +44,21 @@
         <div><div class="drawer-body-key">邮箱:</div><el-input class="drawer-body-value" v-model="messages.email" disabled/></div>
         <div v-if="messages.type==='网站'"><div class="drawer-body-key">链接:</div><el-input class="drawer-body-value" v-model="messages.link" disabled/></div>
         <div v-if="messages.type==='网站'"><div class="drawer-body-key">名称:</div><el-input class="drawer-body-value" v-model="messages.name" disabled/></div>
+        <div><div class="drawer-body-key">通过:</div><el-input class="drawer-body-value" v-model="messages.isPass" disabled/></div>
+        <div v-if="messages.type==='网站'"><div class="drawer-body-key">分类:</div><el-select class="drawer-body-value" v-model="messages.Linktype" placeholder="请选择类型">
+          <el-option
+              v-for="item in collName"
+              :key="item.collName"
+              :label="item.collName"
+              :value="item.collName"
+
+          >
+          </el-option>
+        </el-select></div>
       </div>
       <div class="drawer-footer">
-        <el-button @click="drawerShow = false" type="success">提 交</el-button>
+        <el-button @click="passMessage(1)" type="success">提 交</el-button>
+        <el-button @click="passMessage(2)" type="danger">拒 绝</el-button>
         <el-button @click="drawerShow = false" type="warning">关 闭</el-button>
       </div>
     </el-drawer>
@@ -54,8 +66,9 @@
 </template>
 
 <script>
-import {reactive, toRefs, ref, getCurrentInstance} from "vue";
-import moment from "moment/moment";
+import {getCurrentInstance, reactive, toRefs} from "vue";
+import {ElMessage} from "element-plus";
+import qs from "qs";
 
 export default {
   name: "ManagesDialog",
@@ -86,8 +99,37 @@ export default {
         link:'',
         name:'',
         checkdate:'',
-      }
+        isPass:'',
+        Linktype:'',
+      },
+      collName:[],
     })
+
+    /**
+     * 处理消息
+     */
+    const passMessage = (ispass) => {
+      let uri='/message/pass'
+      proxy.$axios.get(uri, {params: {ispass:ispass,keyid:data.messages.keyid}}).then(res => {
+        if (res.data===1){
+          ElMessage.success("操作成功")
+          getMessage()
+          data.drawerShow=false
+          // 选择提交且类型为网站时
+          if (ispass === 1 && data.messages.type === '网站'){
+            proxy.$axios.post('mork/add',qs.stringify({"id":data.messages.id,"name":data.messages.title,"link":data.messages.link,
+              "type":data.messages.Linktype,"img":'',"text":data.messages.text})).then(res=>{
+                if (res === 1){
+                  ElMessage.success("网站添加成功")
+                }
+            });
+          }
+        }else {
+          ElMessage.error("错误！请联系管理员！")
+        }
+
+      });
+    }
 
     /**
      * 关闭抽屉触发地方法
@@ -109,6 +151,9 @@ export default {
     const showColumn = (index, row) => {
       data.drawerTitle=row.type+":"+row.title
       data.messages=row
+      if (row.type==='网站'){
+        getType()
+      }
       data.drawerShow=true
     }
 
@@ -120,14 +165,35 @@ export default {
       proxy.$axios.get(uri, {params: {isread: data.isRead}}).then(res => {
         data.messageTable = res.data;
         for (let i = 0; i < res.data.length; i++) {
-          data.messageTable[i].type=res.data[i].type = 1 ? "广告" : "消息"
+          if (res.data[i].type === 1){
+            data.messageTable[i].type='广告'
+          }else if (res.data[i].type === 2){
+            data.messageTable[i].type='网站'
+          }
+          // data.messageTable[i].type=res.data[i].type = 1 ? "广告" : "消息"
+          if (res.data[i].isPass === 0){
+            data.messageTable[i].isPass='未处理'
+          }else if (res.data[i].isPass === 1){
+            data.messageTable[i].isPass='通过'
+          }else if (res.data[i].isPass === 2){
+            data.messageTable[i].isPass='不通过'
+          }
         }
 
       });
     }
+    /**
+     * 获取网站类型
+     */
+    const getType = () => {
+      let uri='coll/show';
+      proxy.$axios.get(uri,{}).then(res=>{
+        data.collName=res.data;
+      });
+    }
     getMessage() //显示该弹框获取数据
     return{
-      ...toRefs(data),openThis,showColumn,getMessage,drawerHandleClose
+      ...toRefs(data),openThis,showColumn,getMessage,drawerHandleClose,passMessage,getType
     }
   }
 }

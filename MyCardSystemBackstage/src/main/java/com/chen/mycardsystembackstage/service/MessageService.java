@@ -19,4 +19,5 @@ public interface MessageService {
     public List<Message> getMessage(int isRead);
     public int addMessage(Message message);
     public int countMessageNotRead();
+    public int psaaMessage(int ispass,String keyid);
 }

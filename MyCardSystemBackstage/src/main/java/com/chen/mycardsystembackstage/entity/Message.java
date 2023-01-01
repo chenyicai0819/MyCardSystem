@@ -25,7 +25,7 @@ public class Message implements Serializable {
     private String link;
     private String name;
     private Timestamp checkdate;
-
+    private int isPass;
 
 
     public Message() {
@@ -133,5 +133,13 @@ public class Message implements Serializable {
 
     public void setCheckdate(Timestamp checkdate) {
         this.checkdate = checkdate;
+    }
+
+    public int getIsPass() {
+        return isPass;
+    }
+
+    public void setIsPass(int isPass) {
+        this.isPass = isPass;
     }
 }

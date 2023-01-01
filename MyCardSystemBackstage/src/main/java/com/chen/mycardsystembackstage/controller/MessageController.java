@@ -50,4 +50,13 @@ public class MessageController {
     public int countMessageNotRead(){
         return messageService.countMessageNotRead();
     }
+
+    /**
+     * 处理消息是否通过
+     * @return
+     */
+    @GetMapping("/pass")
+    public int psaaMessage(int ispass,String keyid){
+        return messageService.psaaMessage(ispass, keyid);
+    }
 }
