@@ -1,5 +1,7 @@
 package com.chen.mycardsystembackstage.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -9,35 +11,13 @@ import java.io.Serializable;
  * @date 2021/10/22 15:31
  * @since 1.0
  */
+@Data
 public class User implements Serializable {
     private int userId;
     private String userPass;
     private String openid;
+    private String email;
 
     public User() {
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getUserPass() {
-        return userPass;
-    }
-
-    public void setUserPass(String userPass) {
-        this.userPass = userPass;
-    }
-
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
     }
 }

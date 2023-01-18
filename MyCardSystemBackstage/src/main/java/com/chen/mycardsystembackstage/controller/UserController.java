@@ -2,17 +2,20 @@ package com.chen.mycardsystembackstage.controller;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
+import cn.hutool.extra.mail.MailAccount;
+import cn.hutool.extra.mail.MailUtil;
 import com.chen.mycardsystembackstage.entity.User;
 import com.chen.mycardsystembackstage.oauth.WechatOAuth;
 import com.chen.mycardsystembackstage.service.StartService;
 import com.chen.mycardsystembackstage.service.UserService;
-import com.chen.mycardsystembackstage.utils.GetIpUtil;
-import com.chen.mycardsystembackstage.utils.Msg;
-import com.chen.mycardsystembackstage.utils.WeChatNotify;
+import com.chen.mycardsystembackstage.utils.*;
+import com.sun.mail.util.MailSSLSocketFactory;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,11 +27,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import com.chen.mycardsystembackstage.utils.JwtUtils;
+import java.util.Objects;
 
 /**
  * @author George
@@ -62,6 +66,10 @@ public class UserController {
     private GetIpUtil getIpUtil;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private AuthCodeUtil authCodeUtil;
+    @Autowired
+    private RedisTemplate<Object, Object> redisTemplate;
 
     // InetAddress addr;
     //
@@ -74,7 +82,7 @@ public class UserController {
     // }
 
     @PostMapping("/login")
-    public String login(User user){
+    public String login(User user,String code){
         // System.out.println(user);
         Date date = new Date();
         SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -87,9 +95,13 @@ public class UserController {
             // 通知登录错误结果
             map.put("isYes","否");
             wcn.pushLogin(map);
-            // System.out.println("没有这个用户，或者密码错误");
             return "没有这个用户，或者密码错误";
         }else{
+            ValueOperations<Object, Object> vo = redisTemplate.opsForValue();
+
+            if (!Objects.equals(vo.get("CODE:" + user.getUserId()), code)){
+                return "验证码有误";
+            }
             // 通知登录成功结果
             map.put("isYes","是");
             String ip = getIpUtil.getIpAddr(request);
@@ -147,5 +159,36 @@ public class UserController {
         return Msg.success().add("info","成功获得 vip 信息！");
     }
 
+    /**
+     * 获取到验证码
+     * @param id 用户id，
+     * @param time 过期时间（秒）
+     *
+     */
+    @GetMapping("/getAuthCode")
+    public int getAuthCode(String id,int time) {
+        String email = userService.selUser(id).getEmail();
+        String authCode = authCodeUtil.create(id,time);
+        String message = "您正在登录MyCardSystem管理端，您的所有行为都将收到监控！\r\n您的验证码为："
+                +authCode +
+                "\r\n请注意不要将此验证码泄露给其他人！\r\n该验证码有效时间为："
+                +time+
+                "秒！\r\n如果本操作不是您本人所为，请注意您的账号安全！";
+        String put = MailUtil.send(email,"MyCardSystem-您的验证码",message,false);
+        if (authCode != null && put.length()>0){
+            return 1;
+        }else {
+            return 0;
+        }
+    }
 
+    /**
+     * 获取用户邮箱
+     * @param id 用户id
+     * @return 用户邮箱
+     */
+    @GetMapping("/getEmail")
+    public String getEmail(String id){
+        return userService.selUser(id).getEmail();
+    }
 }

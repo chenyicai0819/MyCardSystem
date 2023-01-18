@@ -7,8 +7,7 @@ import com.chen.mycardsystembackstage.service.MessageService;
 import com.chen.mycardsystembackstage.service.MorkService;
 import com.chen.mycardsystembackstage.utils.TemplateUtils;
 import com.chen.mycardsystembackstage.utils.WeChatNotify;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.HtmlEmail;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;

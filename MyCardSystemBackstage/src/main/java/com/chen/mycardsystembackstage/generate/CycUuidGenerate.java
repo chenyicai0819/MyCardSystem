@@ -22,9 +22,9 @@ public class CycUuidGenerate {
      * @return 返回 UUID 的值
      */
     public String getUuid(SequenceBean sequenceBean) {
-        if(sequenceBean.getSequenceType().equals("DATE")){
+        if("DATE".equals(sequenceBean.getSequenceType())){
             return uuidDate();
-        }else if (sequenceBean.getSequenceType().equals("CRE")){
+        }else if ("CRE".equals(sequenceBean.getSequenceType())){
             return uuidCreId();
         }else {
             return UUID.randomUUID().toString().replace("-", "");

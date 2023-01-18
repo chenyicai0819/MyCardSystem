@@ -1,0 +1,6 @@
+from = 2495842975@qq.com
+pass = jbilyfbdewchebae
+user = 2495842975
+host = smtp.qq.com
+post = 465
+sslEnable = true

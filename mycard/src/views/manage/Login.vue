@@ -13,6 +13,10 @@
           <el-form-item label="密码">
             <el-input v-model="data.form.pass" type="password" class="input-login"></el-input>
           </el-form-item>
+          <el-form-item label="验证码">
+            <el-input v-model="data.form.code" class="input-code"></el-input>
+            <el-button type="primary" :disabled="data.isdisabled" style="width: 100px" @click="getAuthCode">{{data.getCode}}</el-button>
+          </el-form-item>
           <!--<el-form-item label="验证码">-->
           <!--  <div @click="refreshCode()" class="code" style="cursor:pointer;" title="点击切换验证码">-->
           <!--    <Verify/>-->
@@ -21,6 +25,9 @@
           <el-button type="primary" @click="onSubmit">登录</el-button>
           <!--<el-button @click="Wechatlogin">微信授权</el-button>-->
           <el-button @click="toAl">访问al网址</el-button>
+          <div v-if="data.isdisabled === true">
+            验证码已发送至邮箱：{{data.form.email}}
+          </div>
         </el-form>
       </div>
     </div>
@@ -32,6 +39,8 @@ import {getCurrentInstance, reactive} from "vue";
 import router from "../../router";
 import qs from "qs";
 import Verify from "./Verify";
+import moment from "moment/moment";
+import {ElMessage} from "element-plus";
 export default {
   name: "Login",
   components: {Verify},
@@ -42,7 +51,15 @@ export default {
       form: {
         name: '',
         pass: '',
+        code: '',
+        email:'',
       },
+      authCodeTime:300, //短信验证码过期时间，默认300秒(5分钟)
+      isCountDown:false, //是否开始倒计时
+      getCode: '获取验证码', //获取验证码的按钮
+      authCodeCountDownModel:60,//验证码倒计时
+      authCodeCountDown:60, // 验证码倒计时，显示出来的
+      isdisabled:false, // 获取验证码按钮是否禁用
       ismoblie:false,
       identifyCode: "",
       identifyCodes: ['0','1','2','3','4','5','6','7','8','9','a','b','c','d'], //根据实际需求加入自己想要的字符
@@ -50,7 +67,7 @@ export default {
     const onSubmit = () => {
       // console.log(data.form.name);
       // console.log(data.form.pass);
-      proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":data.form.pass })).then(res=>{
+      proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":data.form.pass,"code":data.form.code })).then(res=>{
         if ("允许登录"==res.data){
           localStorage.setItem("loginToken",data.form.name)
           router.push("/manages");
@@ -58,6 +75,44 @@ export default {
           alert(res.data);
         }
       });
+    }
+
+    // 获取用户邮箱
+    const getEmail = () => {
+      proxy.$axios.get('user/getEmail', {params: {"id":data.form.name}}).then(res => {
+        data.form.email = res.data
+      });
+    }
+    // 获取短信验证码
+    const getAuthCode = () => {
+      proxy.$axios.get('user/getAuthCode', {params: {"id":data.form.name,"time":data.authCodeTime}}).then(res => {
+        if (res.data == 1){
+          getEmail()
+          data.authCodeCountDown =data.authCodeCountDownModel;
+          ElMessage.success("验证码邮件发送成功，请注意查收！")
+          data.isCountDown = true;
+          data.isdisabled = true;
+          isCountDown()
+        }else {
+          ElMessage.error("出现错误，请重试！")
+        }
+      });
+    }
+    // 是否开始倒计时
+    const isCountDown = () => {
+      if (data.isCountDown === true){
+        data.getCode = data.authCodeCountDown
+        countDown()
+      }
+    }
+    // 验证码失效倒计时
+    const countDown = () => {
+      data.authCodeCountDown = data.authCodeCountDown -1;
+      if (data.authCodeCountDown < 0){
+        data.isCountDown = false
+        data.getCode = '获取验证码'
+        data.isdisabled = false
+      }
     }
     const toLoad = () => {
       router.push("/home");
@@ -98,11 +153,13 @@ export default {
     }
 
     isMobile()
+    isCountDown()
+    setInterval(isCountDown,"1000");
     // refreshCode()
     return{
       data,
-      onSubmit,
-      toLoad,toAl,Wechatlogin,isMobile,refreshCode,makeCode,randomNum
+      onSubmit,countDown,getAuthCode,isCountDown,getEmail,
+      toLoad,toAl,Wechatlogin,isMobile,refreshCode,makeCode,randomNum,
     }
   }
 }
@@ -125,7 +182,7 @@ export default {
 .login-pc{
   margin: 10px auto;
   width: 500px;
-  height: 300px;
+  height: 350px;
   background-color: #42b983;
 }
 .login-mobile{
@@ -145,6 +202,10 @@ export default {
   width: 90%;
 }
 .input-login{
-  width: 200px;
+  width: 210px;
+}
+.input-code{
+  width: 100px;
+
 }
 </style>
