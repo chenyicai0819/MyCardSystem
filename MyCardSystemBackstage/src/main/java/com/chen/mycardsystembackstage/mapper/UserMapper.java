@@ -3,6 +3,8 @@ package com.chen.mycardsystembackstage.mapper;
 import com.chen.mycardsystembackstage.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @author George
  * @project MyCardSystem
@@ -20,4 +22,5 @@ public interface UserMapper {
     String getRole(String id);
     String getRolePermission(String id);
     String getPermission(String id);
+    List<User> getAllUser();
 }

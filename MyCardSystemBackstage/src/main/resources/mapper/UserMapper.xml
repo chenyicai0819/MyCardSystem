@@ -35,5 +35,8 @@
         FROM user
         WHERE userId = #{id}
     </select>
+    <select id="getAllUser" resultType="com.chen.mycardsystembackstage.entity.User">
+        SELECT * FROM user WHERE email is not null
+    </select>
 
 </mapper>

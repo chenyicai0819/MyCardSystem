@@ -3,6 +3,8 @@ package com.chen.mycardsystembackstage.service;
 import com.chen.mycardsystembackstage.entity.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author George
  * @project MyCardSystem
@@ -20,5 +22,6 @@ public interface UserService {
     String getRole(String id);
     String getRolePermission(String id);
     String getPermission(String id);
+    List<User> getAllUser();
 
 }

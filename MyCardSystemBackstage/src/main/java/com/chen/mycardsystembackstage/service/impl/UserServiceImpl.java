@@ -6,6 +6,7 @@ import com.chen.mycardsystembackstage.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author George
@@ -57,6 +58,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getPermission(String id) {
         return userMapper.getPermission(id);
+    }
+
+    @Override
+    public List<User> getAllUser() {
+        return userMapper.getAllUser();
     }
 
 }
