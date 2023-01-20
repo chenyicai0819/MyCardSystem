@@ -4,16 +4,16 @@
 
     <insert id="addStart" parameterType="string">
         INSERT INTO
-        start(ip,username)
-        VALUES(#{ip},#{username});
+        start(ip,userid)
+        VALUES(#{ip},#{userid});
     </insert>
     <update id="upStart" parameterType="string">
         UPDATE start
-        set username=#{username}
+        set userid=#{userid}
         WHERE ip=#{ip}
     </update>
     <select id="selStart" resultType="string" parameterType="string">
-        SELECT username FROM start WHERE ip=#{ip}
+        SELECT userid FROM start WHERE ip=#{ip}
     </select>
     <select id="countStart" resultType="java.lang.Integer" parameterType="string">
         SELECT COUNT(*) FROM start WHERE ip=#{ip}

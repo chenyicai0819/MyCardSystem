@@ -14,8 +14,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface StartMapper {
 
-    public int addStart(String ip,String username);
-    public int upStart(String ip,String username);
+    public int addStart(String ip,String userid);
+    public int upStart(String ip,String userid);
     public String selStart(String ip);
     public int countStart(String ip);
 }

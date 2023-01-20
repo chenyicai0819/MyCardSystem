@@ -10,6 +10,7 @@ import com.chen.mycardsystembackstage.service.StartService;
 import com.chen.mycardsystembackstage.service.UserService;
 import com.chen.mycardsystembackstage.utils.*;
 import com.sun.mail.util.MailSSLSocketFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -42,6 +43,7 @@ import java.util.Objects;
  * @since 1.0
  */
 @RestController
+@Slf4j
 @RequestMapping("/user")
 public class UserController {
 
@@ -95,16 +97,20 @@ public class UserController {
             // 通知登录错误结果
             map.put("isYes","否");
             wcn.pushLogin(map);
+            log.info(user.getUserId()+user.getUserName()+"于"+getIpUtil.getIpAddr(request)+"登陆失败！原因：没有这个用户，或者密码错误！");
             return "没有这个用户，或者密码错误";
         }else{
+            String ip = getIpUtil.getIpAddr(request);
+
             ValueOperations<Object, Object> vo = redisTemplate.opsForValue();
 
-            if (!Objects.equals(vo.get("CODE:" + user.getUserId()), code)){
+            if (!Objects.equals(vo.get("CODE:" + user.getUserId()), code) && !Objects.equals("wechat",code)){
+                log.info(user.getUserId()+user.getUserName()+"于"+ip+"登陆失败！原因：验证码有误！");
                 return "验证码有误";
             }
             // 通知登录成功结果
             map.put("isYes","是");
-            String ip = getIpUtil.getIpAddr(request);
+
             // 登陆成功的时候往数据库添加登陆状态
             if (1 == startService.countStart(ip)){
                 startService.upStart(ip, String.valueOf(user.getUserId()));
@@ -112,7 +118,7 @@ public class UserController {
                 startService.addStart(ip, String.valueOf(user.getUserId()));
             }
             wcn.pushLogin(map);
-            // System.out.println("允许登录");
+            log.info(user.getUserId()+user.getUserName()+"于"+ip+"登录成功！");
             return "允许登录";
         }
     }
@@ -190,5 +196,16 @@ public class UserController {
     @GetMapping("/getEmail")
     public String getEmail(String id){
         return userService.selUser(id).getEmail();
+    }
+
+    /**
+     * 获取用户信息（一般是登陆成功后使用）
+     * @return 用户所有信息
+     */
+    @PostMapping("/getUserMessage")
+    public User getUserMessage(){
+        String ip = getIpUtil.getIpAddr(request);
+        String id = startService.selStart(ip);
+        return userService.selUser(id);
     }
 }

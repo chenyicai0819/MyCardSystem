@@ -70,6 +70,11 @@
       >
       </el-pagination>
     </div>
+    <div class="down-user">
+      <div>
+        当前登录用户：{{data.nowUser.userName}}
+      </div>
+    </div>
     <div class="drawers">
       <el-drawer
           v-model="data.drawer"
@@ -132,11 +137,11 @@ import { UploadFilled } from '@element-plus/icons-vue'
 import moment from 'moment'
 import _axios from "@/axios/config";
 import ManagesDialog from "@/views/manage/ManagesDialog";
+
 export default {
   name: "Manages",
   components: {ManagesDialog, Add},
   setup(){
-
     const appStore=inject('appStore')
     const qs=require('qs');
     const {proxy}=getCurrentInstance();
@@ -144,6 +149,7 @@ export default {
     const RefManagesDialog=ref(null);
     const count = ref(0)
     const data=reactive({
+      nowUser:{},//当前登录用户
       drawer:false,
       direction:'rtl',
       buttenType:'',
@@ -171,6 +177,13 @@ export default {
       manages_dialog_dialog:false,//消息弹窗是否显示
       messageNotReadCount:0,//未读消息的数量
     })
+
+    // 获取到用户信息
+    const getUserMessageFromStore = () => {
+      proxy.$axios.post('user/getUserMessage').then(res=>{
+        data.nowUser = res.data
+      });
+    }
 
     /**
      * 打开消息子组件
@@ -239,6 +252,8 @@ export default {
       getCount();
       getData();
     }
+
+    // 打开子组件界面
     const openDrawer = (buttenType) => {
       data.drawer=true;
       data.buttenType=buttenType;
@@ -247,6 +262,8 @@ export default {
         RefChilde.value.getFather();
       }, 500);
     }
+
+    // 点击编辑按钮
     const handleEdit = (index, row) => {
       chooseNum();
       let active=data.activeName;
@@ -282,6 +299,8 @@ export default {
     const upExcel = () => {
       ElMessage.error('功能正在开发中')
     }
+
+    // 点击删除按钮
     const handleDelete = (index, row) => {
       // console.log(index, row)
       chooseNum();
@@ -298,16 +317,21 @@ export default {
         data.deleteId=row.imgsId;
       }
     }
+
+    // 确认添加
     const downAdd = () => {
       data.drawer=false
       getData()
     }
+
+    // 获取标签
     const getMana= () =>{
       proxy.$axios.get('mana/get',{}).then(res=>{
         const getdata=res.data;
         data.manaName=getdata;
       });
     }
+    // 获取表格的字段头
     const getHead= () =>{
       proxy.$axios.post('mana/head',qs.stringify({"head":data.activeName})).then(res=>{
         const getdata=res.data;
@@ -315,6 +339,8 @@ export default {
         data.tableHead=getdata;
       });
     }
+
+    // 获取主要数据
     const getData= () =>{
       let uri;
       let active=data.activeName;
@@ -334,8 +360,9 @@ export default {
         console.log(getdata)
         data.tableData=getdata;
       });
-
     }
+
+    // 确认删除
     const confirmEvent = () => {
       proxy.$axios.post(data.uri+'del',qs.stringify({"id":data.deleteId})).then(res=>{
         const getdata=res.data;
@@ -346,6 +373,8 @@ export default {
     const cancelEvent = () => {
       // console.log('cancel!')
     }
+
+    // 搜索
     const searchName = () => {
       chooseNum();
       let search=data.search;
@@ -355,10 +384,15 @@ export default {
         data.tableData=getdata;
       });
     }
+
+    // 登出
     const toLoad = () => {
       router.push("/home");
       localStorage.removeItem("loginToken");
+
     }
+
+    // 显示数据
     const chooseNum = () => {
       let active=data.activeName;
       let manadata=data.editData;
@@ -406,6 +440,8 @@ export default {
             data.maData.push({"text": manadata.imgsLink})
       }
     }
+
+    // 获取数据数量
     const getCount = () => {
       chooseNum();
       proxy.$axios.get(data.uri+"count",{}).then(res=>{
@@ -424,17 +460,22 @@ export default {
       getData();
     }
 
+    // 以下是进入界面后执行的方法
     getMana();
+    getUserMessageFromStore();
     getHead();
     getCount();
     getData();
     chooseNum();
-    getMessageNotReadCount()
+    getMessageNotReadCount();
+
+
     return{
       data, dateFormat, handleSizeChange, handleCurrentChange, toLoad, handleClick, getMana,
       getHead, getData, openDrawer, handleEdit, handleDelete, confirmEvent, cancelEvent, chooseNum,
       searchName, getCount, downAdd, RefChilde, count, load, outExcel,upExcel,updataFile,onSuccess,
-      onExceed,onRemove,onError,toLogs,RefManagesDialog,openMd,getMessageNotReadCount,
+      onExceed,onRemove,onError,toLogs,RefManagesDialog,openMd,getMessageNotReadCount,getUserMessageFromStore,
+
     }
 
   }
@@ -466,6 +507,12 @@ export default {
 }
 .demo-pagination-block {
   position: fixed;
+  bottom: 0px;
+  background-color: #FFFFFF;
+}
+.down-user{
+  position: fixed;
+  right: 0px;
   bottom: 0px;
   background-color: #FFFFFF;
 }

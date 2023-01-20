@@ -37,7 +37,7 @@ export default {
         text: 'Loading',
         background: 'rgba(0, 0, 0, 0.7)',
       })
-      proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":data.form.pass })).then(res=>{
+      proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":data.form.pass,"code":"wechat"})).then(res=>{
         if ("允许登录"==res.data){
           window.location.href="http://www.cyc292.top:8089/wechat/oauth?id="+data.form.name
           loading.close()

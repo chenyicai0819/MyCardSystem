@@ -1,9 +1,10 @@
 // src>store>index.js
 import appStore from "./appStore";
 import mapStore from "./mapStore";
+import nowUserStore from "./nowUserStore";
 
 const store = createStore({
-    appStore,mapStore
+    appStore,mapStore,nowUserStore
 })
 
 function createStore(parmas) {

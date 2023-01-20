@@ -11,6 +11,10 @@ const appStore ={
     isMoblie:false,
     setIsMoblie(value){
         this.isMoblie=value
+    },
+    nowUserName:'',
+    setNowUserName(value){
+        this.nowUserName = value
     }
 }
 export default reactive(appStore)

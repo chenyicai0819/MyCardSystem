@@ -19,13 +19,13 @@ public class StartServiceImpl implements StartService {
     @Autowired
     private StartMapper startMapper;
     @Override
-    public int addStart(String ip, String username) {
-        return startMapper.addStart(ip,username);
+    public int addStart(String ip, String userid) {
+        return startMapper.addStart(ip,userid);
     }
 
     @Override
-    public int upStart(String ip, String username) {
-        return startMapper.upStart(ip, username);
+    public int upStart(String ip, String userid) {
+        return startMapper.upStart(ip, userid);
     }
 
     @Override

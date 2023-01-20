@@ -35,12 +35,13 @@
 </template>
 
 <script>
-import {getCurrentInstance, reactive} from "vue";
+import {getCurrentInstance, inject, reactive} from "vue";
 import router from "../../router";
 import qs from "qs";
 import Verify from "./Verify";
 import moment from "moment/moment";
 import {ElMessage} from "element-plus";
+
 export default {
   name: "Login",
   components: {Verify},
@@ -64,13 +65,16 @@ export default {
       identifyCode: "",
       identifyCodes: ['0','1','2','3','4','5','6','7','8','9','a','b','c','d'], //根据实际需求加入自己想要的字符
     })
+
+    // 登录
     const onSubmit = () => {
-      // console.log(data.form.name);
-      // console.log(data.form.pass);
       proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":data.form.pass,"code":data.form.code })).then(res=>{
         if ("允许登录"==res.data){
+          // 登录成功后将token存储到store，然后再进入界面
           localStorage.setItem("loginToken",data.form.name)
-          router.push("/manages");
+          // 缓冲500毫秒，等待加载数据
+          setTimeout(router.push("/manages"),500)
+
         }else{
           alert(res.data);
         }
