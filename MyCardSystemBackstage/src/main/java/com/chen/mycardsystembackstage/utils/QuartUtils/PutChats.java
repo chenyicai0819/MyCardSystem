@@ -27,6 +27,11 @@ public class PutChats implements Job {
     @Autowired
     private UserService userService;
 
+
+    public void test(){
+        log.info("测试的定时任务");
+    }
+
     /**
      * 提醒管理员注意账号安全，修改密码
      */

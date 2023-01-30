@@ -3,8 +3,10 @@ FROM openjdk:8
 LABEL AUTHOR=GeorgeChan
 LABEL MAIL=2495842975@qq.com
 
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
+
 EXPOSE 8089
-ENV LANG="en_US.UTF-8"
 WORKDIR /ROOT
 ADD MyCardSystemBackstage-0.0.1-SNAPSHOT.jar /ROOT/app.jar
 ENTRYPOINT ["java", "-jar"]

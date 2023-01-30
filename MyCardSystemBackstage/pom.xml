@@ -31,6 +31,11 @@
             <version>2.2.0</version>
         </dependency>
         <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.5</version>
@@ -182,8 +187,9 @@
                     </imageTags>
                     <!--依赖的基础镜像-->
                     <baseImage>openjdk:8</baseImage>
+<!--                    <env>LANG=C.UTF-8</env>-->
                     <!-- Dockerfile 的位置-->
-                    <!--<dockerDirectory>${project.basedir}</dockerDirectory>-->
+<!--                    <dockerDirectory>D:\IdeaProjects\MyCardSystem\MyCardSystemBackstage}</dockerDirectory>-->
                     <!-- 暴露的端口，和项目保持一致 -->
                     <exposes>8089</exposes>
                     <!-- 工作目录，即进入容器后所处的默认目录 -->
