@@ -6,6 +6,9 @@ import com.chen.mycardsystembackstage.service.ISysScheduleTriggerService;
 import com.chen.mycardsystembackstage.utils.ResultBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 /**
  * Project : MyCardSystem - SysScheduleTriggerController
  * Powered by GeorgeChen On 2023-01-30 16:27:56
@@ -24,7 +27,7 @@ public class SysScheduleTriggerController {
 
 
     /**
-     * 新增定时任务  com.mengyb.myb.quartz.QuartzJob
+     * 新增定时任务  com.chen.mycardsystembackstage.utils.QuartUtils.QuartzJob
      * @param sysScheduleTrigger
      * @return
      */
@@ -36,7 +39,12 @@ public class SysScheduleTriggerController {
     }
 
 
-
+    /**
+     * 更新定时任务
+     * @param sysScheduleTrigger
+     * @param id
+     * @return
+     */
     @PostMapping("/updateScheduleTrigger/{id}")
     public ResultBean updateScheduleTrigger(SysScheduleTrigger sysScheduleTrigger, @PathVariable("id") int id) {
         ResultBean resultBean = sysScheduleTriggerService.updateScheduleTrigger(sysScheduleTrigger);
@@ -44,10 +52,35 @@ public class SysScheduleTriggerController {
     }
 
 
+    /**
+     * 删除定时任务
+     * @param id
+     * @return
+     */
     @GetMapping("/deleteScheduleTrigger/{id}")
     public ResultBean deleteScheduleTrigger(@PathVariable("id") int id) {
         ResultBean resultBean = sysScheduleTriggerService.deleteScheduleTrigger(id);
         return resultBean;
+    }
+
+    /**
+     * 获取所有的定时任务
+     * @return
+     */
+    @GetMapping("/allSchedulerTrigger")
+    public List<SysScheduleTrigger> allSchedulerTrigger(){
+        return sysScheduleTriggerService.allSchedulerTrigger();
+    }
+
+    /**
+     * 分页获取定时任务
+     * @param page 当前页码
+     * @param size 每页数量
+     * @return 定时任务集合
+     */
+    @GetMapping("/pageSchedulerTrigger")
+    public List<SysScheduleTrigger> pageSchedulerTrigger(int page,int size){
+        return sysScheduleTriggerService.pageSchedulerTrigger(page, size);
     }
 
 

@@ -11,6 +11,7 @@ import com.chen.mycardsystembackstage.mapper.SysScheduleTriggerMapper;
 import com.chen.mycardsystembackstage.service.ISysScheduleTriggerService;
 import com.chen.mycardsystembackstage.utils.QuartUtils.QuartzJobExecution;
 import com.chen.mycardsystembackstage.utils.ResultBean;
+import com.github.pagehelper.PageHelper;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -250,6 +251,29 @@ public class SysScheduleTriggerServiceImpl extends ServiceImpl<SysScheduleTrigge
         // 修改定时任务信息
 
         return null;
+    }
+
+    /**
+     * 获取所有的定时任务
+     * @return
+     */
+    @Override
+    public List<SysScheduleTrigger> allSchedulerTrigger() {
+        // QueryWrapper<SysScheduleTrigger> queryWrapper = new QueryWrapper();
+
+        return sysScheduleTriggerMapper.selectList(null);
+    }
+
+    /**
+     * 分页获取定时任务
+     * @param page
+     * @param size
+     * @return
+     */
+    @Override
+    public List<SysScheduleTrigger> pageSchedulerTrigger(int page, int size) {
+        PageHelper.startPage(page, size);
+        return sysScheduleTriggerMapper.selectList(null);
     }
 
     /**

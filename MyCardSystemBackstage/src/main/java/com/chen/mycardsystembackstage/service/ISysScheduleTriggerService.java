@@ -5,6 +5,8 @@ import com.chen.mycardsystembackstage.common.responsecode.CodeDefault;
 import com.chen.mycardsystembackstage.entity.SysScheduleTrigger;
 import com.chen.mycardsystembackstage.utils.ResultBean;
 
+import java.util.List;
+
 /**
  * Project : MyCardSystem - ISysScheduleTriggerService
  * Powered by GeorgeChen On 2023-01-30 16:09:01
@@ -43,8 +45,6 @@ public interface ISysScheduleTriggerService extends IService<SysScheduleTrigger>
      */
     ResultBean deleteScheduleTrigger(int id);
 
-
-
     ResultBean updateScheduleStatus(int id, int status);
 
     /**
@@ -53,5 +53,19 @@ public interface ISysScheduleTriggerService extends IService<SysScheduleTrigger>
      * @return
      */
     ResultBean updateScheduleTrigger(SysScheduleTrigger sysScheduleTrigger);
+
+    /**
+     * 获取所有的定时任务
+     * @return
+     */
+    List<SysScheduleTrigger> allSchedulerTrigger();
+
+    /**
+     * 分页获取定时任务
+     * @param page
+     * @param size
+     * @return
+     */
+    List<SysScheduleTrigger> pageSchedulerTrigger(int page,int size);
 
 }

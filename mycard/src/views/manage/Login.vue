@@ -31,6 +31,9 @@
         </el-form>
       </div>
     </div>
+    <div style="width:100%;padding-left: 10px;margin-top: -5px;" v-show="data.isShowCronCore">
+      <Cron @change="changeCron" v-model:value="data.form.logicConfig" />
+    </div>
   </div>
 </template>
 
@@ -41,19 +44,26 @@ import qs from "qs";
 import Verify from "./Verify";
 import moment from "moment/moment";
 import {ElMessage} from "element-plus";
+import Cron from "@/views/manage/Cron";
 
 export default {
   name: "Login",
-  components: {Verify},
+  components: {Cron, Verify},
+
   setup(){
     const {proxy}=getCurrentInstance();
     const qs=require('qs');
+    const formData = reactive({  // 表单数据
+      name: "", // 名称
+      logicConfig: "* * * * * ? *", // cron表达式
+    });
     const data=reactive({
       form: {
         name: '',
         pass: '',
         code: '',
         email:'',
+        logicConfig: "* * * * * ? *", // cron表达式
       },
       authCodeTime:300, //短信验证码过期时间，默认300秒(5分钟)
       isCountDown:false, //是否开始倒计时
@@ -62,9 +72,15 @@ export default {
       authCodeCountDown:60, // 验证码倒计时，显示出来的
       isdisabled:false, // 获取验证码按钮是否禁用
       ismoblie:false,
+      isShowCronCore:true, //是否打开cron表达式配置狂
       identifyCode: "",
       identifyCodes: ['0','1','2','3','4','5','6','7','8','9','a','b','c','d'], //根据实际需求加入自己想要的字符
     })
+
+    const changeCron = (val) => {
+      if (typeof val !== "string") return false;
+      formData.logicConfig = val;
+    };
 
     // 登录
     const onSubmit = () => {
@@ -161,7 +177,7 @@ export default {
     setInterval(isCountDown,"1000");
     // refreshCode()
     return{
-      data,
+      data,changeCron,
       onSubmit,countDown,getAuthCode,isCountDown,getEmail,
       toLoad,toAl,Wechatlogin,isMobile,refreshCode,makeCode,randomNum,
     }
