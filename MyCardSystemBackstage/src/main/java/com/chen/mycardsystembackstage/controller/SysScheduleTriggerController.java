@@ -4,6 +4,8 @@ package com.chen.mycardsystembackstage.controller;
 import com.chen.mycardsystembackstage.entity.SysScheduleTrigger;
 import com.chen.mycardsystembackstage.service.ISysScheduleTriggerService;
 import com.chen.mycardsystembackstage.utils.ResultBean;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,7 @@ import java.util.List;
  * @since 1.8
  **/
 @RestController
+@Api(value = "定时任务操作接口",tags = "定时任务")
 @RequestMapping("/schedule")
 public class SysScheduleTriggerController {
 
@@ -32,6 +35,7 @@ public class SysScheduleTriggerController {
      * @return
      */
 
+    @ApiOperation("新增定时任务")
     @PostMapping("/insertScheduleTrigger")
     public ResultBean insertScheduleTrigger(SysScheduleTrigger sysScheduleTrigger) {
         ResultBean resultBean = sysScheduleTriggerService.insertScheduleTrigger(sysScheduleTrigger);
@@ -45,6 +49,7 @@ public class SysScheduleTriggerController {
      * @param id
      * @return
      */
+    @ApiOperation("更新定时任务")
     @PostMapping("/updateScheduleTrigger/{id}")
     public ResultBean updateScheduleTrigger(SysScheduleTrigger sysScheduleTrigger, @PathVariable("id") int id) {
         ResultBean resultBean = sysScheduleTriggerService.updateScheduleTrigger(sysScheduleTrigger);
@@ -57,6 +62,7 @@ public class SysScheduleTriggerController {
      * @param id
      * @return
      */
+    @ApiOperation("删除定时任务")
     @GetMapping("/deleteScheduleTrigger/{id}")
     public ResultBean deleteScheduleTrigger(@PathVariable("id") int id) {
         ResultBean resultBean = sysScheduleTriggerService.deleteScheduleTrigger(id);
@@ -68,6 +74,7 @@ public class SysScheduleTriggerController {
      * @return
      */
     @GetMapping("/allSchedulerTrigger")
+    @ApiOperation("获取所有的定时任务")
     public List<SysScheduleTrigger> allSchedulerTrigger(){
         return sysScheduleTriggerService.allSchedulerTrigger();
     }
@@ -79,6 +86,7 @@ public class SysScheduleTriggerController {
      * @return 定时任务集合
      */
     @GetMapping("/pageSchedulerTrigger")
+    @ApiOperation("分页获取定时任务")
     public List<SysScheduleTrigger> pageSchedulerTrigger(int page,int size){
         return sysScheduleTriggerService.pageSchedulerTrigger(page, size);
     }
