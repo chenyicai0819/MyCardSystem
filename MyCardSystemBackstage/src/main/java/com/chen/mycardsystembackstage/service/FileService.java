@@ -1,6 +1,7 @@
 package com.chen.mycardsystembackstage.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.chen.mycardsystembackstage.utils.ResultBean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,4 +13,6 @@ import java.io.IOException;
 public interface FileService {
     JSONObject uploadFileController(MultipartFile multipartFile,int id) throws IOException;
     public void downloadModel(HttpServletResponse response, int id);
+    String uploadFile(MultipartFile multipartFile);
+
 }

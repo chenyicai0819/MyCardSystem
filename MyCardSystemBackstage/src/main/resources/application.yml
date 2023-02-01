@@ -40,7 +40,9 @@ wx:
     redirect_url:
 web:
   upload:
+    root: /home/static/mycard/
     audio: /home/static/mycard/audio/
-    image: /home/static/mycard/images/
+#    image: /home/static/mycard/images/
     video: /home/static/mycard/videos/
+    image: D:\sz\
   domain: https://worklist.hidtb.com:8085/

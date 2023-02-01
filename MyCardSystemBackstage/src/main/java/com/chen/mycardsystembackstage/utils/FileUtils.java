@@ -36,6 +36,13 @@ public class FileUtils {
 
     private static String uploadVideoBasePath;
 
+    private static String uploadRootBasePath;
+
+    @Value("${web.upload.root:}")
+    public void setUploadRootBasePath(String uploadRootBasePath){
+        FileUtils.uploadRootBasePath =uploadRootBasePath;
+    }
+
     @Value("${web.upload.image:}")
     public void setUploadImageBasePath(String uploadImageBasePath) {
         FileUtils.uploadImageBasePath = uploadImageBasePath;
@@ -177,8 +184,9 @@ public class FileUtils {
         // 以日期来做文件分类
         String dateDir = sdf.format(new Date());
         // 文件后缀
+        CycSnowFlakeGenerate cycSnowFlakeGenerate = new CycSnowFlakeGenerate();
         String suffixName = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
-        String fileName = SpringContextUtils.getContext().getBean(CycSnowFlakeGenerate.class).nextId() + suffixName;
+        String fileName = cycSnowFlakeGenerate.nextId() + suffixName;
         // 文件类型:1-图片，2-音频，3-视频
         String fileType = getFileType(suffixName);
         // 文件存放在服务器上的路径
@@ -221,7 +229,7 @@ public class FileUtils {
             log.error("saveFile fail:" + e.getMessage());
             throw new RuntimeException("保存失败");
         }
-        return completePath;
+        return uploadRootBasePath+completePath;
     }
 
 }

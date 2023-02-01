@@ -4,8 +4,6 @@ package com.chen.mycardsystembackstage.common.responce;
 
 import com.chen.mycardsystembackstage.common.responsecode.CodeDefault;
 import com.chen.mycardsystembackstage.common.responsecode.CodeEnum;
-import com.dtb.hwcmc.queue.common.responsecode.CodeDefault;
-import com.dtb.hwcmc.queue.common.responsecode.CodeEnum;
 import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;

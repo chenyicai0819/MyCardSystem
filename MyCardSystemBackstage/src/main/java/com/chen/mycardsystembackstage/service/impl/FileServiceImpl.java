@@ -10,6 +10,8 @@ import cn.hutool.poi.excel.ExcelWriter;
 import com.alibaba.fastjson.JSONObject;
 import com.chen.mycardsystembackstage.entity.*;
 import com.chen.mycardsystembackstage.service.*;
+import com.chen.mycardsystembackstage.utils.FileUtils;
+import com.chen.mycardsystembackstage.utils.ResultBean;
 import com.chen.mycardsystembackstage.utils.StringToUtf8;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -164,6 +166,12 @@ public class FileServiceImpl implements FileService {
             writer.close();
         }
         IoUtil.close(out);
+    }
+
+    @Override
+    public String uploadFile(MultipartFile multipartFile) {
+        String relativePath = FileUtils.uploadFile(multipartFile);
+        return  relativePath;
     }
 
     public static String getStringImg(ExcelWriter writer) {
