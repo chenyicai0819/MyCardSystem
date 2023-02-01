@@ -1,6 +1,5 @@
 package com.chen.mycardsystembackstage.service.impl;
 
-import com.chen.mycardsystembackstage.entity.ColumnName;
 import com.chen.mycardsystembackstage.entity.Manages;
 import com.chen.mycardsystembackstage.mapper.ManaMapper;
 import com.chen.mycardsystembackstage.service.ManaService;
@@ -26,9 +25,20 @@ public class ManaServiceImpl implements ManaService {
         return manaMapper.getMana();
     }
 
+    /**
+     * 获取数据库表的字段名
+     * @param head
+     * @return
+     */
     @Override
-    public List<ColumnName> getHead(int head) {
+    public List<String> getHead(int head) {
         String name=getName(head);
+
+        // List<String> list = manaMapper.getHead(name);
+        // for (int i = 0; i < list.size(); i++) {
+        //     System.out.println(list.get(0));
+        // }
+        // return null;
         return manaMapper.getHead(name);
     }
 

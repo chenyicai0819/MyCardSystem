@@ -20,7 +20,7 @@ spring:
       min-idle: 0
       max-wait: -1
     password: chenyicai0819
-mybatis:
+mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.chen.mycardsystembackstage.entity
   configuration:
@@ -33,3 +33,14 @@ pagehelper:
   params: count=countSql
 logging:
   config: classpath:log.xml
+wx:
+  open:
+    app_id:
+    app_secret:
+    redirect_url:
+web:
+  upload:
+    audio: /home/static/mycard/audio/
+    image: /home/static/mycard/images/
+    video: /home/static/mycard/videos/
+  domain: https://worklist.hidtb.com:8085/

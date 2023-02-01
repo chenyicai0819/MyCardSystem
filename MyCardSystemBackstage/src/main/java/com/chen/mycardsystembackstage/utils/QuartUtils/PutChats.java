@@ -3,14 +3,19 @@ package com.chen.mycardsystembackstage.utils.QuartUtils;
 import cn.hutool.extra.mail.MailUtil;
 import com.chen.mycardsystembackstage.entity.User;
 import com.chen.mycardsystembackstage.service.UserService;
+import com.chen.mycardsystembackstage.utils.GetIpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Project : MyCardSystem - PutChats
@@ -26,6 +31,8 @@ public class PutChats implements Job {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private GetIpUtil getIpUtil;
 
 
     public void test(){
@@ -66,6 +73,16 @@ public class PutChats implements Job {
         }else {
             log.error("用户"+user.getUserId()+":"+user.getUserName()+"安全信息发送失败，请关注！");
         }
+    }
+
+    /**
+     * 启动时显示Swagger的地址
+     */
+    public void showSwaggerHost(){
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        String ip = Objects.equals(getIpUtil.getIpAddr(request), "0:0:0:0:0:0:0:1") ?"localhost":getIpUtil.getIpAddr(request);
+        log.warn("Swagger Host:"+ip+":8089/swagger-ui/index.html");
     }
 
     @Override

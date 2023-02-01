@@ -87,8 +87,8 @@ public enum CodeDefault implements CodeEnum{
     EMPTY_CLASS_NICK_NAME(100020041L,"班级昵称不能为空！"),
     INVALID_SURVEY_CODE(100020042L,"问卷码无效!"),
 
-    QUART_ADD_ERROR(100120001L,"定时任务添加异常！"),
-    QUART_UPDATE_ERROR(100120002L,"定时任务修改异常"),
+    QUART_ADD_ERROR(100120001L,"定时任务新增失败"),
+    QUART_UPDATE_ERROR(100120002L,"定时任务修改失败"),
 
     ;
 

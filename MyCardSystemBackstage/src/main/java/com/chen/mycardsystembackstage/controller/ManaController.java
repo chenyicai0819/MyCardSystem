@@ -33,7 +33,7 @@ public class ManaController {
     }
 
     @PostMapping("/head")
-    public List<ColumnName> getHead(int head){
+    public List<String> getHead(int head){
         return manaService.getHead(head);
     }
 

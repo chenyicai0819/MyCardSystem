@@ -5,6 +5,7 @@
       <el-badge :value="data.messageNotReadCount" :max="99" class="item" style="right: 15px">
         <el-button type="warning" circle @click="openMd"><el-icon><Message /></el-icon></el-button>
       </el-badge>
+      <el-button type="danger" @click="openTasks">定时任务</el-button>
       <el-button type="danger" @click="toLogs">查看日志</el-button>
       <el-button type="danger" @click="toLoad">返回首页</el-button>
     </div>
@@ -18,8 +19,10 @@
           </div>
           <div class="table">
             <el-table :data="data.tableData" stripe style="width: 100%">
-              <el-table-column :prop="thead.name"
-                               :label="thead.name"
+              <!--                               :prop="thead.name"-->
+              <!--                               :label="thead.name"-->
+              <el-table-column :prop="thead"
+                               :label="thead"
                                sortable
                                v-for="(thead,i) in data.tableHead"
                                :key =i
@@ -122,6 +125,7 @@
     </el-dialog>
 
     <ManagesDialog ref="RefManagesDialog"/>
+    <Tasks ref="RefTasks"/>
   </div>
 </template>
 
@@ -137,16 +141,18 @@ import { UploadFilled } from '@element-plus/icons-vue'
 import moment from 'moment'
 import _axios from "@/axios/config";
 import ManagesDialog from "@/views/manage/ManagesDialog";
+import Tasks from "@/views/manage/Tasks";
 
 export default {
   name: "Manages",
-  components: {ManagesDialog, Add},
+  components: {Tasks, ManagesDialog, Add},
   setup(){
     const appStore=inject('appStore')
     const qs=require('qs');
     const {proxy}=getCurrentInstance();
     const RefChilde=ref();
     const RefManagesDialog=ref(null);
+    const RefTasks=ref(null);
     const count = ref(0)
     const data=reactive({
       nowUser:{},//当前登录用户
@@ -190,6 +196,13 @@ export default {
      */
     const openMd = () => {
       RefManagesDialog.value.openThis()
+    }
+
+    /**
+     * 打开定时任务组件
+     */
+    const openTasks = () => {
+      RefTasks.value.openThis()
     }
     /**
      * 获取未读消息的数量
@@ -335,7 +348,7 @@ export default {
     const getHead= () =>{
       proxy.$axios.post('mana/head',qs.stringify({"head":data.activeName})).then(res=>{
         const getdata=res.data;
-        // console.log(getdata);
+        console.log(getdata);
         data.tableHead=getdata;
       });
     }
@@ -475,7 +488,7 @@ export default {
       getHead, getData, openDrawer, handleEdit, handleDelete, confirmEvent, cancelEvent, chooseNum,
       searchName, getCount, downAdd, RefChilde, count, load, outExcel,upExcel,updataFile,onSuccess,
       onExceed,onRemove,onError,toLogs,RefManagesDialog,openMd,getMessageNotReadCount,getUserMessageFromStore,
-
+      openTasks,RefTasks,
     }
 
   }

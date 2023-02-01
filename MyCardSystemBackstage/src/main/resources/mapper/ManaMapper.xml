@@ -6,7 +6,7 @@
     <select id="getMana" resultType="com.chen.mycardsystembackstage.entity.Manages">
         SELECT * FROM manages;
     </select>
-    <select id="getHead" resultType="com.chen.mycardsystembackstage.entity.ColumnName">
+    <select id="getHead" resultType="string" parameterType="string">
         SELECT COLUMN_NAME  FROM information_schema.columns WHERE table_name=#{head}
     </select>
 

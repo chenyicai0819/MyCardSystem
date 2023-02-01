@@ -16,5 +16,5 @@ import java.util.List;
 @Service
 public interface ManaService {
     public List<Manages> getMana();
-    public List<ColumnName> getHead(int head);
+    public List<String> getHead(int head);
 }

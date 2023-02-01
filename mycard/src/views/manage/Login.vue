@@ -31,9 +31,9 @@
         </el-form>
       </div>
     </div>
-    <div style="width:100%;padding-left: 10px;margin-top: -5px;" v-show="data.isShowCronCore">
-      <Cron @change="changeCron" v-model:value="data.form.logicConfig" />
-    </div>
+<!--    <div style="width:100%;padding-left: 10px;margin-top: -5px;" v-show="data.isShowCronCore">-->
+<!--      <Cron @change="changeCron" v-model:value="data.form.logicConfig" />-->
+<!--    </div>-->
   </div>
 </template>
 
