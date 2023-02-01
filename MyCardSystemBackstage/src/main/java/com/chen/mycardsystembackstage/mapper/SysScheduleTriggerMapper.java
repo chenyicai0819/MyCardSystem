@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.chen.mycardsystembackstage.entity.SysScheduleTrigger;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * Project : MyCardSystem - SysScheduleTriggerMapper
  * Powered by GeorgeChen On 2023-01-30 16:06:51
@@ -14,4 +16,5 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface SysScheduleTriggerMapper extends BaseMapper<SysScheduleTrigger> {
+    SysScheduleTrigger getAllByMethod(String method);
 }

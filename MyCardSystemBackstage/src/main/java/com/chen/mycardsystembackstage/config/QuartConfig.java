@@ -40,7 +40,7 @@ public class QuartConfig {
         bean.setStartupDelay(1);
 
         // 注册触发器
-        bean.setTriggers(firstTrigger,secondTrigger);
+        // bean.setTriggers(firstTrigger,secondTrigger);
 
         return bean;
     }

@@ -33,17 +33,17 @@ public class QuartzTask implements CommandLineRunner {
      */
     @Override
     public void run(String... args) throws Exception {
-        LambdaQueryWrapper<SysScheduleTrigger> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(SysScheduleTrigger::getStatus, 1);
-        List<SysScheduleTrigger> scheduleTriggerList = sysScheduleTriggerService.list(lambdaQueryWrapper);
-        if (null != scheduleTriggerList && !scheduleTriggerList.isEmpty()) {
-            for (SysScheduleTrigger item: scheduleTriggerList) {
-                // 首先删除定时任务
-                sysScheduleTriggerService.schedulerDelete(item);
-                // 再添加定时任务
-                sysScheduleTriggerService.schedulerAdd(item);
-            }
-        }
+        // LambdaQueryWrapper<SysScheduleTrigger> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        // lambdaQueryWrapper.eq(SysScheduleTrigger::getStatus, 1);
+        // List<SysScheduleTrigger> scheduleTriggerList = sysScheduleTriggerService.list(lambdaQueryWrapper);
+        // if (null != scheduleTriggerList && !scheduleTriggerList.isEmpty()) {
+        //     for (SysScheduleTrigger item: scheduleTriggerList) {
+        //         // 首先删除定时任务
+        //         sysScheduleTriggerService.schedulerDelete(item);
+        //         // 再添加定时任务
+        //         sysScheduleTriggerService.schedulerAdd(item);
+        //     }
+        // }
 
     }
 }

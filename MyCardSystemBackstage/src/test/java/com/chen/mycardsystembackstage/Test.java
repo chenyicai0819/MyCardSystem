@@ -1,6 +1,7 @@
 package com.chen.mycardsystembackstage;
 
 import com.chen.mycardsystembackstage.utils.AuthCodeUtil;
+import com.chen.mycardsystembackstage.utils.QuartUtils.PutChatsLogsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,9 +17,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class Test {
     @Autowired
     private AuthCodeUtil authCodeUtil;
+    @Autowired
+    private PutChatsLogsUtils putChatsLogsUtils;
 
     @org.junit.jupiter.api.Test
     public void testRedis(){
         System.out.println(authCodeUtil.create(String.valueOf(1), 60));
     }
+
+    @org.junit.jupiter.api.Test
+    public void testPutChatLog(){
+        System.out.println(putChatsLogsUtils.getTrigge("test").getId());
+
+    }
+
+
 }

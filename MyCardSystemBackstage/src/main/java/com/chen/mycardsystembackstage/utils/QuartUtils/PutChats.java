@@ -1,9 +1,12 @@
 package com.chen.mycardsystembackstage.utils.QuartUtils;
 
 import cn.hutool.extra.mail.MailUtil;
+import com.chen.mycardsystembackstage.entity.SysScheduleTrigger;
 import com.chen.mycardsystembackstage.entity.User;
 import com.chen.mycardsystembackstage.service.UserService;
+import com.chen.mycardsystembackstage.service.impl.UserServiceImpl;
 import com.chen.mycardsystembackstage.utils.GetIpUtil;
+import com.chen.mycardsystembackstage.utils.context.SpringContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -29,20 +32,21 @@ import java.util.Objects;
 @Slf4j
 public class PutChats implements Job {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private GetIpUtil getIpUtil;
-
-
     public void test(){
+        PutChatsLogsUtils putChatsLogsUtils = SpringContextUtils.getContext().getBean(PutChatsLogsUtils.class);
+        SysScheduleTrigger trigger = putChatsLogsUtils.getTrigge("test");
         log.info("测试的定时任务");
+        putChatsLogsUtils.addTasksLogsUtils(trigger.getId(),trigger.getJobName(),1, "后台通知消息","测试的定时任务");
     }
 
     /**
      * 提醒管理员注意账号安全，修改密码
      */
     public void updataPass(){
+        PutChatsLogsUtils putChatsLogsUtils = SpringContextUtils.getContext().getBean(PutChatsLogsUtils.class);
+        SysScheduleTrigger trigger = putChatsLogsUtils.getTrigge("updataPass");
+        UserService userService = SpringContextUtils.getContext().getBean(UserService.class);
+
         List<User> users = userService.getAllUser();
         for (int i = 0; i < users.size(); i++) {
             String email = users.get(i).getEmail();
@@ -54,13 +58,22 @@ public class PutChats implements Job {
             String put = MailUtil.send(email,"MyCardSystem-请关注您的账户安全",message,false);
             if (put.length()>0){
                 log.info("用户"+users.get(i).getUserId()+":"+users.get(i).getUserName()+"安全信息已发送至"+users.get(i).getEmail());
+                putChatsLogsUtils.addTasksLogsUtils(trigger.getId(),trigger.getJobName(),1, String.valueOf(users.get(i).getUserId()),message);
             }else {
                 log.error("用户"+users.get(i).getUserId()+":"+users.get(i).getUserName()+"安全信息发送失败，请关注！");
+                putChatsLogsUtils.addTasksLogsUtils(trigger.getId(),trigger.getJobName(),0, String.valueOf(users.get(i).getUserId()),message);
             }
         }
     }
 
+    /**
+     * 给一个特定管理员发送消息
+     */
     public void chatsForOne(){
+        PutChatsLogsUtils putChatsLogsUtils = SpringContextUtils.getContext().getBean(PutChatsLogsUtils.class);
+        SysScheduleTrigger trigger = putChatsLogsUtils.getTrigge("chatsForOne");
+        UserService userService = SpringContextUtils.getContext().getBean(UserService.class);
+
         User user = userService.selUser("4");
         String email = user.getEmail();
         String message = "MyCardSystem管理员"
@@ -70,8 +83,10 @@ public class PutChats implements Job {
         String put = MailUtil.send(email,"MyCardSystem-请关注您的账户安全",message,false);
         if (put.length()>0){
             log.info("用户"+user.getUserId()+":"+user.getUserName()+"安全信息已发送至"+user.getEmail());
+            putChatsLogsUtils.addTasksLogsUtils(trigger.getId(),trigger.getJobName(),1, String.valueOf(user.getUserId()),message);
         }else {
             log.error("用户"+user.getUserId()+":"+user.getUserName()+"安全信息发送失败，请关注！");
+            putChatsLogsUtils.addTasksLogsUtils(trigger.getId(),trigger.getJobName(),0, String.valueOf(user.getUserId()),message);
         }
     }
 
@@ -79,10 +94,16 @@ public class PutChats implements Job {
      * 启动时显示Swagger的地址
      */
     public void showSwaggerHost(){
+        PutChatsLogsUtils putChatsLogsUtils = SpringContextUtils.getContext().getBean(PutChatsLogsUtils.class);
+        GetIpUtil getIpUtil =SpringContextUtils.getContext().getBean(GetIpUtil.class);
+        SysScheduleTrigger trigger = putChatsLogsUtils.getTrigge("showSwaggerHost");
+
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String ip = Objects.equals(getIpUtil.getIpAddr(request), "0:0:0:0:0:0:0:1") ?"localhost":getIpUtil.getIpAddr(request);
-        log.warn("Swagger Host:"+ip+":8089/swagger-ui/index.html");
+        String message = "Swagger Host:"+ip+":8089/swagger-ui/index.html";
+        log.warn(message);
+        putChatsLogsUtils.addTasksLogsUtils(trigger.getId(),trigger.getJobName(),1, "后台通知消息",message);
     }
 
     @Override

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mengyb.myb.mapper.SysScheduleTriggerMapper">
-    <cache type="com.chen.mycardsystembackstage.cache.MybatisRedisCache"></cache>
+<mapper namespace="com.chen.mycardsystembackstage.mapper.SysScheduleTriggerMapper">
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.chen.mycardsystembackstage.entity.SysScheduleTrigger">
         <id column="id" property="id" />
@@ -25,6 +24,9 @@
     <sql id="Base_Column_List">
         id, job_name, job_group, job_class, job_method, job_params, job_desc, cron, trigger_name, trigger_group, trigger_desc, concurrent, status, account, create_time
     </sql>
+    <select id="getAllByMethod" resultType="com.chen.mycardsystembackstage.entity.SysScheduleTrigger">
+        SELECT * FROM sys_schedule_trigger WHERE job_method = #{method}
+    </select>
 
 </mapper>
 
