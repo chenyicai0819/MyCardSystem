@@ -250,7 +250,12 @@ public class SysScheduleTriggerServiceImpl extends ServiceImpl<SysScheduleTrigge
     public ResultBean updateScheduleTrigger(SysScheduleTrigger sysScheduleTrigger) {
         // 修改定时任务信息
 
-        return null;
+        int result = sysScheduleTriggerMapper.updateById(sysScheduleTrigger);
+        if (result > 0){
+            return ResultBean.success();
+        }else {
+            return ResultBean.error();
+        }
     }
 
     /**

@@ -46,14 +46,14 @@ public class SysScheduleTriggerController {
     /**
      * 更新定时任务
      * @param sysScheduleTrigger
-     * @param id
      * @return
      */
     @ApiOperation("更新定时任务")
-    @PostMapping("/updateScheduleTrigger/{id}")
-    public ResultBean updateScheduleTrigger(SysScheduleTrigger sysScheduleTrigger, @PathVariable("id") int id) {
+    @PostMapping("/updateScheduleTrigger")
+    public ResultBean updateScheduleTrigger(SysScheduleTrigger sysScheduleTrigger) {
         ResultBean resultBean = sysScheduleTriggerService.updateScheduleTrigger(sysScheduleTrigger);
         return resultBean;
+        // return ResultBean.success();
     }
 
 
@@ -63,10 +63,11 @@ public class SysScheduleTriggerController {
      * @return
      */
     @ApiOperation("删除定时任务")
-    @GetMapping("/deleteScheduleTrigger/{id}")
-    public ResultBean deleteScheduleTrigger(@PathVariable("id") int id) {
-        ResultBean resultBean = sysScheduleTriggerService.deleteScheduleTrigger(id);
-        return resultBean;
+    @GetMapping("/deleteScheduleTrigger")
+    public ResultBean deleteScheduleTrigger(int id) {
+        // ResultBean resultBean = sysScheduleTriggerService.deleteScheduleTrigger(id);
+        // return resultBean;
+        return ResultBean.success();
     }
 
     /**
