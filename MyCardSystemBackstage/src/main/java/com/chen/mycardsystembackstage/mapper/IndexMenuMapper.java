@@ -19,5 +19,5 @@ import java.util.List;
 
 @Mapper
 public interface IndexMenuMapper extends BaseMapper<IndexMenu> {
-    public List<IndexMenu> getIndexMenu(String parent);
+    public List<IndexMenu> getIndexMenu(int parent);
 }

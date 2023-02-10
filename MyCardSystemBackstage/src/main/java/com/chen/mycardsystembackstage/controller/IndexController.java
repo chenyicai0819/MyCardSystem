@@ -52,7 +52,7 @@ public class IndexController {
 
     @ApiOperation("删除菜单")
     @PostMapping("/delIndexMenu")
-    public ResultBean delIndexMenu(String id){
+    public ResultBean delIndexMenu(int id){
         return indexService.delIndexMenu(id);
     }
 }

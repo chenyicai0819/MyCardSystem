@@ -20,5 +20,5 @@ public interface IndexService {
     List<IndexMenuVO> getIndexMenu();
     ResultBean addIndexMenu(IndexMenu indexMenu);
     ResultBean updateIndexMenu(IndexMenu indexMenu);
-    ResultBean delIndexMenu(String id);
+    ResultBean delIndexMenu(int id);
 }

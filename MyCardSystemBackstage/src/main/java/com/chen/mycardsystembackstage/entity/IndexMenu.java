@@ -12,10 +12,10 @@ import lombok.Data;
  **/
 @Data
 public class IndexMenu {
-    String id;
+    int id;
     String name;
     String link;
     String logo;
     int level;
-    String parent;
+    int parent;
 }

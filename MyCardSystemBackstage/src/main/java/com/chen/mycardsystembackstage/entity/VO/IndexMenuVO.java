@@ -15,11 +15,11 @@ import java.util.List;
  **/
 @Data
 public class IndexMenuVO {
-    String id;
+    int id;
     String name;
     String link;
     String logo;
     int level;
-    String parent;
+    int parent;
     List<IndexMenu> children;
 }

@@ -27,7 +27,7 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public List<IndexMenuVO> getIndexMenu() {
         // 首先获取父菜单
-        List<IndexMenu> parents = indexMenuMapper.getIndexMenu("null" );
+        List<IndexMenu> parents = indexMenuMapper.getIndexMenu(0 );
         List<IndexMenuVO> menuVOS = new ArrayList<>();
 
         for (int i = 0; i < parents.size(); i++) {
@@ -65,7 +65,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public ResultBean delIndexMenu(String id) {
+    public ResultBean delIndexMenu(int id) {
         if (indexMenuMapper.deleteById(id)>0){
              return ResultBean.success();
         }else {
