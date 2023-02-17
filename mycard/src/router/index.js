@@ -30,6 +30,28 @@ const routes = [
     ]
   },
   {
+    path: '/system',
+    name: 'System',
+    component: () => import('../views/index/System'),
+    children:[
+      {
+        path: 'user',
+        name: 'user',
+        component: ()=>import('../views/index/User')
+      },
+      {
+        path: 'menu',
+        name: 'menu',
+        component: ()=>import('../views/index/Menu')
+      },
+      {
+        path: 'dict',
+        name: 'dict',
+        component: ()=>import('../views/index/Dict')
+      },
+    ]
+  },
+  {
     path: '/index',
     name: 'Index',
     component: () => import('../views/index/index'),

@@ -63,7 +63,21 @@
       </template>
       <template #default>
         <div>
-          {{drawerData}}
+          <div><div class="drawer-body-key">ID:</div><el-input class="drawer-body-value" v-model="drawerData.id" disabled/></div>
+          <div><div class="drawer-body-key">名称:</div><el-input class="drawer-body-value" v-model="drawerData.jobName" /></div>
+<!--          <div><div class="drawer-body-key">组:</div><el-input class="drawer-body-value" v-model="drawerData.jobGroup" /></div>-->
+<!--          <div><div class="drawer-body-key">所属的类:</div><el-input class="drawer-body-value" v-model="drawerData.jobClass" /></div>-->
+<!--          <div><div class="drawer-body-key">所属的方法:</div><el-input class="drawer-body-value" v-model="drawerData.jobMethod" /></div>-->
+          <div><div class="drawer-body-key">参数:</div><el-input class="drawer-body-value" v-model="drawerData.jobParams" /></div>
+          <div><div class="drawer-body-key">备注:</div><el-input class="drawer-body-value" v-model="drawerData.jobDesc" /></div>
+          <div><div class="drawer-body-key">定时时间:</div><el-input class="drawer-body-value" v-model="drawerData.cron" /></div>
+<!--          <div><div class="drawer-body-key">触发器名称:</div><el-input class="drawer-body-value" v-model="drawerData.triggerName" /></div>-->
+<!--          <div><div class="drawer-body-key">触发器组:</div><el-input class="drawer-body-value" v-model="drawerData.triggerGroup" /></div>-->
+<!--          <div><div class="drawer-body-key">触发器备注:</div><el-input class="drawer-body-value" v-model="drawerData.triggerDesc" /></div>-->
+          <div><div class="drawer-body-key">并发（0：允许，1：禁止）:</div><el-input class="drawer-body-value" v-model="drawerData.concurrent" /></div>
+          <div><div class="drawer-body-key">状态（0：禁用，1：启用）:</div><el-input class="drawer-body-value" v-model="drawerData.status" /></div>
+          <div><div class="drawer-body-key">添加人:</div><el-input class="drawer-body-value" v-model="drawerData.account" disabled/></div>
+          <div><div class="drawer-body-key">添加时间:</div><el-input class="drawer-body-value" v-model="drawerData.createTime" disabled/></div>
         </div>
         <div>
           <el-button @click="cancelClick">取消</el-button>

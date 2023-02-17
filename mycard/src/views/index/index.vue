@@ -8,27 +8,30 @@
       <div class="index-left">
         <!--        侧边导航栏-->
         <el-menu
-            default-active="1"
+            :default-active="route.path"
             class="el-menu-vertical-demo"
             :collapse="isCollapse"
             @open="handleOpen"
             @close="handleClose"
         >
-          <el-menu-item v-for="menus in menuList.data" :index="menus.id" v-show="menus.children.length === 0">
-            <el-icon><icon-menu/></el-icon>
+          <el-menu-item v-for="menus in menuList.data"
+                        :index="menus.link"
+                        v-show="menus.children.length === 0"
+                        route=true
+          >
             <template #title>{{ menus.name }}</template>
           </el-menu-item>
           <el-sub-menu v-for="menus in menuList.data" :index="menus.id" v-show="menus.children.length>0">
             <template #title>
-              <el-icon><location/></el-icon>
               {{ menus.name }}
             </template>
-            <el-menu-item v-for="children in menus.children" :index="children.id">
+            <el-menu-item v-for="children in menus.children"
+                          :index="children.link"
+                          route=true
+            >
               {{children.name}}
             </el-menu-item>
           </el-sub-menu>
-
-
         </el-menu>
       </div>
       <div class="index-body">
@@ -43,17 +46,13 @@
 
 <script>
 import {getCurrentInstance, reactive, toRefs} from "vue";
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from '@element-plus/icons-vue'
+import {useRoute} from "vue-router";
 
 export default {
   name: "index",
   setup() {
     const {proxy} = getCurrentInstance();
+    const route = useRoute()
     const data = reactive({
       isCollapse: false,
       menuList: {},
@@ -83,7 +82,7 @@ export default {
     getMenus()
 
     return {
-      ...toRefs(data), handleOpen, handleClose, getMenus,
+      ...toRefs(data), handleOpen, handleClose, getMenus, route,
     }
   }
 
