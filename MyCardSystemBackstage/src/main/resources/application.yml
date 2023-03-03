@@ -46,3 +46,6 @@ web:
     video: /home/static/mycard/videos/
     image: D:\sz\
   domain: https://worklist.hidtb.com:8085/
+
+utils:
+  pdf: D:\Download\
