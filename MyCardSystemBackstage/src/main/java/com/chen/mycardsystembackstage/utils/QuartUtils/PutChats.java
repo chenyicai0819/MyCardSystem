@@ -1,12 +1,15 @@
 package com.chen.mycardsystembackstage.utils.QuartUtils;
 
 import cn.hutool.extra.mail.MailUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.chen.mycardsystembackstage.entity.SysScheduleTrigger;
 import com.chen.mycardsystembackstage.entity.User;
 import com.chen.mycardsystembackstage.service.UserService;
 import com.chen.mycardsystembackstage.service.impl.UserServiceImpl;
 import com.chen.mycardsystembackstage.utils.GetIpUtil;
+import com.chen.mycardsystembackstage.utils.YiYanUtils;
 import com.chen.mycardsystembackstage.utils.context.SpringContextUtils;
+import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -17,6 +20,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -104,6 +108,34 @@ public class PutChats implements Job {
         String message = "Swagger Host:"+ip+":8089/swagger-ui/index.html";
         log.warn(message);
         putChatsLogsUtils.addTasksLogsUtils(trigger.getId(),trigger.getJobName(),1, "后台通知消息",message);
+    }
+
+    /**
+     * 每天发送一则文字
+     */
+    public void putChatForDay(){
+        PutChatsLogsUtils putChatsLogsUtils = SpringContextUtils.getContext().getBean(PutChatsLogsUtils.class);
+        SysScheduleTrigger trigger = putChatsLogsUtils.getTrigge("putChatForDay");
+        UserService userService = SpringContextUtils.getContext().getBean(UserService.class);
+        YiYanUtils yiYanUtils =SpringContextUtils.getContext().getBean(YiYanUtils.class);
+
+        List<User> users = new ArrayList<>();
+        users.add(userService.selUser("1"));
+        users.add(userService.selUser("4"));
+        JSONObject o = yiYanUtils.sendRequestWithHttpClient();
+        for (int i = 0; i < users.size(); i++) {
+            String email = users.get(i).getEmail();
+            String message = o.getString("hitokoto")+"   ————"+o.getString("from")+"("+o.getString("from_who")+")";
+            String put = MailUtil.send(email,"MyCardSystem-请关注您的账户安全",message,false);
+            if (put.length()>0){
+                log.info("用户"+users.get(i).getUserId()+":"+users.get(i).getUserName()+"每日一言"+users.get(i).getEmail());
+                putChatsLogsUtils.addTasksLogsUtils(trigger.getId(),trigger.getJobName(),1, String.valueOf(users.get(i).getUserId()),message);
+            }else {
+                log.error("用户"+users.get(i).getUserId()+":"+users.get(i).getUserName()+"每日一言发送失败，请关注！");
+                putChatsLogsUtils.addTasksLogsUtils(trigger.getId(),trigger.getJobName(),0, String.valueOf(users.get(i).getUserId()),message);
+            }
+        }
+
     }
 
     @Override

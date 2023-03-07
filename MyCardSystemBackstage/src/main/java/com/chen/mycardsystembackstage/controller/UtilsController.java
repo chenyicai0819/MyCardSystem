@@ -3,6 +3,7 @@ package com.chen.mycardsystembackstage.controller;
 import com.chen.mycardsystembackstage.entity.VO.UtilsPdfVo;
 import com.chen.mycardsystembackstage.utils.PdfUtils;
 import com.chen.mycardsystembackstage.utils.QRCodeUtils;
+import com.chen.mycardsystembackstage.utils.YiYanUtils;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,8 @@ public class UtilsController {
     private PdfUtils pdfUtils;
     @Autowired
     private QRCodeUtils qrCodeUtils;
+    @Autowired
+    private YiYanUtils yiYanUtils;
 
     @PostMapping("/imageToPdf")
     public void imageToPdf(@RequestParam(value = "multripartFile",required = false)MultipartFile[] files,
@@ -51,5 +54,13 @@ public class UtilsController {
             qrCodeUtils.create(link,response);
         }
 
+    }
+
+    /**
+     * 获取每日一言
+     */
+    @GetMapping("/getYiyan")
+    public Object getYiyan(){
+        return yiYanUtils.sendRequestWithHttpClient();
     }
 }
