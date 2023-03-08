@@ -260,7 +260,7 @@ export default {
     }
     // 切换Tab时
     const handleClick = (tab, event) => {
-      // console.log(data.activeName);
+      console.log(data.activeName);
       getHead();
       getCount();
       getData();
@@ -357,15 +357,15 @@ export default {
     const getData= () =>{
       let uri;
       let active=data.activeName;
-      if (active==1){
+      if (active===1){
         uri='card/get';
-      }else if(active==2){
+      }else if(active===2){
         uri='mork/get';
-      }else if(active==3){
+      }else if(active===3){
         uri='coll/get';
-      }else if (active==4){
+      }else if (active===4){
         uri='ad/get';
-      }else if (active==5){
+      }else if (active===5){
         uri='imgs/get';
       }
       proxy.$axios.get(uri,{params:{page:data.currentPage,size:data.pageSize}}).then(res=>{

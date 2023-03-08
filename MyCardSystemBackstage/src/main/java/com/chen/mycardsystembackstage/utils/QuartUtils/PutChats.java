@@ -122,11 +122,13 @@ public class PutChats implements Job {
         List<User> users = new ArrayList<>();
         users.add(userService.selUser("1"));
         users.add(userService.selUser("4"));
+        String history = String.valueOf(yiYanUtils.getHistory());
         JSONObject o = yiYanUtils.sendRequestWithHttpClient();
         for (int i = 0; i < users.size(); i++) {
             String email = users.get(i).getEmail();
-            String message = o.getString("hitokoto")+"   ————"+o.getString("from")+"("+o.getString("from_who")+")";
-            String put = MailUtil.send(email,"MyCardSystem-请关注您的账户安全",message,false);
+            String message = o.getString("hitokoto")+"   ————"+o.getString("from")+"("+o.getString("from_who")+")"
+                    +"\r\n\r\n"+history;
+            String put = MailUtil.send(email,"MyCardSystem-每日一言",message,false);
             if (put.length()>0){
                 log.info("用户"+users.get(i).getUserId()+":"+users.get(i).getUserName()+"每日一言"+users.get(i).getEmail());
                 putChatsLogsUtils.addTasksLogsUtils(trigger.getId(),trigger.getJobName(),1, String.valueOf(users.get(i).getUserId()),message);

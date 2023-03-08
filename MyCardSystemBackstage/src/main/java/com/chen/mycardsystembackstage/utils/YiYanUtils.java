@@ -1,6 +1,8 @@
 package com.chen.mycardsystembackstage.utils;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +13,8 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,6 +40,36 @@ public class YiYanUtils {
             String message = jsonObject.getString("hitokoto")+"   ————"+jsonObject.getString("from")+"("+jsonObject.getString("from_who")+")";
             System.out.println(message);
             return jsonObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取历史上的今天（免费API一天只能用50次）
+     * @return
+     */
+    public Object getHistory(){
+        try {
+            int month = DateUtil.thisMonth()+1;
+            int day=DateUtil.thisDayOfMonth();
+            String url = "http://v.juhe.cn/todayOnhistory/queryEvent.php?key=6176e18c7631e130bcf3588144c50c7e&date="+month+"/"+day;
+            String o= null;
+            o = HttpClientUtil.get(url);
+            JSONObject jsonObject = JSON.parseObject(o);
+            JSONArray results = jsonObject.getJSONArray("result");
+            StringBuffer sb = new StringBuffer();
+            sb.append("历史上的今天："+DateUtil.thisYear()+"年"+month+"月"+day+"日");
+            for(int i=0; i<results.size(); i++){
+                JSONObject result = (JSONObject) results.get(i);
+                String title = result.getString("title");
+                String date = result.getString("date");
+                // System.out.println(date+":"+title);
+                sb.append("\r\n");
+                sb.append(date+":"+title);
+            }
+            return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
