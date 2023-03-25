@@ -99,7 +99,7 @@ export default {
         console.log(e)
       })
     }
-    getMap()
+    // getMap()
     // getIpCity()
     onBeforeMount(()=>{
       getAllProvince()
