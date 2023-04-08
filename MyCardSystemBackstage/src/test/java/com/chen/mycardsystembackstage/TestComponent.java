@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.text.ParseException;
+
 /**
  * Project : MyCardSystem - TestComponent
  * Powered by GeorgeChen On 2023-03-10 15:37:51
@@ -25,6 +27,10 @@ public class TestComponent {
 
     @Test
     public void testOffwork(){
-        countdownUtil.offWork();
+        try {
+            countdownUtil.offWork();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
