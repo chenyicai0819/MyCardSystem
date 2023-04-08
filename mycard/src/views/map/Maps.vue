@@ -102,7 +102,7 @@ export default {
     // getMap()
     // getIpCity()
     onBeforeMount(()=>{
-      getAllProvince()
+      // getAllProvince()
       mapStore.setMaplist(data.allProvince)
     })
     return{

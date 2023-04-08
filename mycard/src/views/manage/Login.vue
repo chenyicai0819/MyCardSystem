@@ -45,6 +45,7 @@ import Verify from "./Verify";
 import moment from "moment/moment";
 import {ElMessage} from "element-plus";
 import Cron from "@/views/manage/Cron";
+import md5 from 'js-md5';
 
 export default {
   name: "Login",
@@ -84,7 +85,12 @@ export default {
 
     // 登录
     const onSubmit = () => {
-      proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":data.form.pass,"code":data.form.code })).then(res=>{
+      // 密码md5加密
+      let secret = "george";
+      let md5Pass = md5(md5(data.form.pass)+secret);
+      // console.log(data.form.pass)
+      // console.log(md5Pass)
+      proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":md5Pass,"code":data.form.code })).then(res=>{
         if ("允许登录"==res.data){
           // 登录成功后将token存储到store，然后再进入界面
           localStorage.setItem("loginToken",data.form.name)
