@@ -73,7 +73,7 @@
       >
       </el-pagination>
     </div>
-    <div class="down-user">
+    <div class="down-userMongo">
       <div>
         当前登录用户：{{data.nowUser.userName}}
       </div>
@@ -186,7 +186,7 @@ export default {
 
     // 获取到用户信息
     const getUserMessageFromStore = () => {
-      proxy.$axios.post('user/getUserMessage').then(res=>{
+      proxy.$axios.post('userMongo/getUserMessage').then(res=>{
         data.nowUser = res.data
       });
     }
@@ -523,7 +523,7 @@ export default {
   bottom: 0px;
   background-color: #FFFFFF;
 }
-.down-user{
+.down-userMongo{
   position: fixed;
   right: 0px;
   bottom: 0px;

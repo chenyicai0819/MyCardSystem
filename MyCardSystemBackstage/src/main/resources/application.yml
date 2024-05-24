@@ -20,6 +20,11 @@ spring:
       min-idle: 0
       max-wait: -1
     password: chenyicai0819
+  data:
+    mongodb:
+      uri: mongodb://"app":"!QAZ2wsx"@134.175.68.240:27017/test
+      authentication-database: admin
+
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.chen.mycardsystembackstage.entity

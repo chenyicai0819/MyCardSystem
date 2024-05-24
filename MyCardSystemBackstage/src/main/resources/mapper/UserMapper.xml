@@ -3,40 +3,40 @@
 <mapper namespace="com.chen.mycardsystembackstage.mapper.UserMapper">
 <!--    <cache type="com.chen.mycardsystembackstage.cache.MybatisRedisCache"></cache>-->
     <update id="addOpenid" parameterType="string">
-        UPDATE user SET openid = #{openid} WHERE userId = #{id}
+        UPDATE userMongo SET openid = #{openid} WHERE userId = #{id}
     </update>
 
     <select id="login" resultType="int" parameterType="com.chen.mycardsystembackstage.entity.User">
-        SELECT COUNT(*) FROM user WHERE userId=#{userId} AND userPass=#{userPass}
+        SELECT COUNT(*) FROM userMongo WHERE userId=#{userId} AND userPass=#{userPass}
     </select>
     <select id="selUser" resultType="com.chen.mycardsystembackstage.entity.User">
-        SELECT * FROM user WHERE userId=#{id}
+        SELECT * FROM userMongo WHERE userId=#{id}
     </select>
     <select id="getPassword" resultType="java.lang.String">
-        SELECT userPass FROM user WHERE userId=#{id}
+        SELECT userPass FROM userMongo WHERE userId=#{id}
     </select>
     <select id="checkUserBanStatus" resultType="java.lang.Integer">
         SELECT ban
-        FROM user
+        FROM userMongo
         WHERE userId = #{id}
     </select>
     <select id="getRole" resultType="java.lang.String">
         SELECT role
-        FROM user
+        FROM userMongo
         WHERE userId = #{id}
     </select>
     <select id="getRolePermission" resultType="java.lang.String">
         SELECT roles.permission
-        FROM user, roles
-        WHERE user.userId = #{id} AND roles.roleName = user.roleName
+        FROM userMongo, roles
+        WHERE userMongo.userId = #{id} AND roles.roleName = userMongo.roleName
     </select>
     <select id="getPermission" resultType="java.lang.String">
         SELECT permission
-        FROM user
+        FROM userMongo
         WHERE userId = #{id}
     </select>
     <select id="getAllUser" resultType="com.chen.mycardsystembackstage.entity.User">
-        SELECT * FROM user WHERE email is not null
+        SELECT * FROM userMongo WHERE email is not null
     </select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.chen.mycardsystembackstage.controller;
 
+import cn.hutool.crypto.SmUtil;
 import com.chen.mycardsystembackstage.entity.VO.UtilsPdfVo;
 import com.chen.mycardsystembackstage.utils.*;
 import io.swagger.annotations.ApiParam;
@@ -7,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Project : MyCardSystem - UtilsController
@@ -34,6 +37,8 @@ public class UtilsController {
     private VideoUtils videoUtils;
     @Autowired
     private SportUtils sportUtils;
+    @Resource
+    private Sm3Utils sm3Utils;
 
     @PostMapping("/imageToPdf")
     public void imageToPdf(@RequestParam(value = "multripartFile",required = false)MultipartFile[] files,
@@ -90,5 +95,19 @@ public class UtilsController {
     @GetMapping("/getNba")
     public Object getNba(){
         return sportUtils.getNba();
+    }
+
+    @GetMapping("/getSm3")
+    public String getSm3(){
+        String appCode = "ycJqGD";
+        String appSecretKey = "770df23d-ecee-4087-aa04-f5ecb190707b";
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        String requestId = String.valueOf(UUID.randomUUID());
+
+        String signKey = appCode + appSecretKey + requestId + timestamp;
+        System.out.println(signKey);
+        String digestHex = SmUtil.sm3(signKey);
+        System.out.println(digestHex);
+        return digestHex;
     }
 }

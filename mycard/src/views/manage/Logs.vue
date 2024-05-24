@@ -108,7 +108,7 @@ export default {
       tableHead: [
         {"name": "id"},
         {"name": "type"},
-        {"name": "user"},
+        {"name": "userMongo"},
         {"name": "ip"},
         {"name": "classMethod"},
         {"name": "args"},
@@ -204,7 +204,7 @@ export default {
     //查找
     const searchName = () => {
       let search = data.search;
-      proxy.$axios.post('/logs/sea', qs.stringify({"user": search})).then(res => {
+      proxy.$axios.post('/logs/sea', qs.stringify({"userMongo": search})).then(res => {
         const getdata = res.data;
         // console.log(getdata);
         data.tableData = getdata;

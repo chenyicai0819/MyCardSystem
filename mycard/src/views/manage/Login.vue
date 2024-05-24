@@ -90,7 +90,7 @@ export default {
       let md5Pass = md5(md5(data.form.pass)+secret);
       // console.log(data.form.pass)
       // console.log(md5Pass)
-      proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":md5Pass,"code":data.form.code })).then(res=>{
+      proxy.$axios.post('userMongo/login',qs.stringify({ "userId":data.form.name,"userPass":md5Pass,"code":data.form.code })).then(res=>{
         if ("允许登录"==res.data){
           // 登录成功后将token存储到store，然后再进入界面
           localStorage.setItem("loginToken",data.form.name)
@@ -105,13 +105,13 @@ export default {
 
     // 获取用户邮箱
     const getEmail = () => {
-      proxy.$axios.get('user/getEmail', {params: {"id":data.form.name}}).then(res => {
+      proxy.$axios.get('userMongo/getEmail', {params: {"id":data.form.name}}).then(res => {
         data.form.email = res.data
       });
     }
     // 获取短信验证码
     const getAuthCode = () => {
-      proxy.$axios.get('user/getAuthCode', {params: {"id":data.form.name,"time":data.authCodeTime}}).then(res => {
+      proxy.$axios.get('userMongo/getAuthCode', {params: {"id":data.form.name,"time":data.authCodeTime}}).then(res => {
         if (res.data == 1){
           getEmail()
           data.authCodeCountDown =data.authCodeCountDownModel;

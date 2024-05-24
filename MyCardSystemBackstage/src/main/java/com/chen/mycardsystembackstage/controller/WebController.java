@@ -1,5 +1,7 @@
 package com.chen.mycardsystembackstage.controller;
 
+import com.chen.mycardsystembackstage.entity.mongod.UserMongo;
+import com.chen.mycardsystembackstage.repository.UserRepository;
 import com.chen.mycardsystembackstage.utils.GetCityByIp;
 import com.chen.mycardsystembackstage.utils.GetIpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class WebController {
 
     @Autowired
     private GetIpUtil getIpUtil;
+
+    @Autowired
+    private UserRepository userRepository;
     // InetAddress addr;
     //
     // {
@@ -50,5 +55,11 @@ public class WebController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/getUser")
+    public UserMongo getUser(){
+        UserMongo userMongo = userRepository.findUserByUserName("小黑");
+        return userMongo;
     }
 }

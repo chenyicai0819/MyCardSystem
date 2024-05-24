@@ -49,7 +49,7 @@
       <el-input :class="net.name==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.name" placeholder="网站的名称" />
       <el-input :class="net.link==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.link" placeholder="网站的网址" />
       <el-input :class="net.text==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.text" placeholder="网站的介绍" />
-      <el-input :class="net.user==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.user" placeholder="您的名字" />
+      <el-input :class="net.userMongo==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.userMongo" placeholder="您的名字" />
       <el-input :class="net.email==''?'marks-affix-input-input-null':'marks-affix-input-input'" v-model="net.email" placeholder="您的邮箱" />
       <el-divider style="margin-bottom: 10px"/>
       <el-button type="primary" style="margin-top: -10px;width: 100px" @click="recommendPush">推  荐</el-button>
@@ -98,7 +98,7 @@ export default {
         name:'',
         link:'',
         text:'',
-        user:'',
+        userMongo:'',
         email:'',
         type:'推荐网站',
         out:'我们已经收到了您的推荐！我们会尽快审核,审核通过后尽快上架！感谢！'
@@ -152,7 +152,7 @@ export default {
               {"name":data.net.name,
                 "link":data.net.link,
                 "text":data.net.text,
-                "user":data.net.user,
+                "userMongo":data.net.userMongo,
                 "email":data.net.email,
                 "model":recommendEmail(data.net),
               }
