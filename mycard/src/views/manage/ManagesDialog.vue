@@ -1,65 +1,195 @@
 <template>
   <div class="managesdialog">
-    <el-dialog v-model="dialogTableVisible"
-               :show-close="false"
-               title="消息列表"
+    <el-dialog
+      v-model="dialogTableVisible"
+      title="消息管理"
+      width="70%"
+      class="message-dialog"
+      destroy-on-close
     >
-      <el-table :data="messageTable" height="300px">
-        <el-table-column property="id" label="id" width="100" />
-        <el-table-column property="type" label="type" width="100" />
-        <el-table-column property="title" label="title" width="300" />
-        <el-table-column align="right">
-          <template #default="scope">
-            <el-button type="primary" size="mini" @click="showColumn(scope.$index, scope.row)"
-            >查看详情</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="dialogTableVisible = false" type="warning">关 闭</el-button>
-        </div>
-      </template>
+      <div class="message-table-wrapper">
+        <el-table 
+          :data="messageTable" 
+          style="width: 100%"
+          height="450px"
+          border
+          stripe
+          class="message-table"
+        >
+          <el-table-column 
+            type="index" 
+            label="序号" 
+            width="80" 
+            align="center"
+          />
+          <el-table-column 
+            property="type" 
+            label="类型" 
+            width="120"
+            align="center"
+          >
+            <template #default="{ row }">
+              <el-tag 
+                :type="row.type === '广告' ? 'warning' : row.type === '网站' ? 'primary' : 'info'"
+                effect="light"
+                class="type-tag"
+              >
+                {{ row.type }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column 
+            property="title" 
+            label="标题"
+            show-overflow-tooltip
+          >
+            <template #default="{ row }">
+              <div class="message-title">
+                <el-badge v-if="!row.isRead" is-dot class="unread-badge" />
+                {{ row.title }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column 
+            fixed="right"
+            label="操作" 
+            width="120"
+            align="center"
+          >
+            <template #default="scope">
+              <el-button
+                type="primary"
+                link
+                @click="showColumn(scope.$index, scope.row)"
+              >
+                查看详情
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-dialog>
 
     <el-drawer
-        v-model="drawerShow"
-        :title=drawerTitle
-        :before-close="drawerHandleClose"
-        direction="rtl"
-        custom-class="demo-drawer"
-        :show-close=false
-        :close-on-press-escape=true
+      v-model="drawerShow"
+      :title="drawerTitle"
+      :before-close="drawerHandleClose"
+      direction="rtl"
+      size="45%"
+      class="message-detail-drawer"
+      destroy-on-close
     >
-      <div class="drawer-body">
-        <div><div class="drawer-body-key">ID:</div><el-input class="drawer-body-value" v-model="messages.id" disabled/></div>
-        <div><div class="drawer-body-key">KEY:</div><el-input class="drawer-body-value" v-model="messages.keyid" disabled/></div>
-        <div><div class="drawer-body-key">类型:</div><el-input class="drawer-body-value" v-model="messages.type" disabled/></div>
-        <div><div class="drawer-body-key">标题:</div><el-input class="drawer-body-value" v-model="messages.title" disabled/></div>
-        <div><div class="drawer-body-key">内容:</div><el-input class="drawer-body-value" v-model="messages.text" disabled/></div>
-        <div v-if="messages.type==='广告'"><div class="drawer-body-key">金额:</div><el-input class="drawer-body-value" v-model="messages.money" disabled/></div>
-        <div v-if="messages.type==='广告'"><div class="drawer-body-key">日期:</div><el-input class="drawer-body-value" v-model="messages.showdate" disabled/></div>
-        <div v-if="messages.type==='广告'"><div class="drawer-body-key">电话:</div><el-input class="drawer-body-value" v-model="messages.phone" disabled/></div>
-        <div><div class="drawer-body-key">邮箱:</div><el-input class="drawer-body-value" v-model="messages.email" disabled/></div>
-        <div v-if="messages.type==='网站'"><div class="drawer-body-key">链接:</div><el-input class="drawer-body-value" v-model="messages.link" disabled/></div>
-        <div v-if="messages.type==='网站'"><div class="drawer-body-key">名称:</div><el-input class="drawer-body-value" v-model="messages.name" disabled/></div>
-        <div><div class="drawer-body-key">通过:</div><el-input class="drawer-body-value" v-model="messages.isPass" disabled/></div>
-        <div v-if="messages.type==='网站'"><div class="drawer-body-key">分类:</div><el-select class="drawer-body-value" v-model="messages.Linktype" placeholder="请选择类型">
-          <el-option
-              v-for="item in collName"
-              :key="item.collName"
-              :label="item.collName"
-              :value="item.collName"
+      <div class="drawer-content">
+        <el-descriptions 
+          :column="1" 
+          border
+          class="message-details"
+        >
+          <el-descriptions-item label="ID">
+            {{ messages.id }}
+          </el-descriptions-item>
+          
+          <el-descriptions-item label="KEY">
+            {{ messages.keyid }}
+          </el-descriptions-item>
+          
+          <el-descriptions-item label="类型">
+            <el-tag 
+              :type="messages.type === '广告' ? 'warning' : messages.type === '网站' ? 'primary' : 'info'"
+              class="type-tag"
+            >
+              {{ messages.type }}
+            </el-tag>
+          </el-descriptions-item>
+          
+          <el-descriptions-item label="标题">
+            {{ messages.title }}
+          </el-descriptions-item>
+          
+          <el-descriptions-item label="内容">
+            <div class="message-content">{{ messages.text }}</div>
+          </el-descriptions-item>
 
+          <template v-if="messages.type === '广告'">
+            <el-descriptions-item label="金额">
+              {{ messages.money }}
+            </el-descriptions-item>
+            
+            <el-descriptions-item label="日期">
+              {{ messages.showdate }}
+            </el-descriptions-item>
+            
+            <el-descriptions-item label="电话">
+              {{ messages.phone }}
+            </el-descriptions-item>
+          </template>
+
+          <el-descriptions-item label="邮箱">
+            {{ messages.email }}
+          </el-descriptions-item>
+
+          <template v-if="messages.type === '网站'">
+            <el-descriptions-item label="链接">
+              <el-link 
+                type="primary" 
+                :href="messages.link" 
+                target="_blank"
+              >
+                {{ messages.link }}
+              </el-link>
+            </el-descriptions-item>
+            
+            <el-descriptions-item label="名称">
+              {{ messages.name }}
+            </el-descriptions-item>
+            
+            <el-descriptions-item label="分类">
+              <el-select 
+                v-model="messages.Linktype" 
+                placeholder="请选择类型"
+                class="type-select"
+              >
+                <el-option
+                  v-for="item in collName"
+                  :key="item.collName"
+                  :label="item.collName"
+                  :value="item.collName"
+                />
+              </el-select>
+            </el-descriptions-item>
+          </template>
+
+          <el-descriptions-item label="状态">
+            <el-tag 
+              :type="messages.isPass === '通过' ? 'success' : messages.isPass === '不通过' ? 'danger' : 'info'"
+            >
+              {{ messages.isPass }}
+            </el-tag>
+          </el-descriptions-item>
+        </el-descriptions>
+
+        <div class="operation-buttons">
+          <el-button 
+            type="success" 
+            @click="passMessage(1)"
+            class="operation-btn"
           >
-          </el-option>
-        </el-select></div>
-      </div>
-      <div class="drawer-footer">
-        <el-button @click="passMessage(1)" type="success">提 交</el-button>
-        <el-button @click="passMessage(2)" type="danger">拒 绝</el-button>
-        <el-button @click="drawerShow = false" type="warning">关 闭</el-button>
+            通过
+          </el-button>
+          <el-button 
+            type="danger" 
+            @click="passMessage(2)"
+            class="operation-btn"
+          >
+            拒绝
+          </el-button>
+          <el-button 
+            @click="drawerShow = false"
+            class="operation-btn"
+          >
+            关闭
+          </el-button>
+        </div>
       </div>
     </el-drawer>
   </div>
@@ -69,6 +199,7 @@
 import {getCurrentInstance, reactive, toRefs} from "vue";
 import {ElMessage} from "element-plus";
 import qs from "qs";
+import { Check, Close } from '@element-plus/icons-vue'
 
 export default {
   name: "ManagesDialog",
@@ -193,26 +324,234 @@ export default {
     }
     getMessage() //显示该弹框获取数据
     return{
-      ...toRefs(data),openThis,showColumn,getMessage,drawerHandleClose,passMessage,getType
+      ...toRefs(data),openThis,showColumn,getMessage,drawerHandleClose,passMessage,getType, Check, Close
     }
   }
 }
 </script>
 
 <style scoped>
-.my-header {
+/* 消息列表弹窗样式 */
+.message-dialog {
+  --el-dialog-padding-primary: 20px;
+  --el-dialog-bg-color: var(--el-bg-color);
+  --el-dialog-border-radius: 8px;
+}
+
+.message-dialog :deep(.el-dialog__header) {
+  margin: 0;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+}
+
+.message-dialog :deep(.el-dialog__title) {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--el-text-color-primary);
+}
+
+.message-dialog :deep(.el-dialog__body) {
+  padding: 20px;
+}
+
+.message-table-wrapper {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* 表格样式优化 */
+.message-table {
+  --el-table-border-color: var(--el-border-color-lighter);
+  --el-table-header-bg-color: var(--el-fill-color-light);
+  --el-table-row-hover-bg-color: var(--el-fill-color-lighter);
+}
+
+.message-table :deep(.el-table__header) {
+  font-weight: 600;
+}
+
+.message-table :deep(.el-table__row) {
+  cursor: pointer;
+}
+
+.message-table :deep(.el-table__row:hover) {
+  background-color: var(--el-fill-color-lighter);
+}
+
+/* 消息标题样式 */
+.message-title {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
 }
-.drawer-body >div{
-  margin-bottom: 5px;
+
+/* 未读消息标记 */
+.unread-badge :deep(.el-badge__content) {
+  background-color: var(--el-color-danger);
+}
+
+/* 类型标签样式 */
+.type-tag {
+  font-size: 12px;
+  padding: 0 8px;
+  height: 24px;
+  line-height: 22px;
+  border-radius: 4px;
+}
+
+/* 操作按钮样式 */
+.message-table :deep(.el-button--link) {
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.message-table :deep(.el-button--link:hover) {
+  opacity: 0.8;
+}
+
+/* 滚动条样式 */
+.message-table :deep(.el-table__body-wrapper::-webkit-scrollbar) {
+  width: 6px;
+  height: 6px;
+}
+
+.message-table :deep(.el-table__body-wrapper::-webkit-scrollbar-thumb) {
+  background: var(--el-border-color);
+  border-radius: 3px;
+}
+
+.message-table :deep(.el-table__body-wrapper::-webkit-scrollbar-track) {
+  background: var(--el-fill-color-lighter);
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 768px) {
+  .message-dialog {
+    width: 95% !important;
+    margin: 0 auto;
+  }
+
+  .message-dialog :deep(.el-dialog__body) {
+    padding: 16px;
+  }
+
+  .message-table :deep(.el-table__header-wrapper) {
+    display: none;
+  }
+}
+
+/* 消息详情抽屉样式 */
+.message-detail-drawer {
+  --el-drawer-padding-primary: 0;
+}
+
+.drawer-content {
+  padding: 24px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* 描述列表样式 */
+.message-details {
+  --el-descriptions-table-border: 1px solid var(--el-border-color-lighter);
+  --el-descriptions-item-bordered-label-background: var(--el-fill-color-light);
+}
+
+.message-details :deep(.el-descriptions__label) {
+  width: 100px;
+  font-weight: 500;
+  color: var(--el-text-color-regular);
+  padding: 16px 24px;
+}
+
+.message-details :deep(.el-descriptions__content) {
+  padding: 16px 24px;
+}
+
+/* 消息内容样式 */
+.message-content {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 12px;
+  background-color: var(--el-fill-color-lighter);
+  border-radius: 4px;
+}
+
+/* 类型选择器样式 */
+.type-select {
+  width: 100%;
+}
+
+/* 标签样式 */
+.type-tag {
+  font-size: 13px;
+  padding: 0 10px;
+  height: 26px;
+  line-height: 24px;
+}
+
+/* 操作按钮区域样式 */
+.operation-buttons {
+  margin-top: 24px;
+  padding: 20px 0;
+  border-top: 1px solid var(--el-border-color-lighter);
   display: flex;
+  justify-content: center;
+  gap: 12px;
 }
-.drawer-body > div > .drawer-body-key{
-  width: 10%;
+
+.operation-btn {
+  min-width: 90px;
+  font-size: 14px;
 }
-.drawer-body > div > .drawer-body-value{
-  width: 80%;
+
+/* 滚动条样式 */
+.drawer-content::-webkit-scrollbar,
+.message-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.drawer-content::-webkit-scrollbar-thumb,
+.message-content::-webkit-scrollbar-thumb {
+  background: var(--el-border-color);
+  border-radius: 3px;
+}
+
+.drawer-content::-webkit-scrollbar-track,
+.message-content::-webkit-scrollbar-track {
+  background: var(--el-fill-color-lighter);
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 768px) {
+  .message-detail-drawer {
+    width: 90% !important;
+  }
+
+  .drawer-content {
+    padding: 16px;
+  }
+
+  .message-details :deep(.el-descriptions__label) {
+    padding: 12px 16px;
+  }
+
+  .message-details :deep(.el-descriptions__content) {
+    padding: 12px 16px;
+  }
+
+  .operation-buttons {
+    margin-top: 20px;
+    padding: 16px 0;
+    flex-wrap: wrap;
+  }
+
+  .operation-btn {
+    flex: 1;
+    min-width: 0;
+  }
 }
 </style>

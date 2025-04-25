@@ -1,51 +1,45 @@
 <template>
-  <div :id="ismoblie==true?'bookmarks-moblic':'bookmarks-PC'">
-    <Marks/>
+  <div class="bookmarks-container" :class="{ 'mobile': ismobile }">
+    <Marks />
   </div>
 </template>
 
 <script>
 import Marks from "./Marks";
-import {reactive, toRefs} from "vue";
+import { ref, onMounted } from 'vue';
+
 export default {
   name: "Bookmarks",
-  components: {Marks},
-  setup(){
-    const data=reactive({
-      ismoblie:false,
-    })
-    const isMobile = () => {
-      const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
-      if (flag) {
-        data.ismoblie=true
-      } else {
-        data.ismoblie=false
-      }
-    }
+  components: { Marks },
+  setup() {
+    const ismobile = ref(false);
 
-    isMobile();
-    return{
-      ...toRefs(data),isMobile,
-    }
+    const checkMobile = () => {
+      ismobile.value = !!navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+    };
+
+    onMounted(() => {
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+    });
+
+    return {
+      ismobile
+    };
   }
 }
 </script>
 
 <style scoped>
-*{
-  margin:0;
-  padding: 0;
+.bookmarks-container {
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
 }
-#bookmarks-PC{
-  width: 80%;
-  display: flex;
-  justify-content: center;
-  flex-flow: wrap;
-}
-#bookmarks-moblic{
+
+.bookmarks-container.mobile {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-flow: wrap;
+  padding: 1rem;
 }
 </style>

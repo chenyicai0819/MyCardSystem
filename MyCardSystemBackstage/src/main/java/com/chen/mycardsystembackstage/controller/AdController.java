@@ -96,7 +96,7 @@ public class AdController {
         map.put("type","添加广告");
         map.put("name",name);
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return adService.addAd(ad);
     }
     @PostMapping("/del")

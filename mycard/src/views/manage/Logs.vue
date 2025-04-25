@@ -1,81 +1,181 @@
 <template>
-  <div class="mana-logs">
-    <div class="mana-logs-head">
-      <h2 class="mana-logs-h2">查看操作日志</h2>
-      <el-button type="danger" @click="toMana">返回管理页</el-button>
-    </div>
-    <div class="mana-body">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane v-for="logs in logName" :label="logs.logName" :name="logs.logId">
-          <div class="buttons">
-            <el-date-picker
-                v-model="dataTime"
-                type="daterange"
-                range-separator="至"
-                start-placeholder="开始时间"
-                end-placeholder="结束时间"
-                :shortcuts="shortcuts"
-                size="default"
-                style="margin-right: 5px"
-                value-format="YYYY-MM-DD HH:mm:ss"
-            />
-            <el-button type="success" @click="timeSea" >筛选</el-button>
-            <el-button type="success" plain @click="reLoad">重置</el-button>
-            <el-button type="info" plain @click="DownloadDialogVisible = true">导出</el-button>
-          </div>
-          <div class="table">
-            <el-table :data="tableData" stripe style="width: 100%">
-              <el-table-column :prop="thead.name"
-                               :label="thead.name"
-                               sortable
+  <div class="logs-container">
+    <!-- 顶部导航 -->
+    <header class="logs-header">
+      <div class="header-left">
+        <h2>操作日志查看</h2>
+        <el-tag type="info" effect="plain" class="version-tag">
+          系统日志
+        </el-tag>
+      </div>
+      <div class="header-right">
+        <!-- 将导出按钮移到这里，与返回按钮并排 -->
+        <el-button 
+          type="success" 
+          @click="DownloadDialogVisible = true"
+          icon="Download"
+        >
+          导出日志
+        </el-button>
+        <el-button 
+          type="primary" 
+          @click="toMana"
+          icon="Back"
+        >
+          返回管理页
+        </el-button>
+      </div>
+    </header>
 
-                               show-overflow-tooltip="true"
-                               v-for="(thead,i) in tableHead"
-                               :key=i
+    <!-- 主要内容区域 -->
+    <main class="logs-content">
+      <el-card class="content-card">
+        <el-tabs 
+          v-model="activeName" 
+          @tab-click="handleClick"
+          class="custom-tabs"
+        >
+          <el-tab-pane 
+            v-for="logs in logName" 
+            :key="logs.logId" 
+            :label="logs.logName" 
+            :name="logs.logId"
+          >
+            <!-- 工具栏 -->
+            <div class="toolbar">
+              <div class="toolbar-left">
+                <el-date-picker
+                  v-model="dataTime"
+                  type="daterange"
+                  range-separator="至"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                  :shortcuts="shortcuts"
+                  value-format="YYYY-MM-DD HH:mm:ss"
+                  class="date-picker"
+                />
+                <el-input
+                  v-model="search"
+                  placeholder="搜索用户ID..."
+                  @change="searchName"
+                  clearable
+                  class="search-input"
+                >
+                  <template #prefix>
+                    <el-icon><Search /></el-icon>
+                  </template>
+                </el-input>
+              </div>
+              <div class="toolbar-right">
+                <el-button-group>
+                  <el-button 
+                    type="primary" 
+                    @click="timeSea"
+                    icon="Search"
+                  >
+                    筛选
+                  </el-button>
+                  <el-button 
+                    @click="reLoad"
+                    icon="Refresh"
+                  >
+                    重置
+                  </el-button>
+                </el-button-group>
+              </div>
+            </div>
+
+            <!-- 表格区域 -->
+            <div class="table-container">
+              <el-table 
+                :data="tableData" 
+                stripe 
+                border
+                v-loading="loading"
+                class="custom-table"
+                height="calc(100vh - 400px)"
+              >
+                <el-table-column 
+                  v-for="(thead, i) in tableHead"
+                  :key="i"
+                  :prop="thead.name"
+                  :label="formatLabel(thead.name)"
+                  sortable
+                  show-overflow-tooltip
+                >
+                  <template #default="scope">
+                    <template v-if="thead.name === 'type'">
+                      <el-tag 
+                        :type="getTypeTagType(scope.row.type)"
+                        size="small"
+                      >
+                        {{ scope.row.type }}
+                      </el-tag>
+                    </template>
+                    <template v-else-if="thead.name === 'time'">
+                      <span class="time-cell">{{ formatTime(scope.row.time) }}</span>
+                    </template>
+                    <template v-else>
+                      {{ scope.row[thead.name] }}
+                    </template>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+
+            <!-- 分页器 -->
+            <div class="pagination-container">
+              <el-pagination
+                v-model:currentPage="currentPage"
+                :page-sizes="[20, 30, 50, 100]"
+                :page-size="pageSize"
+                background
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="allTotal"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
               />
-              <el-table-column align="right">
-                <template #header>
-                  <el-input v-model="search" size="mini" placeholder="输入想找的用户ID" @change="searchName"/>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
-    </div>
-    <div class="demo-pagination-block">
-      <el-pagination
-          v-model:currentPage="currentPage"
-          :page-sizes="[20, 30, 50, 100]"
-          :page-size=pageSize
-          background="true"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="allTotal"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-      >
-      </el-pagination>
-    </div>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
+    </main>
 
-    <el-dialog v-model="DownloadDialogVisible" title="备份日志" width="30%" center>
-      <el-date-picker
+    <!-- 导出日志对话框 -->
+    <el-dialog
+      v-model="DownloadDialogVisible"
+      title="导出日志"
+      width="500px"
+      class="export-dialog"
+      destroy-on-close
+    >
+      <div class="export-content">
+        <el-alert
+          title="请选择要导出的日志时间范围"
+          type="info"
+          :closable="false"
+          class="export-alert"
+        />
+        
+        <el-date-picker
           v-model="dataTime"
           type="daterange"
           range-separator="至"
           start-placeholder="开始时间"
           end-placeholder="结束时间"
           :shortcuts="shortcuts"
-          size="default"
-          style="margin-right: 5px"
           value-format="YYYY-MM-DD HH:mm:ss"
-      />
+          class="export-date-picker"
+        />
+      </div>
+      
       <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="DownloadDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="downLogs">
-          备份
-        </el-button>
-      </span>
+        <div class="dialog-footer">
+          <el-button @click="DownloadDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="downLogs">
+            确认导出
+          </el-button>
+        </div>
       </template>
     </el-dialog>
   </div>
@@ -87,6 +187,7 @@ import router from "@/router";
 import qs from "qs";
 import {ElMessage} from "element-plus";
 import moment from "moment";
+import { Search, Download, Back, Refresh } from '@element-plus/icons-vue'
 
 export default {
   name: "Logs",
@@ -108,7 +209,7 @@ export default {
       tableHead: [
         {"name": "id"},
         {"name": "type"},
-        {"name": "userMongo"},
+        {"name": "user"},
         {"name": "ip"},
         {"name": "classMethod"},
         {"name": "args"},
@@ -153,9 +254,9 @@ export default {
       filtrate:{ //筛选
         startDate:'',
         endTime:'',
-      }
+      },
+      loading: ref(false)
     })
-
 
     //导出备份
     const downLogs = () => {
@@ -204,7 +305,7 @@ export default {
     //查找
     const searchName = () => {
       let search = data.search;
-      proxy.$axios.post('/logs/sea', qs.stringify({"userMongo": search})).then(res => {
+      proxy.$axios.post('/logs/sea', qs.stringify({"user": search})).then(res => {
         const getdata = res.data;
         // console.log(getdata);
         data.tableData = getdata;
@@ -254,48 +355,323 @@ export default {
 
     }
 
+    // 格式化表头标签
+    const formatLabel = (label) => {
+      const labelMap = {
+        'id': 'ID',
+        'type': '操作类型',
+        'user': '用户',
+        'ip': 'IP地址',
+        'classMethod': '方法',
+        'args': '参数',
+        'path': '路径',
+        'time': '时间'
+      }
+      return labelMap[label] || label
+    }
+
+    // 获取标签类型
+    const getTypeTagType = (type) => {
+      const typeMap = {
+        '登录': 'success',
+        '新增': 'primary',
+        '修改': 'warning',
+        '删除': 'danger'
+      }
+      return typeMap[type] || 'info'
+    }
+
+    // 格式化时间
+    const formatTime = (time) => {
+      return moment(time).format('YYYY-MM-DD HH:mm:ss')
+    }
 
     getCount();
     getData();
     return {
       ...toRefs(data), toMana, handleClick, reLoad, searchName, handleSizeChange, handleCurrentChange,
       chooseNum, getCount, getData, downLogs,timeSea,
+      formatLabel, getTypeTagType, formatTime
     }
   }
 }
 </script>
 
 <style scoped>
-.mana-logs {
-  height: 100vh;
+.logs-container {
+  min-height: 100vh;
+  background: #f6f8fa;
+  padding: 24px;
 }
 
-.mana-logs-head {
+.logs-header {
+  background: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
   display: flex;
-  position: fixed;
-  top: 0px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.header-left h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.version-tag {
+  font-weight: 500;
+}
+
+.content-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  height: calc(100vh - 140px);
+  display: flex;
+  flex-direction: column;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  gap: 16px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 16px;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.date-picker {
+  width: 360px;
+}
+
+.search-input {
+  width: 240px;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.action-group {
+  display: flex;
+  gap: 8px;
+}
+
+.table-container {
+  flex: 1;
+  overflow: hidden;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.custom-table {
+  --el-table-border-color: #e5e7eb;
+  --el-table-header-bg-color: #f8fafc;
+}
+
+:deep(.el-table th) {
+  background: var(--el-table-header-bg-color);
+  font-weight: 600;
+  color: #374151;
+  padding: 12px 8px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+:deep(.el-table td) {
+  padding: 12px 8px;
+  color: #4b5563;
+}
+
+.time-cell {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.pagination-container {
+  flex-shrink: 0;
+  padding: 12px 0;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* 导出对话框样式 */
+.export-dialog {
+  --el-dialog-padding-primary: 24px;
+}
+
+.export-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.export-alert {
+  margin: 0;
+}
+
+.export-date-picker {
   width: 100%;
-  z-index: 1;
-  background-color: #FFFFFF;
 }
 
-.mana-logs-h2 {
-  width: 90%;
-}
-
-.mana-body {
-  width: 95%;
-  margin: 30px auto;
-  z-index: 2;
-}
-
-.buttons {
+.dialog-footer {
   display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
 }
 
-.demo-pagination-block {
-  position: fixed;
-  bottom: 0px;
-  background-color: #FFFFFF;
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .logs-container {
+    padding: 16px;
+  }
+
+  .content-card {
+    height: calc(100vh - 100px);
+  }
+
+  .logs-header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .header-right .el-button {
+    flex: 1;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .toolbar-left {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .date-picker,
+  .search-input {
+    width: 100%;
+  }
+
+  .toolbar-right {
+    width: 100%;
+  }
+
+  .toolbar-right .el-button-group {
+    width: 100%;
+    display: flex;
+  }
+
+  .toolbar-right .el-button {
+    flex: 1;
+  }
+
+  .custom-table {
+    height: calc(100vh - 280px);
+  }
+}
+
+/* Element Plus 组件样式优化 */
+:deep(.el-button--success) {
+  --el-button-hover-bg-color: #34d399;
+  --el-button-hover-border-color: #34d399;
+}
+
+:deep(.el-button--primary) {
+  --el-button-hover-bg-color: #4096ff;
+  --el-button-hover-border-color: #4096ff;
+}
+
+:deep(.el-tabs__item) {
+  font-size: 14px;
+  height: 40px;
+  line-height: 40px;
+}
+
+:deep(.el-tabs__item.is-active) {
+  font-weight: 600;
+}
+
+:deep(.el-input__wrapper) {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+:deep(.el-tag) {
+  font-weight: 500;
+}
+
+.custom-tabs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.el-tabs__content) {
+  flex: 1;
+  overflow: hidden;
+  padding: 20px;
+}
+
+:deep(.el-tab-pane) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 美化表格滚动条 */
+:deep(.el-table__body-wrapper::-webkit-scrollbar) {
+  width: 6px;
+  height: 6px;
+}
+
+:deep(.el-table__body-wrapper::-webkit-scrollbar-thumb) {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+:deep(.el-table__body-wrapper::-webkit-scrollbar-track) {
+  background: #f3f4f6;
+}
+
+/* 固定列样式优化 */
+:deep(.el-table__fixed) {
+  height: 100% !important;
+}
+
+:deep(.el-table__fixed-right) {
+  height: 100% !important;
+  right: 0;
 }
 </style>

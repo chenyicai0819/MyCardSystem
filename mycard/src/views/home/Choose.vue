@@ -1,71 +1,77 @@
 <template>
-  <div id="choose" v-loading="data.loading">
-    <!--快捷搜索-->
-    <div style="width: 100%;margin: 5px;">
-      <el-card class="sea-card" style="width: 91.5%;margin: 0 auto ;background: rgba(255, 255, 255, 0.46);">
-        <QuiteSearch :class="data.ismoblie==true?'qsForMobile':'qsForPC'"/>
+  <div class="choose-container" v-loading="data.loading">
+    <!-- 快捷搜索区域 -->
+    <section class="search-section">
+      <el-card class="search-card">
+        <QuiteSearch :class="data.ismoblie ? 'search-mobile' : 'search-desktop'"/>
       </el-card>
-    </div>
+    </section>
 
-    <!--功能插件-->
-    <div :class="data.ismoblie==true?'function1':'function2'">
-      <el-card id="timecard" class="sea-card" style="width: 100%;margin: 0 auto ;background: rgba(255, 255, 255, 0.46);">
-        <!--时间插件-->
-        <div id="mycard-time" style="">
-          <div class="time" :class="data.ismoblie==true?'function-time1':'function-time2'">
+    <!-- 功能区域 -->
+    <section class="features-section">
+      <!-- 时间卡片 -->
+      <el-card class="feature-card time-card">
+        <div class="time-display">
+          <div class="time" :class="{'time-mobile': data.ismoblie}">
             {{data.nowTime}}
           </div>
-          <div class="date" :class="data.ismoblie==true?'function-date1':'function-date2'">
+          <div class="date" :class="{'date-mobile': data.ismoblie}">
             {{data.nowDate}} {{data.nowDay}}
           </div>
         </div>
       </el-card>
-    </div>
-    <div id="mycard-weather-box" :class="data.ismoblie==true?'function1':'function2'" style="margin-left: 20px">
-      <div id="he-plugin-standard" style="margin-left: 20px;"></div>
-      <!--<el-card class="sea-card" style="width: 91.5%;margin: 0 auto ;background: rgba(255, 255, 255, 0.46);">-->
-      <!--  &lt;!&ndash;天气插件&ndash;&gt;-->
 
-      <!--</el-card>-->
-    </div>
-    <!--入口-->
-    <div class="choosecard" :class="{choosecardmoblie:data.ismoblie}" v-for="name in data.cardname" >
-      <el-card class="box-card">
+      <!-- 天气卡片 -->
+      <div class="weather-card">
+        <div id="he-plugin-standard"></div>
+      </div>
+    </section>
+
+    <!-- 卡片网格区域 -->
+    <section class="cards-grid">
+      <el-card 
+        v-for="card in data.cardname" 
+        :key="card.cardName"
+        class="grid-card"
+        :class="{'card-mobile': data.ismoblie}"
+      >
         <template #header>
           <div class="card-header">
-            <span>{{ name.cardName }}</span>
-            <!--<el-button type="text" id="choose-link" @click="toLink(name.cardLink)">前往链接</el-button>-->
-            <a :href="name.cardLink" id="choose-link" @click="toLink(name.cardLink)">前往链接</a>
+            <span class="card-title">{{ card.cardName }}</span>
+            <a :href="card.cardLink" class="card-link" @click="toLink(card.cardLink)">
+              访问
+              <el-icon><ArrowRight /></el-icon>
+            </a>
           </div>
         </template>
         <el-image
-            :src="name.cardImg"
-            class="image"
-            style="width: 100px; height: 100px"
+          :src="card.cardImg"
+          class="card-image"
+          fit="cover"
         >
           <template #error>
-            <div class="image-slot">
-              <el-icon><icon-picture /></el-icon>
+            <div class="image-placeholder">
+              <el-icon><Picture /></el-icon>
             </div>
           </template>
         </el-image>
-        <!--<div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>-->
       </el-card>
-    </div>
-    <!--底部网站信息-->
-    <div class="footer" :class="{footermoblie:data.ismoblie}">
-      <!--分割线-->
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="site-footer" :class="{'footer-mobile': data.ismoblie}">
       <el-divider />
-      <div>
-        Copyright 2020-2022 cyc292.top 陈益财版权所有
-        <el-image
+      <div class="footer-content">
+        <span>Copyright © 2020-{{ new Date().getFullYear() }} cyc292.top</span>
+        <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" class="beian-link">
+          <el-image
             src="https://z3.ax1x.com/2021/10/08/59OMgU.png"
-            class="footer-image"
-            style="width: 15px; height: 15px">
-        </el-image>
-        <a id="footer-a1" href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">琼ICP备2021006962号</a>
+            class="beian-icon"
+          />
+          琼ICP备2021006962号
+        </a>
       </div>
-    </div>
+    </footer>
   </div>
 </template>
 
@@ -192,101 +198,177 @@ export default {
 </script>
 
 <style scoped>
-*{
-  margin:0;
-  padding: 0;
-}
-#choose{
+.choose-container {
   width: 100%;
-  /*height: 93vh;*/
-  /*background-color: #BDBDBD;*/
-  /*background-image: url("https://cdn.jsdelivr.net/gh/chenyicai0819/MyImage/Imgs/20220308133544.png");*/
-  display: flex;
-  justify-content: center;
-  flex-flow: wrap;
+  min-height: 100vh;
+  padding: 1.5rem;
 }
-.choosecard{
-  margin: 5px;
-  width: 30%;
+
+.search-section {
+  margin-bottom: 2rem;
 }
-.choosecardmoblie{
-  margin: 5px;
-  width: 90%;
+
+.search-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 12px;
 }
+
+.search-desktop {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.search-mobile {
+  width: 100%;
+}
+
+.features-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.time-display {
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.time {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.date {
+  font-size: 1.2rem;
+  color: #64748b;
+}
+
+.time-mobile {
+  font-size: 2.5rem;
+}
+
+.date-mobile {
+  font-size: 1rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.grid-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px);
+  border: none;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.grid-card:hover {
+  transform: translateY(-5px);
+}
+
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem;
 }
 
-.text {
-  font-size: 14px;
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e293b;
 }
 
-.item {
-  margin-bottom: 18px;
-}
-
-.box-card {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.46);
-}
-.qsForPC{
-  width: 50%;
-}
-.qsForMobile{
-  width: 90%;
-}
-.function1{
-  width: 100%;
-  margin: 5px;
-}
-.function2{
-  width: 45%;
-}
-.function-time1{
-  color: rgb(255, 255, 255);
-  /*text-shadow: 5px 5px 5px #42b983;*/
-  font-size: 70px;
-
-}
-.function-time2{
-  color: rgb(255, 255, 255);
-  font-size: 126px;
-  /*text-shadow: 5px 5px 5px #42b983;*/
-  margin-top: 10px
-}
-.function-date1{
-  color: rgb(255, 255, 255);
-  /*text-shadow: 5px 5px 5px #42b983;*/
-  font-size: 20px;
-}
-.function-date2{
-  color: rgb(255, 255, 255);
-  /*text-shadow: 5px 5px 5px #42b983;*/
-  font-size: 26px;
-  margin-bottom: 10px
-}
-#choose-link{
-  font-size: 16px;
-  font-family: 微软雅黑;
-  font-weight: bolder;
+.card-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   text-decoration: none;
-  color: #2c3e50
+  color: #3b82f6;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
-#choose-link:hover{
-  color: #1FA2FF;
-}
-.footer{
-  margin: 5px;
-  width: 90%;
-}
-.footermoblie{
 
+.card-link:hover {
+  color: #2563eb;
 }
-#footer-a1{
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background: #f1f5f9;
+  color: #94a3b8;
+  font-size: 2rem;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 2rem 0;
+  color: #64748b;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.beian-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   text-decoration: none;
-  /*color: #707c8c;*/
-  color: #2c3e50;
+  color: #64748b;
+}
+
+.beian-icon {
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 768px) {
+  .choose-container {
+    padding: 1rem;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-mobile {
+    width: 100%;
+  }
+
+  .footer-mobile {
+    padding: 1rem 0;
+  }
 }
 </style>

@@ -1,39 +1,91 @@
 <template>
-  <div class="message-login">
-    <div class="head-login">
-      <h2 class="head-h2">在前往网站内容设置前请验证您的身份</h2>
-      <el-button type="danger" @click="toLoad">返回首页</el-button>
+  <div class="login-container">
+    <!-- 背景动画效果 -->
+    <div class="background-animation">
+      <div class="gradient-bg"></div>
     </div>
-    <div :class="data.ismoblie==true?'login-mobile':'login-pc'">
-      <div :class="data.ismoblie==true?'form-login-mobile':'form-login-pc'">
-        <el-form ref="form" :model="data.form" >
-          <el-form-item label="账户">
-            <el-input v-model="data.form.name" class="input-login"></el-input>
-          </el-form-item>
-          <el-form-item label="密码">
-            <el-input v-model="data.form.pass" type="password" class="input-login"></el-input>
-          </el-form-item>
-          <el-form-item label="验证码">
-            <el-input v-model="data.form.code" class="input-code"></el-input>
-            <el-button type="primary" :disabled="data.isdisabled" style="width: 100px" @click="getAuthCode">{{data.getCode}}</el-button>
-          </el-form-item>
-          <!--<el-form-item label="验证码">-->
-          <!--  <div @click="refreshCode()" class="code" style="cursor:pointer;" title="点击切换验证码">-->
-          <!--    <Verify/>-->
-          <!--  </div>-->
-          <!--</el-form-item>-->
-          <el-button type="primary" @click="onSubmit">登录</el-button>
-          <!--<el-button @click="Wechatlogin">微信授权</el-button>-->
-          <el-button @click="toAl">访问al网址</el-button>
-          <div v-if="data.isdisabled === true">
-            验证码已发送至邮箱：{{data.form.email}}
-          </div>
-        </el-form>
+
+    <!-- 主要内容 -->
+    <div class="content-wrapper">
+      <!-- 顶部导航 -->
+      <nav class="login-nav">
+        <h2>身份验证</h2>
+        <el-button 
+          class="back-button" 
+          @click="toLoad"
+          type="warning"
+          plain
+        >
+          <i class="el-icon-arrow-left"></i>
+          返回首页
+        </el-button>
+      </nav>
+
+      <!-- 登录表单 -->
+      <div class="login-form-container" :class="{ 'mobile': data.ismoblie }">
+        <div class="form-wrapper">
+          <h3 class="form-title">管理员登录</h3>
+          
+          <el-form 
+            ref="form" 
+            :model="data.form"
+            class="login-form"
+          >
+            <el-form-item>
+              <el-input
+                v-model="data.form.name"
+                placeholder="请输入账户"
+                prefix-icon="el-icon-user"
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <el-input
+                v-model="data.form.pass"
+                type="password"
+                placeholder="请输入密码"
+                prefix-icon="el-icon-lock"
+                show-password
+              />
+            </el-form-item>
+
+            <el-form-item>
+              <div class="verification-code">
+                <el-input
+                  v-model="data.form.code"
+                  placeholder="验证码"
+                  prefix-icon="el-icon-key"
+                />
+                <el-button 
+                  type="primary" 
+                  :disabled="data.isdisabled"
+                  @click="getAuthCode"
+                  class="code-button"
+                >
+                  {{ data.getCode }}
+                </el-button>
+              </div>
+            </el-form-item>
+
+            <div class="form-footer">
+              <el-button 
+                type="primary" 
+                class="submit-button"
+                @click="onSubmit"
+              >
+                登录
+              </el-button>
+            </div>
+
+            <!-- 验证码发送提示 -->
+            <div v-if="data.isdisabled" class="email-hint">
+              <i class="el-icon-message"></i>
+              验证码已发送至：{{ data.form.email }}
+            </div>
+          </el-form>
+        </div>
       </div>
     </div>
-<!--    <div style="width:100%;padding-left: 10px;margin-top: -5px;" v-show="data.isShowCronCore">-->
-<!--      <Cron @change="changeCron" v-model:value="data.form.logicConfig" />-->
-<!--    </div>-->
   </div>
 </template>
 
@@ -90,7 +142,7 @@ export default {
       let md5Pass = md5(md5(data.form.pass)+secret);
       // console.log(data.form.pass)
       // console.log(md5Pass)
-      proxy.$axios.post('userMongo/login',qs.stringify({ "userId":data.form.name,"userPass":md5Pass,"code":data.form.code })).then(res=>{
+      proxy.$axios.post('user/login',qs.stringify({ "userId":data.form.name,"userPass":md5Pass,"code":data.form.code })).then(res=>{
         if ("允许登录"==res.data){
           // 登录成功后将token存储到store，然后再进入界面
           localStorage.setItem("loginToken",data.form.name)
@@ -105,13 +157,13 @@ export default {
 
     // 获取用户邮箱
     const getEmail = () => {
-      proxy.$axios.get('userMongo/getEmail', {params: {"id":data.form.name}}).then(res => {
+      proxy.$axios.get('user/getEmail', {params: {"id":data.form.name}}).then(res => {
         data.form.email = res.data
       });
     }
     // 获取短信验证码
     const getAuthCode = () => {
-      proxy.$axios.get('userMongo/getAuthCode', {params: {"id":data.form.name,"time":data.authCodeTime}}).then(res => {
+      proxy.$axios.get('user/getAuthCode', {params: {"id":data.form.name,"time":data.authCodeTime}}).then(res => {
         if (res.data == 1){
           getEmail()
           data.authCodeCountDown =data.authCodeCountDownModel;
@@ -192,46 +244,201 @@ export default {
 </script>
 
 <style scoped>
-.message-login{
-  height: 100vh;
-  background: #1FA2FF;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-}
-.head-login{
+.login-container {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.head-h2{
-  width: 90%;
-}
-.login-pc{
-  margin: 10px auto;
-  width: 500px;
-  height: 350px;
-  background-color: #42b983;
-}
-.login-mobile{
-  margin: 10px auto;
-  width: 100%;
-  height: 300px;
-  background-color: #42b983;
-}
-.form-login-pc{
-  padding-top: 50px;
-  margin: auto;
-  width: 300px;
-}
-.form-login-mobile{
-  padding-top: 50px;
-  margin: auto;
-  width: 90%;
-}
-.input-login{
-  width: 210px;
-}
-.input-code{
-  width: 100px;
 
+/* 背景动画 */
+.background-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+.gradient-bg {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    #12c2e9,
+    #c471ed,
+    #f64f59,
+    #12c2e9
+  );
+  animation: gradient 15s ease infinite;
+  background-size: 400% 400%;
+  opacity: 0.8;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 主要内容 */
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 2rem;
+}
+
+/* 导航栏 */
+.login-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+}
+
+.login-nav h2 {
+  color: white;
+  margin: 0;
+  font-weight: 500;
+}
+
+.back-button {
+  color: #fff !important;
+  background-color: rgba(230, 162, 60, 0.9) !important;
+  border-color: rgba(230, 162, 60, 0.9) !important;
+}
+
+.back-button:hover {
+  background-color: rgba(230, 162, 60, 1) !important;
+  border-color: rgba(230, 162, 60, 1) !important;
+  color: #fff !important;
+}
+
+/* 登录表单容器 */
+.login-form-container {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.form-wrapper {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.form-title {
+  text-align: center;
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+/* 表单样式 */
+.login-form :deep(.el-input__inner) {
+  height: 45px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.login-form :deep(.el-input__prefix) {
+  left: 10px;
+}
+
+.login-form :deep(.el-input__inner:focus) {
+  border-color: #409EFF;
+  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
+}
+
+/* 验证码区域 */
+.verification-code {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.verification-code :deep(.el-input) {
+  flex: 1;
+}
+
+.code-button {
+  height: 45px;
+  padding: 0 20px;
+  white-space: nowrap;
+  border-radius: 8px;
+  flex-shrink: 0; /* 防止按钮被压缩 */
+}
+
+/* 提交按钮 */
+.form-footer {
+  margin-top: 2rem;
+}
+
+.submit-button {
+  width: 100%;
+  height: 45px;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* 邮箱提示 */
+.email-hint {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: rgba(64, 158, 255, 0.1);
+  border-radius: 8px;
+  color: #409EFF;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .content-wrapper {
+    margin: 0 1rem;
+  }
+
+  .login-nav {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .login-form-container {
+    padding: 1rem;
+  }
+
+  .form-wrapper {
+    padding: 1.5rem;
+  }
+
+  .verification-code {
+    gap: 8px; /* 移动端稍微减小间距 */
+  }
+
+  .code-button {
+    padding: 0 12px;
+    font-size: 0.9rem;
+  }
 }
 </style>

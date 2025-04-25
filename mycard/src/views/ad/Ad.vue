@@ -87,13 +87,13 @@ export default {
         times:'',
       },
       out:{
-        userMongo:'',
+        user:'',
         type:'广告投放',
         out:'我们已经收到了您的投放广告邮件内容，请您耐心等待工作人员的回复!我们会尽快审核并由专员与您联系，进行合作的协商！'
       }
     })
     const buyEmail = () => {
-      data.out.userMongo=data.input.title
+      data.out.user=data.input.title
       proxy.$axios.get('ad/buy',{params:{"title":data.input.title,
           "text":data.input.text,
           "money":data.input.money,

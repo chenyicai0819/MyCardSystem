@@ -1,51 +1,69 @@
 <template>
-  <div class="home-about">
-    <div id="nav">
-      <router-link to="/home">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/home/easy">Easy</router-link>
+  <dark-layout>
+    <div class="about-container">
+      <div class="about-header">
+        <h1>站长资料</h1>
+      </div>
+      <div class="about-content">
+        <Head />
+      </div>
     </div>
-    <div class="about">
-      <h2>站长资料</h2>
-      <Head class="about-head-div"/>
-    </div>
-  </div>
-
+  </dark-layout>
 </template>
 
 <script>
-import Head from "./about/Head";
+import DarkLayout from '@/components/layouts/DarkLayout.vue'
+import Head from "./about/Head"
+
 export default {
-  components: {Head}
+  components: {
+    DarkLayout,
+    Head
+  }
 }
 </script>
 
 <style scoped>
+.about-container {
+  min-height: calc(100vh - 80px); /* 减去导航栏的高度 */
+  background: linear-gradient(135deg,rgb(184, 196, 211) 0%,rgb(92, 115, 173) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-.home-about{
-  height: 100vh;
+.about-header {
+  text-align: center;
+  padding: 2rem 0;
+  background: linear-gradient(135deg,rgb(184, 196, 211) 0%,rgb(92, 115, 173) 100%);
 }
-#nav {
-  background: #1FA2FF;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+.about-header h1 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 0;
+  background: linear-gradient(135deg, #ffffff 0%, #a8b2c1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-#nav a.router-link-exact-active {
-  color: #FFFFFF;
-}
-.about{
+
+.about-content {
+  padding: 2rem;
+  max-width: 1200px;
   margin: 0 auto;
-  background: #1FA2FF;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #A6FFCB, #12D8FA, #1FA2FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-.about-head-div{
 
+@media (max-width: 768px) {
+  .about-header {
+    padding: 1.5rem 0;
+  }
 
+  .about-header h1 {
+    font-size: 2rem;
+  }
+
+  .about-content {
+    padding: 1rem;
+  }
 }
 </style>

@@ -67,7 +67,7 @@ public class AdServiceImpl implements AdService {
         map.put("type","添加广告");
         map.put("name",ad.getAdName());
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return adMapper.addAd(ad);
     }
 
@@ -79,7 +79,7 @@ public class AdServiceImpl implements AdService {
         map.put("type","删除广告");
         map.put("name",adMapper.getNameForId(id));
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return adMapper.delAd(id);
     }
 
@@ -96,7 +96,7 @@ public class AdServiceImpl implements AdService {
         map.put("type","更新广告");
         map.put("name",adMapper.getNameForId(ad.getAdId()));
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return adMapper.upAd(ad);
     }
 

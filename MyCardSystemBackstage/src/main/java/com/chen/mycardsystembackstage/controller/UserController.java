@@ -96,7 +96,7 @@ public class UserController {
         if (num==0){
             // 通知登录错误结果
             map.put("isYes","否");
-            wcn.pushLogin(map);
+            // wcn.pushLogin(map);
             log.info(user.getUserId()+user.getUserName()+"于"+getIpUtil.getIpAddr(request)+"登陆失败！原因：没有这个用户，或者密码错误！");
             return "没有这个用户，或者密码错误";
         }else{
@@ -117,7 +117,7 @@ public class UserController {
             }else {
                 startService.addStart(ip, String.valueOf(user.getUserId()));
             }
-            wcn.pushLogin(map);
+            // wcn.pushLogin(map);
             log.info(user.getUserId()+user.getUserName()+"于"+ip+"登录成功！");
             return "允许登录";
         }

@@ -4,8 +4,8 @@
     <cache type="com.chen.mycardsystembackstage.cache.MybatisRedisCache"></cache>
     <insert id="addLogs" parameterType="com.chen.mycardsystembackstage.entity.Logs">
         INSERT INTO
-            logs(type,userMongo,ip,classMethod,args,path,time)
-        VALUES (#{type},#{userMongo},#{ip},#{classMethod},#{args},#{path},#{time})
+            logs(type,user,ip,classMethod,args,path,time)
+        VALUES (#{type},#{user},#{ip},#{classMethod},#{args},#{path},#{time})
     </insert>
     <select id="getLogs" resultType="com.chen.mycardsystembackstage.entity.Logs" parameterType="com.chen.mycardsystembackstage.entity.Logs">
         SELECT * FROM logs
@@ -23,7 +23,7 @@
                  order by id desc
     </select>
     <select id="seaLogs" resultType="com.chen.mycardsystembackstage.entity.Logs">
-        SELECT * FROM logs WHERE userMongo LIKE concat('%',#{userMongo},'%')
+        SELECT * FROM logs WHERE user LIKE concat('%',#{user},'%')
     </select>
     <select id="timeLogs" resultType="com.chen.mycardsystembackstage.entity.Logs">
         SELECT * FROM logs

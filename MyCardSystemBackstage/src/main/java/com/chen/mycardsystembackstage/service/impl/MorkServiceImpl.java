@@ -69,7 +69,7 @@ public class MorkServiceImpl implements MorkService {
         map.put("type","添加书签");
         map.put("name",mork.getMorkName());
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return morkMapper.addMork(mork);
     }
 
@@ -81,7 +81,7 @@ public class MorkServiceImpl implements MorkService {
         map.put("type","删除书签");
         map.put("name",morkMapper.getNameById(id));
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return morkMapper.delMork(id);
     }
 
@@ -98,7 +98,7 @@ public class MorkServiceImpl implements MorkService {
         map.put("type","更新书签");
         map.put("name",morkMapper.getNameById(mork.getMorkId()));
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return morkMapper.upMork(mork);
     }
 

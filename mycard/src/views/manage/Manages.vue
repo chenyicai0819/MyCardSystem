@@ -1,129 +1,256 @@
 <template>
-  <div class="messages">
-    <div class="mana-head">
-      <h2 class="mana-h2">网站内容管理界面</h2>
-      <el-badge :value="data.messageNotReadCount" :max="99" class="item" style="right: 15px">
-        <el-button type="warning" circle @click="openMd"><el-icon><Message /></el-icon></el-button>
-      </el-badge>
-      <el-button type="danger" @click="openTasks">定时任务</el-button>
-      <el-button type="danger" @click="toLogs">查看日志</el-button>
-      <el-button type="danger" @click="toLoad">返回首页</el-button>
-    </div>
-    <div class="manages">
-      <el-tabs v-model="data.activeName" @tab-click="handleClick">
-        <el-tab-pane v-for="mana in data.manaName" :label="mana.manaName" :name="mana.manaId">
-          <div class="buttons">
-            <el-button type="primary" @click="openDrawer('增加')">增加</el-button>
-            <el-button type="success" @click="data.uploaddialog=true">批量上传</el-button>
-            <el-button type="success" plain @click="outExcel">导出备份</el-button>
-          </div>
-          <div class="table">
-            <el-table :data="data.tableData" stripe style="width: 100%">
-              <!--                               :prop="thead.name"-->
-              <!--                               :label="thead.name"-->
-              <el-table-column :prop="thead"
-                               :label="thead"
-                               sortable
-                               v-for="(thead,i) in data.tableHead"
-                               :key =i
-              />
-              <el-table-column align="right">
-                <template #header>
-                  <el-input v-model="data.search" size="mini" placeholder="输入想找的名字" @change="searchName"/>
-                </template>
-                <template #default="scope">
-                  <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-                  >Edit</el-button
-                  >
-                  <el-popconfirm
-                      confirm-button-text="Yes"
-                      cancel-button-text="No"
-                      icon="el-icon-info"
-                      icon-color="red"
-                      :title="'确定要删除'+data.deleteId+'吗'"
-                      @confirm="confirmEvent"
-                      @cancel="cancelEvent"
-                  >
-                    <template #reference>
-                      <el-button
-                          size="mini"
-                          type="danger"
-                          @click="handleDelete(scope.$index, scope.row)"
-                      >Delete</el-button
-                      >
-                    </template>
-                  </el-popconfirm>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
-    </div>
-    <div class="demo-pagination-block">
-      <el-pagination
-          v-model:currentPage="data.currentPage"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          :page-size=data.pageSize
-          background="true"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="data.allTotal"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-      >
-      </el-pagination>
-    </div>
-    <div class="down-userMongo">
-      <div>
-        当前登录用户：{{data.nowUser.userName}}
+  <div class="manages-container">
+    <!-- 顶部导航栏 -->
+    <header class="manages-header">
+      <div class="header-left">
+        <h2>网站内容管理</h2>
       </div>
-    </div>
-    <div class="drawers">
-      <el-drawer
-          v-model="data.drawer"
-          :title="data.buttenType"
-          :direction="data.direction"
-          size="50%"
-      >
-        <Add :numlength="data.tableHead"
-             :manatype="data.buttenType"
-             :mana-data="data.editData"
-             :active-name="data.activeName"
-             :drawer="data.drawer"
-             @checkSucces="downAdd"
-             ref="RefChilde"
-        ></Add>
-      </el-drawer>
-    </div>
-<!--    批量上传弹框-->
-    <el-dialog v-model="data.uploaddialog" :title=data.uploadTiele[data.activeName-1]>
-      <el-link :href=data.downloadModelIp+data.activeName target="_blank" type="danger">点击此处下载对应的模板</el-link>
-<!--      原生上传模块/-->
-<!--      <input type="file" @change="updataFile" />-->
-      <div style="margin-top: 5px">
-        <el-upload
-            v-model:file-list="data.fileList"
-            class="manages-upload"
-            :action=data.uploadFile
-            multiple
-            name="multipartFile"
-            limit="1"
-            :on-exceed="onExceed"
-            :on-remove="onRemove"
-            :on-error="onError"
-            :on-success="onSuccess"
+      
+      <div class="header-actions">
+        <el-button-group>
+          <el-button 
+            type="primary" 
+            @click="openTasks"
+            icon="el-icon-timer"
+          >
+            定时任务
+          </el-button>
+          <el-button 
+            type="primary" 
+            @click="toLogs"
+            icon="el-icon-document"
+          >
+            查看日志
+          </el-button>
+        </el-button-group>
 
+        <el-badge 
+          :value="data.messageNotReadCount" 
+          :max="99" 
+          class="message-badge"
         >
-          <el-button type="primary">点击上传</el-button>
+          <el-button
+            type="primary"
+            circle
+            @click="openMd"
+          >
+            <el-icon><Message /></el-icon>
+          </el-button>
+        </el-badge>
+
+        <el-button 
+          type="default" 
+          @click="toLoad"
+          icon="el-icon-back"
+        >
+          返回首页
+        </el-button>
+      </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="manages-content">
+      <el-card class="content-card">
+        <el-tabs 
+          v-model="data.activeName" 
+          @tab-click="handleClick"
+          class="custom-tabs"
+        >
+          <el-tab-pane 
+            v-for="mana in data.manaName" 
+            :key="mana.manaId"
+            :label="mana.manaName" 
+            :name="mana.manaId"
+          >
+            <!-- 操作按钮组 -->
+            <div class="action-toolbar">
+              <div class="toolbar-left">
+                <el-button-group>
+                  <el-button 
+                    type="primary" 
+                    icon="el-icon-plus"
+                    @click="openDrawer('增加')"
+                  >
+                    新增
+                  </el-button>
+                  <el-button 
+                    type="primary" 
+                    icon="el-icon-upload"
+                    @click="data.uploaddialog=true"
+                  >
+                    批量导入
+                  </el-button>
+                  <el-button 
+                    type="primary" 
+                    icon="el-icon-download"
+                    plain
+                    @click="outExcel"
+                  >
+                    导出备份
+                  </el-button>
+                </el-button-group>
+              </div>
+
+              <div class="toolbar-right">
+                <el-input
+                  v-model="data.search"
+                  placeholder="搜索..."
+                  prefix-icon="el-icon-search"
+                  clearable
+                  @change="searchName"
+                  class="search-input"
+                />
+              </div>
+            </div>
+
+            <!-- 表格区域 -->
+            <div class="table-container">
+              <el-table 
+                :data="data.tableData" 
+                stripe 
+                class="custom-table"
+                v-loading="loading"
+                height="calc(100vh - 380px)"
+              >
+                <el-table-column
+                  v-for="(thead, i) in data.tableHead"
+                  :key="i"
+                  :prop="thead"
+                  :label="thead"
+                  sortable
+                />
+                
+                <el-table-column align="right" width="180">
+                  <template #default="scope">
+                    <el-button-group>
+                      <el-button
+                        size="small"
+                        type="primary"
+                        plain
+                        @click="handleEdit(scope.$index, scope.row)"
+                        icon="el-icon-edit"
+                      >
+                        编辑
+                      </el-button>
+                      
+                      <el-popconfirm
+                        title="确定要删除这条记录吗？"
+                        @confirm="confirmEvent"
+                        @cancel="cancelEvent"
+                      >
+                        <template #reference>
+                          <el-button
+                            size="small"
+                            type="danger"
+                            plain
+                            icon="el-icon-delete"
+                            @click="handleDelete(scope.$index, scope.row)"
+                          >
+                            删除
+                          </el-button>
+                        </template>
+                      </el-popconfirm>
+                    </el-button-group>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+
+            <!-- 分页器 -->
+            <div class="pagination-container">
+              <el-pagination
+                v-model:currentPage="data.currentPage"
+                :page-sizes="[10, 20, 30, 40, 50]"
+                :page-size="data.pageSize"
+                background
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="data.allTotal"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
+    </main>
+
+    <!-- 用户信息 -->
+    <footer class="manages-footer">
+      <div class="user-info">
+        <el-avatar 
+          :size="32"
+          icon="el-icon-user"
+        />
+        <span>{{ data.nowUser.userName }}</span>
+      </div>
+    </footer>
+
+    <!-- 抽屉组件 -->
+    <el-drawer
+      v-model="data.drawer"
+      :title="data.buttenType"
+      :direction="data.direction"
+      size="50%"
+      destroy-on-close
+      class="custom-drawer"
+    >
+      <Add 
+        :numlength="data.tableHead"
+        :manatype="data.buttenType"
+        :mana-data="data.editData"
+        :active-name="data.activeName"
+        :drawer="data.drawer"
+        @checkSucces="downAdd"
+        ref="RefChilde"
+      />
+    </el-drawer>
+
+    <!-- 批量上传对话框 -->
+    <el-dialog 
+      v-model="data.uploaddialog" 
+      :title="data.uploadTiele[data.activeName-1]"
+      width="500px"
+      class="custom-dialog"
+    >
+      <div class="upload-content">
+        <el-alert
+          type="info"
+          :closable="false"
+        >
+          <template #default>
+            <el-link 
+              :href="data.downloadModelIp + data.activeName" 
+              target="_blank" 
+              type="primary"
+            >
+              下载导入模板
+            </el-link>
+          </template>
+        </el-alert>
+
+        <el-upload
+          v-model:file-list="data.fileList"
+          class="upload-area"
+          :action="data.uploadFile"
+          :limit="1"
+          :on-exceed="onExceed"
+          :on-remove="onRemove"
+          :on-error="onError"
+          :on-success="onSuccess"
+        >
+          <el-button type="primary" icon="el-icon-upload">
+            选择文件
+          </el-button>
           <template #tip>
-            <div class="el-upload__tip">
-              只能上传excel(后缀为.xls或.xlsx)文件，一次只能上传一个文件，请先删除已经上传的文件
+            <div class="upload-tip">
+              仅支持 .xls 或 .xlsx 格式的 Excel 文件
             </div>
           </template>
         </el-upload>
       </div>
     </el-dialog>
 
+    <!-- 其他组件 -->
     <ManagesDialog ref="RefManagesDialog"/>
     <Tasks ref="RefTasks"/>
   </div>
@@ -186,7 +313,7 @@ export default {
 
     // 获取到用户信息
     const getUserMessageFromStore = () => {
-      proxy.$axios.post('userMongo/getUserMessage').then(res=>{
+      proxy.$axios.post('user/getUserMessage').then(res=>{
         data.nowUser = res.data
       });
     }
@@ -496,40 +623,230 @@ export default {
 </script>
 
 <style scoped>
-.messages{
-  height: 100vh;
-}
-.mana-head{
+.manages-container {
+  min-height: 100vh;
+  background: #f6f8fa;
   display: flex;
-  position: fixed;
-  top: 10px;
-  width: 100%;
-  z-index: 1;
-  background-color: #FFFFFF;
+  flex-direction: column;
 }
-.mana-h2{
-  width: 90%;
-}
-.manages{
-  width: 95%;
-  margin:30px auto;
-  z-index: 2;
-}
-.buttons{
-  display: flex;
-}
-.demo-pagination-block {
-  position: fixed;
-  bottom: 0px;
-  background-color: #FFFFFF;
-}
-.down-userMongo{
-  position: fixed;
-  right: 0px;
-  bottom: 0px;
-  background-color: #FFFFFF;
-}
-.table{
 
+.manages-header {
+  background: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-left h2 {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.manages-content {
+  flex: 1;
+  padding: 2rem;
+  overflow: hidden; /* 防止内容溢出 */
+}
+
+.content-card {
+  height: calc(100vh - 140px); /* 减去头部和padding的高度 */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-tabs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.el-tabs__content) {
+  flex: 1;
+  overflow: hidden;
+}
+
+:deep(.el-tab-pane) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.action-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px 0;
+}
+
+.search-input {
+  width: 300px;
+}
+
+.table-container {
+  flex: 1;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.custom-table {
+  height: calc(100vh - 240px);
+  margin-bottom: 1.5rem;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.manages-footer {
+  background: white;
+  padding: 1rem 2rem;
+  border-top: 1px solid #eee;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+.custom-drawer :deep(.el-drawer__header) {
+  margin-bottom: 0;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.upload-content {
+  padding: 1rem;
+}
+
+.upload-area {
+  margin-top: 1.5rem;
+}
+
+.upload-tip {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .manages-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .manages-content {
+    padding: 1rem;
+  }
+
+  .action-toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .toolbar-right {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+}
+
+/* Element Plus 组件样式优化 */
+:deep(.el-table) {
+  --el-table-border-color: #eee;
+  --el-table-header-bg-color: #f8f9fa;
+}
+
+:deep(.el-button--primary) {
+  --el-button-hover-bg-color: #4096ff;
+  --el-button-hover-border-color: #4096ff;
+}
+
+:deep(.el-tabs__header) {
+  margin-bottom: 12px;
+}
+
+:deep(.el-tabs__item) {
+  height: 32px;
+  line-height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+:deep(.el-button) {
+  padding: 8px 12px;
+  font-size: 13px;
+  height: 32px;
+}
+
+:deep(.el-input) {
+  height: 32px;
+}
+
+:deep(.el-input__inner) {
+  height: 32px;
+  line-height: 32px;
+  font-size: 13px;
+}
+
+:deep(.el-input__icon) {
+  line-height: 32px;
+}
+
+:deep(.el-pagination) {
+  height: 28px;
+  line-height: 28px;
+}
+
+:deep(.el-pagination .el-select .el-input) {
+  width: 100px;
+}
+
+:deep(.el-pagination button) {
+  height: 28px;
+  min-width: 28px;
+}
+
+:deep(.el-pagination .el-input__inner) {
+  height: 28px;
+}
+
+:deep(.el-pager li) {
+  height: 28px;
+  line-height: 28px;
+  min-width: 28px;
+}
+
+:deep(.el-table) {
+  font-size: 13px;
+}
+
+:deep(.el-table .cell) {
+  line-height: 20px;
+  padding: 8px;
 }
 </style>

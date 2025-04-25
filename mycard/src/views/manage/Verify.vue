@@ -65,7 +65,7 @@ export default {
   },
   setup(){
     const data = reactive({
-      url:"localhost:8089/userMongo/verify", //验证码图片获取地址
+      url:"localhost:8089/user/verify", //验证码图片获取地址
     })
     // 生成一个随机数
     const randomNum = (min, max) => {

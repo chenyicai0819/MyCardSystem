@@ -1,49 +1,58 @@
 <template>
   <div class="about-head">
-    <el-card class="box-card">
+    <el-card class="box-card dark-card">
       <template #header>
         <div class="card-header">
           <span>关于站长</span>
         </div>
       </template>
-      <el-descriptions :column="ismoblie==true?1:3">
+      <el-descriptions :column="ismoblie ? 1 : 3" class="dark-descriptions">
         <el-descriptions-item label="姓名：">陈益财</el-descriptions-item>
         <el-descriptions-item label="联系电话：">15500932013</el-descriptions-item>
         <el-descriptions-item label="城市：">广西桂林</el-descriptions-item>
         <el-descriptions-item label="标签:">
-          <el-tag size="small" v-for="tag in tagList" style="margin-right: 5px;margin-top: 3px">{{tag.value}}</el-tag>
+          <el-tag 
+            v-for="tag in tagList" 
+            :key="tag.value"
+            class="dark-tag"
+            size="small"
+          >
+            {{tag.value}}
+          </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="联系地址：">广西壮族自治区-桂林市-桂林电子科技大学-花江校区</el-descriptions-item>
       </el-descriptions>
     </el-card>
-    <el-card class="box-card" >
+
+    <el-card class="box-card dark-card">
       <template #header>
         <div class="card-header">
           <span>地图位置&我的词云</span>
         </div>
       </template>
-      <div class="card-header-div">
-        <div id="container" :class="ismoblie==true?'map1':'map2'" />
-        <div>
+      <div class="map-cloud-container">
+        <div id="container" :class="ismoblie ? 'map-mobile' : 'map-desktop'" />
+        <div class="word-cloud-container">
           <WordCloud/>
         </div>
       </div>
     </el-card>
-    <el-card class="box-card" >
+
+    <el-card class="box-card dark-card">
       <template #header>
         <div class="card-header">
           <span>我的相册</span>
         </div>
       </template>
-      <div class="card-header-images">
-        <div v-for="url in urls" style="width: 30%;height: 30%;display: inline;">
-          <el-image
-              style="width: 30%;height: 30%"
-              :preview-src-list="urls"
-              :key="url"
-              :src="url"
-              lazy />
-        </div>
+      <div class="gallery-container">
+        <el-image
+          v-for="url in urls"
+          :key="url"
+          :src="url"
+          :preview-src-list="urls"
+          class="gallery-image"
+          lazy
+        />
       </div>
     </el-card>
   </div>
@@ -126,41 +135,106 @@ export default {
 }
 </script>
 <style scoped>
-
-.about-head{
-  width: 90%;
+.about-head {
+  width: 95%;
+  max-width: 1600px;
   margin: 0 auto;
 }
-.box-card{
-  width: 100%;
-  margin-bottom: 10px;
+
+.box-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
 }
+
+.box-card :deep(.el-card__header) {
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  color: #1e293b;
+}
+
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  font-weight: 600;
 }
 
-.text {
-  font-size: 14px;
+:deep(.el-descriptions__label) {
+  color: #64748b;
 }
 
-.item {
-  margin-bottom: 18px;
+:deep(.el-descriptions__content) {
+  color: #1e293b;
 }
-#container {
 
+.dark-tag {
+  background: #f1f5f9 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #3b82f6;
+  margin: 3px;
 }
-.card-header-div{
+
+.map-cloud-container {
   display: flex;
-}
-.map1{
-  width:100%; height: 200px;
-}
-.map2{
-  width:600px; height: 300px;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
 }
 
+.map-desktop {
+  width: 60%;
+  height: 400px;
+  min-width: 600px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
 
+.map-mobile {
+  width: 100%;
+  height: 300px;
+}
+
+.word-cloud-container {
+  flex: 1;
+  min-width: 300px;
+}
+
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.gallery-image {
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.gallery-image:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .about-head {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .map-cloud-container {
+    flex-direction: column;
+  }
+
+  .gallery-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 10px;
+  }
+}
 </style>

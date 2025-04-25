@@ -72,7 +72,7 @@ public class CardServiceImpl implements CardService {
         map.put("type","删除卡片");
         map.put("name",cardMapper.getNameById(cardId));
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return cardMapper.delCard(cardId);
     }
 
@@ -84,7 +84,7 @@ public class CardServiceImpl implements CardService {
         map.put("type","更新卡片");
         map.put("name",cardMapper.getNameById(card.getCardId()));
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return cardMapper.upCard(card);
     }
 
@@ -96,7 +96,7 @@ public class CardServiceImpl implements CardService {
         map.put("type","添加卡片");
         map.put("name",card.getCardName());
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return cardMapper.addCard(card);
     }
 

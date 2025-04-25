@@ -68,7 +68,7 @@ public class CollServiceImpl implements CollService {
         map.put("type","删除书签分类");
         map.put("name",collMapper.seaNameColl(id));
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return collMapper.delColl(id);
     }
 
@@ -90,7 +90,7 @@ public class CollServiceImpl implements CollService {
         map.put("type","添加书签分类");
         map.put("name",coll.getCollName());
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return collMapper.addColl(coll);
     }
 
@@ -102,7 +102,7 @@ public class CollServiceImpl implements CollService {
         map.put("type","更新书签分类");
         map.put("name",collMapper.seaNameColl(coll.getCollId()));
         map.put("time", dateFormat.format(date));
-        wcn.pushEdit(map);
+        // wcn.pushEdit(map);
         return collMapper.upColl(coll);
     }
 
